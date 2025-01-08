@@ -1,0 +1,41 @@
+.register-page {
+    height: 100vh;
+    background: linear-gradient(to bottom, #e3f2fd, #e8f5e9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.register-card h3 {
+    font-weight: bold;
+    color: #4a90e2; /* Matches the blue tone */
+}
+
+.form-label {
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    height: calc(2.5rem + 2px);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.btn-dark {
+    background-color: #000;
+    color: #fff;
+    border: none;
+}
+
+.btn-dark:hover {
+    background-color: #333;
+}
