@@ -1,30 +1,65 @@
 .landing-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100vh;
-    background: linear-gradient(to bottom, #e3f2fd, #e8f5e9);
-    color: #333;
+    background-color: #fff;
+    padding: 0 20px;
 }
 
-.landing-page .display-4 {
+.landing-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.display-4 {
     font-weight: bold;
-    color: #4a90e2; /* Adjust blue color to match your design */
+    color: #000;
 }
 
-.landing-page .lead {
-    font-size: 1.2rem;
-    color: #6c757d; /* Gray tone for subtitle */
+.lead {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Spacing between the buttons */
+    margin-top: 20px;
 }
 
 .button-group .btn {
+    padding: 10px 20px;
     font-size: 1rem;
-    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
-.button-group .btn-dark {
+.btn-dark {
     background-color: #000;
+    color: #fff;
     border: none;
 }
 
-.button-group .btn-outline-dark {
-    border: 2px solid #000;
-    color: #000;
+.btn-dark:hover {
+    background-color: #333;
 }
+
+.btn-outline-dark {
+    border: 1px solid #000;
+    color: #000;
+    background-color: transparent;
+}
+
+.btn-outline-dark:hover {
+    background-color: #000;
+    color: #fff;
+}
+
