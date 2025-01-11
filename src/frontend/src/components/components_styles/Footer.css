@@ -30,5 +30,11 @@
 }
 
 .footer-link:hover {
-    text-decoration: underline;
+    /*text-decoration: underline;*/
+    background-color: black;
+    color: white;
+    padding: 5px 10px; /* Add padding for spacing within the background */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0 0 0 5px white; /* Simulate margin effect with a white "gap" */
+    transition: all 0.3s ease; /* Smooth transition effect */
 }

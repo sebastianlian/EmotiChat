@@ -17,6 +17,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 25px;
+    padding-right: 25px;
 }
 
 .navbar-brand {
@@ -42,7 +44,12 @@
 }
 
 .navbar-link:hover {
-    text-decoration: underline;
+    background-color: black;
+    color: white;
+    padding: 5px 10px; /* Add padding for spacing within the background */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0 0 0 5px white; /* Simulate margin effect with a white "gap" */
+    transition: all 0.3s ease; /* Smooth transition effect */
 }
 
 .navbar-logo {
@@ -63,8 +70,4 @@
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
-}
-
-.navbar-link:hover {
-    text-decoration: underline;
 }

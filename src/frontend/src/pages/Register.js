@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import './pages_styles/Register.css';
 
 const Register = () => {
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [gender, setGender] = useState('');
+    const [pronouns, setPronouns] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,6 +26,10 @@ const Register = () => {
 
         try {
             const response = await axios.post('http://localhost:5000/api/auth/register', {
+                firstname,
+                lastname,
+                gender,
+                pronouns,
                 username,
                 email,
                 password,
@@ -40,6 +48,64 @@ const Register = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && <div className="alert alert-success">{success}</div>}
                 <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="firstname" className="form-label">First Name</label>
+                        <input
+                            type="text"
+                            id="firstname"
+                            className="form-control"
+                            placeholder="Enter your first name"
+                            value={firstname}
+                            onChange={(e) => setFirstname(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="lastname" className="form-label">Last Name</label>
+                        <input
+                            type="text"
+                            id="lastname"
+                            className="form-control"
+                            placeholder="Enter your last name"
+                            value={lastname}
+                            onChange={(e) => setLastname(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="gender" className="form-label">Gender</label>
+                        <select
+                            id="gender"
+                            className="form-control"
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="nonbinary">Non-binary</option>
+                            <option value="other">Other</option>
+                            <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="pronouns" className="form-label">Pronouns</label>
+                        <select
+                            id="pronouns"
+                            className="form-control"
+                            value={pronouns}
+                            onChange={(e) => setPronouns(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Select your pronouns</option>
+                            <option value="he/him">He/Him</option>
+                            <option value="she/her">She/Her</option>
+                            <option value="they/them">They/Them</option>
+                            <option value="other">Other</option>
+                            <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select>
+                    </div>
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
                         <input
