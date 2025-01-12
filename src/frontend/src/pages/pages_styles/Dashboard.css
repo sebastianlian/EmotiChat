@@ -1,84 +1,213 @@
+/* Dashboard Container */
 .dashboard-container {
     display: flex;
     height: 100vh;
-    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease;
 }
 
+/* Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #fff;
-    border-right: 1px solid #ddd;
-    padding: 1rem;
+    background-color: #ffffff; /* Light mode sidebar background */
+    border-right: 1px solid #e0e0e0; /* Light border */
+    padding: 1.5rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.sidebar-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #4a90e2;
-    margin-bottom: 2rem;
+body.dark-mode .sidebar {
+    background-color: #1e1e1e; /* Dark background for sidebar */
+    border-color: #3a3a3a; /* Subtle border contrast for dark mode */
 }
 
+/*.sidebar-title {*/
+/*    font-size: 1.5rem;*/
+/*    font-weight: bold;*/
+/*    color: #4a90e2; !* Light mode title color *!*/
+/*    margin-bottom: 2rem;*/
+/*    text-align: center;*/
+/*    transition: color 0.3s ease;*/
+/*}*/
+
+body.dark-mode .sidebar-title {
+    color: #e2e2e2; /* High contrast text for dark mode */
+}
+
+/* Sidebar Link Base Styles */
 .nav-link {
     display: flex;
     align-items: center;
-    font-size: 1rem;
-    color: #333;
-    margin: 0.5rem 0;
+    justify-content: left; /* Align text and icon to the left */
+    font-size: 1.1rem;
+    color: #555555; /* Neutral dark text for light mode */
+    margin: 0.75rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-.nav-link i {
-    margin-right: 10px;
-    font-size: 1.2rem;
+/* Sidebar Link Hover in Light Mode */
+.nav-link:hover {
+    font-weight: bold;
+    color: #ffffff !important; /* Highlighted text color for active link */
+    background-color: #007bff; /* Accessible blue for hover in light mode */
+    transform: scale(1.05); /* Subtle zoom on hover */
 }
 
+/* Sidebar Link Active in Light Mode */
 .nav-link.active {
     font-weight: bold;
-    color: #4a90e2;
+    color: #ffffff; /* Highlighted text color for active link */
+    background-color: #4444aa; /* Active link background color */
 }
 
-.logout {
-    color: red;
+/* Sidebar Link Disabled in Light Mode */
+.nav-link.disabled {
+    pointer-events: none; /* Disable interaction */
+    color: #aaaaaa; /* Muted text for disabled links */
+    background-color: transparent; /* No background for disabled links */
+}
+
+/* Dark Mode Adjustments */
+body.dark-mode .nav-link {
+    color: #bbbbbb; /* Neutral text color for dark mode */
+}
+
+body.dark-mode .nav-link:hover {
     font-weight: bold;
-    margin-top: 2rem;
+    color: #ffffff; /* White text on hover */
+    background-color: #5e9ea0; /* Accessible hover background for dark mode */
+    transform: scale(1.05); /* Subtle zoom on hover */
 }
 
+body.dark-mode .nav-link.active {
+    color: #ffffff; /* White text for active links */
+    background-color: #4444aa; /* Accessible background for active links */
+}
+
+body.dark-mode .nav-link.disabled {
+    color: #606060; /* Muted gray for disabled links in dark mode */
+    background-color: transparent;
+}
+
+/* Logout Button */
+.nav-link.logout {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the text and icon */
+    font-size: 1.1rem;
+    color: #d9534f; /* Accessible red shade for light mode */
+    margin: 1rem 0;
+    padding: 0.75rem 1.5rem; /* Add padding for better spacing */
+    border-radius: 8px;
+    background-color: #fff; /* Default background */
+    border: 2px solid #d9534f; /* Accessible border for visibility */
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover styles for better visibility */
+.nav-link.logout:hover {
+    background-color: #d9534f; /* Red background */
+    color: #ffffff; /* White text */
+    border-color: #b22222; /* Darker red border */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Focus styles for keyboard navigation */
+.nav-link.logout:focus {
+    outline: 2px solid #4a90e2; /* Blue outline for focus */
+    outline-offset: 2px;
+}
+
+/* Dark Mode Logout Button */
+body.dark-mode .nav-link.logout {
+    color: #ff7b72; /* Softer red for dark mode */
+    background-color: #1e1e1e; /* Dark mode background */
+    border-color: #ff7b72;
+}
+
+body.dark-mode .nav-link.logout:hover {
+    background-color: #ff7b72; /* Softer red hover */
+    color: #000000; /* Black text for contrast */
+    border-color: #ff4d4d; /* Slightly darker red border */
+    transform: scale(1.1); /* Slight zoom */
+}
+
+/* Main Content */
 .main-content {
     flex: 1;
     padding: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.main-title {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #4a90e2;
-    margin-bottom: 1.5rem;
+body.dark-mode .main-content {
+    background-color: #202020; /* Neutral dark background */
+    color: #e0e0e0; /* High contrast text */
 }
 
+/* Welcome Banner */
+.welcome-banner {
+    margin-bottom: 2rem;
+    text-align: center;
+    animation: fadeIn 1s ease-out;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .welcome-message {
+    color: #d0d0d0; /* Slightly muted text color */
+}
+
+/* Card Styles */
 .card {
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s ease, color 0.3s ease;
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 1rem;
+body.dark-mode .card {
+    background-color: #2a2a2a; /* Dark gray for contrast */
+    color: #e0e0e0; /* High contrast text */
+    border-color: #444444;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.chat-window {
-    height: 300px;
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
-.chat-input {
+body.dark-mode .card:hover {
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+body.dark-mode .dark-mode-toggle {
+    background-color: #444444;
+}
+
+.dark-mode-toggle:hover {
+    transform: scale(1.1);
 }
