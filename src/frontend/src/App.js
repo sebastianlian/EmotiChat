@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ProgressPage from "./pages/ProgressPage";
 
 const App = () => (
     <AuthProvider>
@@ -19,6 +20,14 @@ const App = () => (
                     element={
                         <ProtectedRoute>
                             <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/progress"
+                    element={
+                        <ProtectedRoute>
+                            <ProgressPage />
                         </ProtectedRoute>
                     }
                 />

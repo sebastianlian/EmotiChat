@@ -80,12 +80,16 @@ export const AuthProvider = ({ children }) => {
 
 
     const logout = () => {
+        // Clear the token and user state
         localStorage.removeItem('token');
         setAuthState({
             user: null,
             token: null,
-            loading: false,
+            loading: false, // Ensure loading is false
         });
+
+        // Optionally reload the page to ensure full logout
+        window.location.href = '/login'; // Redirect to the login page
     };
 
     return (
