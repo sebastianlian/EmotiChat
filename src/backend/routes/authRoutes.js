@@ -30,21 +30,52 @@ router.post('/register', async (req, res) => {
 
 // Login endpoint
 router.post('/login', (req, res, next) => {
-    // Use Passport Local Strategy for login
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        console.error('Missing email or password');
+        return res.status(400).send('Email and password are required.');
+    }
+
+    console.log('Login request received:', req.body);
+
     passport.authenticate('local', { session: false }, (err, user, info) => {
-        if (err || !user) {
-            return res.status(400).send(info.message || 'Login failed');
+        if (err) {
+            console.error('Error during login:', err);
+            return res.status(500).send('Internal server error');
         }
 
-        // Generate JWT
+        if (!user) {
+            console.error('Login failed:', info.message);
+            return res.status(400).send(info.message || 'Invalid login');
+        }
+
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+        console.log('Login successful, token generated:', token);
         res.json({ token });
     })(req, res, next);
 });
+
 
 // Protected route (example)
 router.get('/dashboard', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.send(`Hello ${req.user.username}, welcome to the dashboard!`);
 });
+
+// Verify token endpoint
+router.get('/verify-token', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).send('Unauthorized');
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const user = await User.findById(decoded.id).select('-password'); // Exclude password
+        if (!user) return res.status(404).send('User not found');
+        res.json({ user });
+    } catch (err) {
+        res.status(401).send('Invalid or expired token');
+    }
+});
+
 
 module.exports = router;
