@@ -7,27 +7,27 @@ import { BsMoon, BsSun, BsCloudSun } from 'react-icons/bs';
 const Dashboard = () => {
     const { user, logout } = useAuth(); // Access user information from AuthContext
     const currentHour = new Date().getHours(); // Get the current hour
-    const [darkMode, setDarkMode] = React.useState(false); // Dark mode state
+    // const [darkMode, setDarkMode] = React.useState(false); // Dark mode state
 
-    React.useEffect(() => {
-        const savedMode = localStorage.getItem('darkMode') === 'true';
-        setDarkMode(savedMode);
-        document.body.classList.toggle('dark-mode', savedMode);
-        document.body.classList.toggle('light-mode', !savedMode);
-    }, []);
+    // React.useEffect(() => {
+    //     const savedMode = localStorage.getItem('darkMode') === 'true';
+    //     setDarkMode(savedMode);
+    //     document.body.classList.toggle('dark-mode', savedMode);
+    //     document.body.classList.toggle('light-mode', !savedMode);
+    // }, []);
 
     const handleLogout = () => {
         logout();
         window.location.href = '/login'; // Redirect to login
     };
 
-    const toggleDarkMode = () => {
-        const newMode = !darkMode;
-        setDarkMode(newMode);
-        document.body.classList.toggle('dark-mode', newMode);
-        document.body.classList.toggle('light-mode', !newMode);
-        localStorage.setItem('darkMode', newMode);
-    };
+    // const toggleDarkMode = () => {
+    //     const newMode = !darkMode;
+    //     setDarkMode(newMode);
+    //     document.body.classList.toggle('dark-mode', newMode);
+    //     document.body.classList.toggle('light-mode', !newMode);
+    //     localStorage.setItem('darkMode', newMode);
+    // };
 
     const getGreeting = () => {
         if (currentHour < 12) return 'Good Morning';
@@ -43,10 +43,10 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-wrapper">
-            {/* Dark Mode Toggle */}
-            <div className="dark-mode-toggle" onClick={toggleDarkMode}>
-                {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}
-            </div>
+            {/*/!* Dark Mode Toggle *!/*/}
+            {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
+            {/*    {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}*/}
+            {/*</div>*/}
 
             <div className="dashboard-container">
                 {/* Sidebar */}

@@ -10,14 +10,13 @@ const ProgressPage = () => {
         <div className="progress-page-wrapper">
             {/* Sidebar */}
             <Sidebar handleLogout={() => {
-                // Optional: Define logout logic here if necessary
                 window.location.href = '/login';
             }} />
 
             {/* Main Content */}
             <div className="main-content">
                 <div className="progress-header">
-                    <h1>Progress Page</h1>
+                    <h1 className="main-title">Progress Page</h1>
                     <p>Welcome, {user?.firstname || 'User'}! Here's your progress overview.</p>
                 </div>
                 <div className="progress-content">

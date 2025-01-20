@@ -1,0 +1,192 @@
+/* Root variables for themes */
+:root {
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --input-background-color: #f9f9f9;
+    --primary-color: #007bff;
+    --primary-hover-color: #0056b3;
+    --toggle-inactive-color: #ccc;
+    --toggle-active-color: #007bff;
+    --toggle-knob-color: #ffffff;
+}
+
+/* Dark mode variables */
+.dark-mode {
+    --background-color: #1e1e1e;
+    --text-color: #f1f1f1;
+    --border-color: #3a3a3a;
+    --input-background-color: #2e2e2e;
+    --toggle-inactive-color: #555555;
+    --toggle-active-color: #007bff;
+    --primary-color: #1a73e8;
+    --primary-hover-color: #144a96;
+}
+
+/* Wrapper styles */
+.settings-page-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.settings-content {
+    flex-grow: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header Section */
+.settings-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.settings-subtitle {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Form Section */
+.settings-form {
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--input-background-color);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.settings-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.settings-group label {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-right: 1rem;
+}
+
+.settings-group input,
+.settings-group select {
+    flex: 2;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.settings-group select {
+    cursor: pointer;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    display: block; /* Make the checkbox visible for debugging */
+    position: relative;
+    z-index: 1; /* Ensure it's above the slider */
+    width: 50px;
+    height: 24px;
+    opacity: 1; /* Fully visible for debugging */
+    cursor: pointer;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-inactive-color);
+    border-radius: 24px;
+    transition: background-color 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background-color: var(--toggle-knob-color);
+    bottom: 3px;
+    left: 3px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.switch input:checked + .slider {
+    background-color: var(--toggle-active-color);
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Save Changes Button */
+button.btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+button.btn:hover {
+    background-color: var(--primary-hover-color);
+    transform: scale(1.02);
+}
+
+button.btn:active {
+    transform: scale(0.98);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .settings-content {
+        padding: 1rem;
+    }
+
+    .settings-form {
+        padding: 1rem;
+    }
+
+    .settings-group label {
+        font-size: 0.9rem;
+    }
+
+    button.btn {
+        font-size: 0.9rem;
+    }
+}

@@ -114,3 +114,127 @@ body.dark-mode .nav-link.logout:hover {
     background-color: #ff7b72;
     color: #000000;
 }
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+    width: 80px; /* Adjust based on your preference */
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.sidebar.collapsed .nav-link .sidebar-icon {
+    margin-right: 0; /* Hide the space for text */
+}
+
+.sidebar.collapsed .nav-link span {
+    display: none; /* Hide text labels */
+}
+
+.sidebar.collapsed .logout {
+    justify-content: center;
+    text-align: center;
+}
+
+.sidebar.collapsed .collapse-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Toggle Button */
+.collapse-btn {
+    background: none;
+    border: none;
+    color: #555555;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.collapse-btn:hover {
+    color: #007bff;
+    transform: rotate(180deg);
+}
+
+body.dark-mode .collapse-btn {
+    color: #bbbbbb;
+}
+
+body.dark-mode .collapse-btn:hover {
+    color: #5e9ea0;
+}
+
+/* Logout Button for Collapsed Sidebar */
+.sidebar.collapsed .nav-link.logout {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px; /* Adjust size to match other icons */
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    color: #d9534f; /* Keep consistent with non-collapsed style */
+    font-size: 1.5rem; /* Make icon larger */
+    cursor: pointer;
+}
+
+.sidebar.collapsed .nav-link.logout:hover {
+    background-color: #d9534f; /* Highlight on hover */
+    color: #ffffff;
+    border-radius: 50%; /* Make it circular */
+}
+
+/* Tooltip Styling */
+.nav-link.logout[title] {
+    position: relative;
+}
+
+.nav-link.logout[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Dark Mode Toggle Button */
+.nav-link.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #555555;
+    margin: 0.75rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-link.dark-mode-toggle:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+body.dark-mode .nav-link.dark-mode-toggle {
+    color: #bbbbbb;
+}
+
+body.dark-mode .nav-link.dark-mode-toggle:hover {
+    background-color: #5e9ea0;
+    color: #ffffff;
+}

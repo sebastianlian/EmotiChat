@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { useDarkMode } from './DarkModeContext'; // Import DarkModeContext
 
 const AuthContext = createContext();
 
@@ -11,6 +12,9 @@ export const AuthProvider = ({ children }) => {
         token: null,
         loading: true,
     });
+
+    // Destructure resetDarkMode from useDarkMode
+    const { resetDarkMode } = useDarkMode();
 
     const { user, token, loading } = authState;
 
@@ -50,6 +54,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
+        // Clear dark mode state on login
+        resetDarkMode(); // Reset dark mode when logging in
+        localStorage.removeItem('darkMode'); // Clear localStorage for darkMode
+        console.log('Dark mode reset on login'); // Debug
+
         if (!email || !password) {
             throw new Error('Email and password are required.');
         }
@@ -78,19 +87,21 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
     const logout = () => {
-        // Clear the token and user state
+        console.log('Logout called'); // Debug
+        resetDarkMode(); // Reset dark mode
+        console.log('Dark mode reset'); // Debug
+
         localStorage.removeItem('token');
         setAuthState({
             user: null,
             token: null,
-            loading: false, // Ensure loading is false
+            loading: false,
         });
 
-        // Optionally reload the page to ensure full logout
-        window.location.href = '/login'; // Redirect to the login page
+        window.location.href = '/login';
     };
+
 
     return (
         <AuthContext.Provider value={{ user, token, login, logout, loading }}>

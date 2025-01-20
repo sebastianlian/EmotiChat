@@ -25,12 +25,11 @@
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: var(--primary-color); /* Use primary color variable */
 }
 
 .progress-header p {
     font-size: 1.2rem;
-    color: var(--text-secondary-color); /* Secondary text color */
+    /*color: var(--text-secondary-color); !* Secondary text color *!*/
 }
 
 /* Cards */
