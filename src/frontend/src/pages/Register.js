@@ -8,6 +8,7 @@ const Register = () => {
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('');
     const [pronouns, setPronouns] = useState('');
+    const [customPronouns, setCustomPronouns] = useState(''); // State for custom pronouns
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,22 +25,32 @@ const Register = () => {
             return;
         }
 
+        // Do NOT override pronouns with the custom value.
+        // Just keep pronouns in your state as 'other' if user picks other.
+        const payload = {
+            firstname,
+            lastname,
+            gender,
+            // If user chose "other" in the dropdown, pronouns should be "other"
+            // If user chose "he/him", pronouns should be "he/him", etc.
+            pronouns,
+            // If pronouns is "other", pass customPronouns
+            customPronouns: pronouns === 'other' ? customPronouns : undefined,
+            username,
+            email,
+            password,
+        };
+
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/register', {
-                firstname,
-                lastname,
-                gender,
-                pronouns,
-                username,
-                email,
-                password,
-            });
+            const response = await axios.post('http://localhost:5000/api/auth/register', payload);
             setSuccess('Registration successful! Redirecting...');
             setTimeout(() => navigate('/login'), 2000);
         } catch (err) {
-            setError(err.response?.data || 'Registration failed');
+            const errorMessage = err.response?.data?.message || 'Registration failed';
+            setError(errorMessage);
         }
     };
+
 
     return (
         <div className="register-page d-flex justify-content-center align-items-center">
@@ -107,6 +118,21 @@ const Register = () => {
                             <option value="prefer_not_to_say">Prefer not to say</option>
                         </select>
                     </div>
+                    {/* Render custom pronouns field if "Other" is selected */}
+                    {pronouns === 'other' && (
+                        <div className="mb-3">
+                            <label htmlFor="customPronouns" className="form-label">Custom Pronouns</label>
+                            <input
+                                type="text"
+                                id="customPronouns"
+                                className="form-control"
+                                placeholder="Enter your pronouns"
+                                value={customPronouns}
+                                onChange={(e) => setCustomPronouns(e.target.value)}
+                                required
+                            />
+                        </div>
+                    )}
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
                         <input

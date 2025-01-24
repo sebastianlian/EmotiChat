@@ -187,9 +187,9 @@ body.dark-mode .collapse-btn:hover {
 }
 
 .sidebar.collapsed .nav-link.logout:hover {
-    background-color: #d9534f; /* Highlight on hover */
+    background-color: #d9534f;
     color: #ffffff;
-    border-radius: 50%; /* Make it circular */
+    transform: scale(1.05);
 }
 
 /* Tooltip Styling */
