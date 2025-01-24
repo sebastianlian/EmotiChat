@@ -1,22 +1,35 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext'; // Import AuthContext
 import './pages_styles/Login.css';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth(); // Get login function from AuthContext
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!email || !password) {
+            setError('Email and password are required.');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            localStorage.setItem('token', response.data.token); // Store token
+            await login(email, password); // Pass email and password as separate arguments
             navigate('/dashboard'); // Redirect to the dashboard
         } catch (err) {
-            setError(err.response?.data || 'Login failed');
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -24,6 +37,7 @@ const Login = () => {
         <div className="login-page d-flex justify-content-center align-items-center">
             <div className="card login-card p-4">
                 <h3 className="text-center mb-4">Login</h3>
+                <p className="card-text text-center text-secondary">Enter your email and password to access your account.</p>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
@@ -50,7 +64,9 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-dark w-100">Login</button>
+                    <button type="submit" className="btn btn-dark w-100" disabled={loading}>
+                        {loading ? 'Logging in...' : 'Login'}
+                    </button>
                 </form>
             </div>
         </div>

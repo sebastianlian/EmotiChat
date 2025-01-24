@@ -1,62 +1,83 @@
 import React from 'react';
+import { useAuth } from '../components/AuthContext'; // Import the AuthContext
+import Sidebar from '../components/SideBar'; // Import the Sidebar component
 import './pages_styles/Dashboard.css';
+import { BsMoon, BsSun, BsCloudSun } from 'react-icons/bs';
 
 const Dashboard = () => {
-    return (
-        <div className="dashboard-container">
-            {/* Sidebar */}
-            <div className="sidebar">
-                <h2 className="sidebar-title">EmotiChat</h2>
-                <ul className="nav flex-column">
-                    <li className="nav-item">
-                        <a href="#home" className="nav-link active">
-                            <i className="bi bi-house"></i> Home
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#chat" className="nav-link">
-                            <i className="bi bi-chat"></i> Chat
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#progress" className="nav-link">
-                            <i className="bi bi-bar-chart"></i> Progress
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#settings" className="nav-link">
-                            <i className="bi bi-gear"></i> Settings
-                        </a>
-                    </li>
-                </ul>
-                <a href="#logout" className="nav-link logout">
-                    <i className="bi bi-box-arrow-left"></i> Logout
-                </a>
-            </div>
+    const { user, logout } = useAuth(); // Access user information from AuthContext
+    const currentHour = new Date().getHours(); // Get the current hour
+    // const [darkMode, setDarkMode] = React.useState(false); // Dark mode state
 
-            {/* Main Content */}
-            <div className="main-content">
-                <h1 className="main-title">Dashboard</h1>
-                <div className="row">
-                    {/* Chat Card */}
-                    <div className="col-md-8">
-                        <div className="card">
-                            <h5 className="card-title">Chat with Your Assistant</h5>
-                            <div className="chat-window">
-                                {/* Placeholder chat area */}
-                            </div>
-                            <div className="chat-input">
-                                <input type="text" className="form-control" placeholder="Type your message..." />
-                                <button className="btn btn-dark">Send</button>
+    // React.useEffect(() => {
+    //     const savedMode = localStorage.getItem('darkMode') === 'true';
+    //     setDarkMode(savedMode);
+    //     document.body.classList.toggle('dark-mode', savedMode);
+    //     document.body.classList.toggle('light-mode', !savedMode);
+    // }, []);
+
+    const handleLogout = () => {
+        logout();
+        window.location.href = '/login'; // Redirect to login
+    };
+
+    // const toggleDarkMode = () => {
+    //     const newMode = !darkMode;
+    //     setDarkMode(newMode);
+    //     document.body.classList.toggle('dark-mode', newMode);
+    //     document.body.classList.toggle('light-mode', !newMode);
+    //     localStorage.setItem('darkMode', newMode);
+    // };
+
+    const getGreeting = () => {
+        if (currentHour < 12) return 'Good Morning';
+        if (currentHour < 18) return 'Good Afternoon';
+        return 'Good Evening';
+    };
+
+    const getGreetingIcon = () => {
+        if (currentHour < 12) return <BsSun className="time-icon" />;
+        if (currentHour < 18) return <BsCloudSun className="time-icon" />;
+        return <BsMoon className="time-icon" />;
+    };
+
+    return (
+        <div className="dashboard-wrapper">
+            {/*/!* Dark Mode Toggle *!/*/}
+            {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
+            {/*    {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}*/}
+            {/*</div>*/}
+
+            <div className="dashboard-container">
+                {/* Sidebar */}
+                <Sidebar handleLogout={handleLogout} />
+
+                {/* Main Content */}
+                <div className="main-content">
+                    <div className="welcome-banner fade-in">
+                        <h1 className="welcome-message">
+                            {getGreeting()} {getGreetingIcon()}, {user?.firstname || 'User'}!
+                        </h1>
+                    </div>
+                    <h1 className="main-title">Quick View</h1>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <div className="card">
+                                <h5 className="card-title">Your Progress</h5>
+                                <p>Track your progress here.</p>
                             </div>
                         </div>
-                    </div>
-
-                    {/* Progress Card */}
-                    <div className="col-md-4">
-                        <div className="card">
-                            <h5 className="card-title">Your Progress</h5>
-                            <p>Progress tracking features will be implemented here.</p>
+                        <div className="col-md-4">
+                            <div className="card">
+                                <h5 className="card-title">Your Goals</h5>
+                                <p>Set your goals for the day!</p>
+                            </div>
+                        </div>
+                        <div className="col-md-4">
+                            <div className="card">
+                                <h5 className="card-title">Your Stats</h5>
+                                <p>View your stats and activity insights.</p>
+                            </div>
                         </div>
                     </div>
                 </div>

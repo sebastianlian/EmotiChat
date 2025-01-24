@@ -1,0 +1,240 @@
+/* Sidebar Container */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #ffffff;
+    border-right: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .sidebar {
+    background-color: #1e1e1e;
+    border-color: #3a3a3a;
+}
+
+/* Sidebar Title */
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a90e2;
+    margin-bottom: 2rem;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .sidebar-title {
+    color: #e2e2e2;
+}
+
+/* Sidebar Links */
+.nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #555555;
+    margin: 0.75rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link .sidebar-icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Hover Effects */
+.nav-link:hover {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    transform: scale(1.05);
+}
+
+/* Active Link */
+.nav-link.active {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4444aa;
+}
+
+/* Disabled Link */
+.nav-link.disabled {
+    pointer-events: none;
+    color: #aaaaaa;
+    background-color: transparent;
+}
+
+body.dark-mode .nav-link {
+    color: #bbbbbb;
+}
+
+body.dark-mode .nav-link:hover {
+    background-color: #5e9ea0;
+}
+
+body.dark-mode .nav-link.active {
+    background-color: #4444aa;
+}
+
+/* Logout Button */
+.nav-link.logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #d9534f;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    background-color: #fff;
+    border: 2px solid #d9534f;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link.logout:hover {
+    background-color: #d9534f;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+body.dark-mode .nav-link.logout {
+    color: #ff7b72;
+    background-color: #1e1e1e;
+    border-color: #ff7b72;
+}
+
+body.dark-mode .nav-link.logout:hover {
+    background-color: #ff7b72;
+    color: #000000;
+}
+
+/* Collapsed Sidebar */
+.sidebar.collapsed {
+    width: 80px; /* Adjust based on your preference */
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.sidebar.collapsed .nav-link .sidebar-icon {
+    margin-right: 0; /* Hide the space for text */
+}
+
+.sidebar.collapsed .nav-link span {
+    display: none; /* Hide text labels */
+}
+
+.sidebar.collapsed .logout {
+    justify-content: center;
+    text-align: center;
+}
+
+.sidebar.collapsed .collapse-btn {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Toggle Button */
+.collapse-btn {
+    background: none;
+    border: none;
+    color: #555555;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.collapse-btn:hover {
+    color: #007bff;
+    transform: rotate(180deg);
+}
+
+body.dark-mode .collapse-btn {
+    color: #bbbbbb;
+}
+
+body.dark-mode .collapse-btn:hover {
+    color: #5e9ea0;
+}
+
+/* Logout Button for Collapsed Sidebar */
+.sidebar.collapsed .nav-link.logout {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px; /* Adjust size to match other icons */
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    color: #d9534f; /* Keep consistent with non-collapsed style */
+    font-size: 1.5rem; /* Make icon larger */
+    cursor: pointer;
+}
+
+.sidebar.collapsed .nav-link.logout:hover {
+    background-color: #d9534f;
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+/* Tooltip Styling */
+.nav-link.logout[title] {
+    position: relative;
+}
+
+.nav-link.logout[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Dark Mode Toggle Button */
+.nav-link.dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #555555;
+    margin: 0.75rem 0;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-link.dark-mode-toggle:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+body.dark-mode .nav-link.dark-mode-toggle {
+    color: #bbbbbb;
+}
+
+body.dark-mode .nav-link.dark-mode-toggle:hover {
+    background-color: #5e9ea0;
+    color: #ffffff;
+}

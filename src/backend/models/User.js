@@ -5,6 +5,8 @@ const userSchema = new mongoose.Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     gender: { type: String, enum: ['male', 'female', 'nonbinary', 'other', 'prefer_not_to_say'], required: true },
+    pronouns: { type: String, required: true }, // Allow any string for pronouns
+    customPronouns: { type: String }, // Optional field for custom pronouns
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
