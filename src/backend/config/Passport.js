@@ -32,11 +32,19 @@ const options = {
 passport.use(
     new JwtStrategy(options, async (jwtPayload, done) => {
         try {
+            console.log(`Verifying JWT for user ID: ${jwtPayload.id}`);
             const user = await User.findById(jwtPayload.id);
-            if (!user) return done(null, false);
+            if (!user) {
+                console.error('User not found for JWT');
+                return done(null, false);
+            }
+
+            console.log('User verified successfully for JWT');
             return done(null, user);
         } catch (err) {
+            console.error('Error in JwtStrategy:', err);
             return done(err);
         }
     })
 );
+
