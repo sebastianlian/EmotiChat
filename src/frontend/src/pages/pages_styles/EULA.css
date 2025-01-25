@@ -1,78 +1,106 @@
-/* General Typography for EULA */
-.eula-content {
-    font-family: 'Arial', sans-serif; /* Match the font family of your landing page */
-    color: #555; /* Consistent text color */
-    line-height: 1.8; /* Improve readability */
-    max-width: 800px; /* Centered content with controlled width */
-    margin: 0 auto; /* Center align */
+/* EULA Page Layout */
+.eula-page {
+    height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light gray background for contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-/* Headings */
-.eula-content h1,
-.eula-content h2,
-.eula-content h3 {
-    font-family: 'Arial', sans-serif; /* Match font family */
+/* EULA Card */
+.eula-card {
+    max-width: 600px; /* Matches a similar width as the login card */
+    width: 100%;
+    background-color: #fff; /* White card background */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 80vh; /* Limit height with overflow for large content */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Content flows vertically */
+}
+
+/* EULA Typography */
+.eula-card h1,
+.eula-card h2,
+.eula-card h3 {
+    font-family: 'Arial', sans-serif; /* Consistent font family */
     font-weight: bold;
-    color: #000; /* Consistent heading color */
-    margin-bottom: 20px;
-    text-align: center; /* Center-align headings */
+    color: #000;
+    text-align: center; /* Center headings */
+    margin-bottom: 1rem;
 }
 
-.eula-content h1 {
-    font-size: 2.5rem; /* Match the landing page display-4 size */
+.eula-card h1 {
+    font-size: 2rem; /* Adjusted for card layout */
 }
 
-.eula-content h2 {
-    font-size: 2rem;
+.eula-card h2 {
+    font-size: 1.5rem;
 }
 
-.eula-content h3 {
-    font-size: 1.75rem;
+.eula-card h3 {
+    font-size: 1.25rem;
 }
 
 /* Paragraphs */
-.eula-content p {
-    font-size: 1.25rem; /* Consistent with the landing page lead text */
-    margin-bottom: 20px;
+.eula-card p {
+    font-size: 1rem; /* Smaller size to fit in a card layout */
+    color: #555;
+    line-height: 1.6; /* Better readability */
+    margin-bottom: 1rem;
 }
 
 /* Lists */
-.eula-content ul {
-    list-style-type: none; /* Standard bullet points */
-    padding-left: 20px; /* Indentation for list items */
-    margin-bottom: 20px;
+.eula-card ul {
+    list-style-type: disc; /* Standard bullet points */
+    padding-left: 20px;
 }
 
-.eula-content li {
-    font-size: 1.2rem; /* Adjust list item size to match paragraph text */
-    margin-bottom: 10px;
-    line-height: 1.6;
+.eula-card li {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #555;
 }
 
 /* Links */
-.eula-content a {
-    color: #4a90e2; /* Match the landing page link color */
+.eula-card a {
+    color: #007bff; /* Bootstrap primary link color */
     text-decoration: none;
 }
 
-.eula-content a:hover {
+.eula-card a:hover {
     text-decoration: underline;
     font-weight: bold;
 }
 
-/* Code Blocks (if applicable) */
-.eula-content code {
-    background-color: #f8f9fa;
-    color: #333;
-    padding: 2px 4px;
+/* Code Blocks */
+.eula-card code {
+    background-color: #f1f1f1;
+    color: #d63384;
+    padding: 4px 6px;
     border-radius: 4px;
-    font-family: 'Arial', sans-serif; /* Match font family */
-    font-size: 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
 }
 
 /* Horizontal Rules */
-.eula-content hr {
+.eula-card hr {
     border: 0;
     border-top: 1px solid #ddd;
-    margin: 30px 0;
+    margin: 20px 0;
+}
+
+/* Style for links in the EULA */
+.eula-link {
+    color: #007bff; /* Bootstrap primary link color */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Highlight the links */
+}
+
+.eula-link:hover {
+    text-decoration: underline; /* Add underline on hover */
+    color: #0056b3; /* Slightly darker blue for hover effect */
 }

@@ -40,6 +40,5 @@ By using EmotiChat, you acknowledge that you have read and understood this EULA 
 ## **10. Contact**
 For inquiries, contact:
 - **Sebastian Lian Carmagnola**
-- **GitHub:** https://github.com/sebastianlian
-- **LinkedIn:** https://www.linkedin.com/in/sebastiancarmagnola/
-
+- [GitHub](https://github.com/sebastianlian)
+- [LinkedIn](https://www.linkedin.com/in/sebastiancarmagnola/)

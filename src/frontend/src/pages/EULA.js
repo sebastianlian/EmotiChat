@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import ReactMarkdown from 'react-markdown'; // Import react-markdown
-import './pages_styles/EULA.css'; // Assuming you have a separate CSS file for EULA styling
+import ReactMarkdown from 'react-markdown';
+import './pages_styles/EULA.css'; // EULA-specific CSS
 
 const EULA = () => {
     const [eulaContent, setEulaContent] = useState('');
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Fetch the EULA.md file from the public directory
         fetch('/EULA.md')
             .then((response) => {
                 if (!response.ok) {
@@ -24,8 +23,8 @@ const EULA = () => {
 
     if (error) {
         return (
-            <div className="landing-page">
-                <div className="landing-content">
+            <div className="eula-page">
+                <div className="eula-card">
                     <div className="alert alert-danger">{error}</div>
                 </div>
             </div>
@@ -33,12 +32,19 @@ const EULA = () => {
     }
 
     return (
-        <div className="landing-page">
-            <div className="landing-content">
-                {/*<h1 className="display-4">End-User License Agreement (EULA)</h1>*/}
-                <div className="eula-content lead" style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    <ReactMarkdown>{eulaContent}</ReactMarkdown>
-                </div>
+        <div className="eula-page">
+            <div className="eula-card">
+                <ReactMarkdown
+                    components={{
+                        a: ({ href, children }) => (
+                            <a href={href} target="_blank" rel="noopener noreferrer" className="eula-link">
+                                {children}
+                            </a>
+                        ),
+                    }}
+                >
+                    {eulaContent}
+                </ReactMarkdown>
             </div>
         </div>
     );
