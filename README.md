@@ -1,6 +1,8 @@
 # EmotiChat
 
-EmotiChat is a mental health assistant web application designed to provide AI-driven support for managing depression and improving mental well-being. This application features an AI chatbot, progress tracking, and secure user authentication, making it a personal and private companion for users.
+EmotiChat is a mental health assistant web application designed to provide AI-driven support for managing depression and anxiety,
+geared towards improving mental well-being. This application features an AI chatbot, progress tracking, and secure user authentication, 
+making it a personal and private companion for users.
 
 ---
 
@@ -20,6 +22,7 @@ EmotiChat is a mental health assistant web application designed to provide AI-dr
 - AI-powered chatbot for mental health assistance.
 - Progress tracking to monitor and reflect on mental health improvements.
 - Secure authentication using **Passport.js** and **JWT**.
+- Customizable user preferences, including pronoun selection with support for custom pronouns.
 - Responsive and intuitive user interface built with **React** and **Bootstrap**.
 - RESTful API backend powered by **Node.js** and **Express**.
 - Database integration using **MongoDB** for private and secure data storage.
@@ -91,12 +94,14 @@ Ensure you have the following installed:
 - Future monetization plans may include subscription models or licensing for businesses.
 
 ### License
-The source code for EmotiChat is proprietary and all rights are reserved. No part of this codebase may be reproduced, distributed, or transmitted without prior written permission from the author.
+The source code for EmotiChat is proprietary and all rights are reserved. 
+No part of this codebase may be reproduced, distributed, or transmitted without 
+prior written permission from the author.
 
 ### Contact
 For inquiries, feel free to contact:
 
 - Sebastian Lian Carmagnola
 - GitHub: https://github.com/sebastianlian
-- LinkedIn:https://www.linkedin.com/in/sebastiancarmagnola/
+- LinkedIn: https://www.linkedin.com/in/sebastiancarmagnola/
 

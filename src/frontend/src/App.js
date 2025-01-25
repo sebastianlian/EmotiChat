@@ -63,6 +63,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ProgressPage from './pages/ProgressPage';
 import SettingsPage from './pages/SettingsPage';
 import GoalsPage from './pages/GoalsPage';
+import EULA from './pages/EULA';
+
 
 const App = () => {
     const location = useLocation();
@@ -82,6 +84,7 @@ const App = () => {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/eula" element={<EULA />} />
             <Route
                 path="/dashboard"
                 element={

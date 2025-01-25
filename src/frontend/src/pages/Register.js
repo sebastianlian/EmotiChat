@@ -13,6 +13,7 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [agreeToEULA, setAgreeToEULA] = useState(false); // Track EULA agreement
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
@@ -22,6 +23,11 @@ const Register = () => {
 
         if (password !== confirmPassword) {
             setError("Passwords do not match");
+            return;
+        }
+
+        if (!agreeToEULA) {
+            setError("You must agree to the EULA to register.");
             return;
         }
 
@@ -181,6 +187,22 @@ const Register = () => {
                             required
                         />
                     </div>
+
+                    {/* EULA Agreement */}
+                    <div className="mb-3">
+                        <input
+                            type="checkbox"
+                            id="eula"
+                            className="form-check-input"
+                            checked={agreeToEULA}
+                            onChange={(e) => setAgreeToEULA(e.target.checked)}
+                            required
+                        />
+                        <label htmlFor="eula" className="form-check-label">
+                            I agree to the <a href="/eula" target="_blank" rel="noopener noreferrer">End-User License Agreement (EULA)</a>.
+                        </label>
+                    </div>
+
                     <button type="submit" className="btn btn-dark w-100">Register</button>
                 </form>
             </div>
