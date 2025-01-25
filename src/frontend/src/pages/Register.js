@@ -189,17 +189,18 @@ const Register = () => {
                     </div>
 
                     {/* EULA Agreement */}
-                    <div className="mb-3">
+                    <div className="mb-3 d-flex align-items-center">
                         <input
                             type="checkbox"
                             id="eula"
-                            className="form-check-input"
+                            className="form-check-input me-2" // Add margin to separate checkbox and label
                             checked={agreeToEULA}
                             onChange={(e) => setAgreeToEULA(e.target.checked)}
                             required
                         />
-                        <label htmlFor="eula" className="form-check-label">
-                            I agree to the <a href="/eula" target="_blank" rel="noopener noreferrer">End-User License Agreement (EULA)</a>.
+                        <label htmlFor="eula" className="form-check-label mb-0">
+                            I agree to the <a href="/eula" target="_blank" rel="noopener noreferrer">End-User License
+                            Agreement (EULA)</a>.
                         </label>
                     </div>
 

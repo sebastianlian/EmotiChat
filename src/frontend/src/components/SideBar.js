@@ -50,7 +50,7 @@ const Sidebar = ({ handleLogout }) => {
                 <li className="nav-item">
                     <a
                         href="/dashboard/goals"
-                        className={`nav-link ${location.pathname === '/goals' ? 'active disabled' : ''}`}
+                        className={`nav-link ${location.pathname === '/dashboard/goals' ? 'active disabled' : ''}`}
                     >
                         <BsListTask className="sidebar-icon"/> {!collapsed && 'Goals'}
                     </a>
@@ -58,7 +58,7 @@ const Sidebar = ({ handleLogout }) => {
                 <li className="nav-item">
                     <a
                         href="/dashboard/settings"
-                        className={`nav-link ${location.pathname === '/settings' ? 'active disabled' : ''}`}
+                        className={`nav-link ${location.pathname === '/dashboard/settings' ? 'active disabled' : ''}`}
                     >
                         <BsGear className="sidebar-icon"/> {!collapsed && 'Settings'}
                     </a>
