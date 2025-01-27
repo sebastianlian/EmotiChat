@@ -3,33 +3,16 @@ import { useAuth } from '../components/AuthContext'; // Import the AuthContext
 import Sidebar from '../components/SideBar'; // Import the Sidebar component
 import './pages_styles/Dashboard.css';
 import { BsMoon, BsSun, BsCloudSun } from 'react-icons/bs';
-import DashboardLayout from "../components/ChatPlacement";
 import ChatPlacement from "../components/ChatPlacement";
 
 const Dashboard = () => {
     const { user, logout } = useAuth(); // Access user information from AuthContext
     const currentHour = new Date().getHours(); // Get the current hour
-    // const [darkMode, setDarkMode] = React.useState(false); // Dark mode state
-
-    // React.useEffect(() => {
-    //     const savedMode = localStorage.getItem('darkMode') === 'true';
-    //     setDarkMode(savedMode);
-    //     document.body.classList.toggle('dark-mode', savedMode);
-    //     document.body.classList.toggle('light-mode', !savedMode);
-    // }, []);
 
     const handleLogout = () => {
         logout();
         window.location.href = '/login'; // Redirect to login
     };
-
-    // const toggleDarkMode = () => {
-    //     const newMode = !darkMode;
-    //     setDarkMode(newMode);
-    //     document.body.classList.toggle('dark-mode', newMode);
-    //     document.body.classList.toggle('light-mode', !newMode);
-    //     localStorage.setItem('darkMode', newMode);
-    // };
 
     const getGreeting = () => {
         if (currentHour < 12) return 'Good Morning';
@@ -44,13 +27,8 @@ const Dashboard = () => {
     };
 
     return (
-        <ChatPlacement>
+        <ChatPlacement username={user?.username}>
             <div className="dashboard-wrapper">
-                {/*/!* Dark Mode Toggle *!/*/}
-                {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
-                {/*    {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}*/}
-                {/*</div>*/}
-
                 <div className="dashboard-container">
                     {/* Sidebar */}
                     <Sidebar handleLogout={handleLogout} />
