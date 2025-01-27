@@ -45,47 +45,47 @@ const Dashboard = () => {
 
     return (
         <ChatPlacement>
-        <div className="dashboard-wrapper">
-            {/*/!* Dark Mode Toggle *!/*/}
-            {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
-            {/*    {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}*/}
-            {/*</div>*/}
+            <div className="dashboard-wrapper">
+                {/*/!* Dark Mode Toggle *!/*/}
+                {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
+                {/*    {darkMode ? <BsSun className="toggle-icon sun" /> : <BsMoon className="toggle-icon moon" />}*/}
+                {/*</div>*/}
 
-            <div className="dashboard-container">
-                {/* Sidebar */}
-                <Sidebar handleLogout={handleLogout} />
+                <div className="dashboard-container">
+                    {/* Sidebar */}
+                    <Sidebar handleLogout={handleLogout} />
 
-                {/* Main Content */}
-                <div className="main-content">
-                    <div className="welcome-banner fade-in">
-                        <h1 className="welcome-message">
-                            {getGreeting()} {getGreetingIcon()}, {user?.firstname || 'User'}!
-                        </h1>
-                    </div>
-                    <h1 className="main-title">Quick View</h1>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <div className="card">
-                                <h5 className="card-title">Your Progress</h5>
-                                <p>Track your progress here.</p>
-                            </div>
+                    {/* Main Content */}
+                    <div className="main-content">
+                        <div className="welcome-banner fade-in">
+                            <h1 className="welcome-message">
+                                {getGreeting()} {getGreetingIcon()}, {user?.firstname || 'User'}!
+                            </h1>
                         </div>
-                        <div className="col-md-4">
-                            <div className="card">
-                                <h5 className="card-title">Your Goals</h5>
-                                <p>Set your goals for the day!</p>
+                        <h1 className="main-title">Quick View</h1>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <div className="card">
+                                    <h5 className="card-title">Your Progress</h5>
+                                    <p>Track your progress here.</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-md-4">
-                            <div className="card">
-                                <h5 className="card-title">Your Stats</h5>
-                                <p>View your stats and activity insights.</p>
+                            <div className="col-md-4">
+                                <div className="card">
+                                    <h5 className="card-title">Your Goals</h5>
+                                    <p>Set your goals for the day!</p>
+                                </div>
+                            </div>
+                            <div className="col-md-4">
+                                <div className="card">
+                                    <h5 className="card-title">Your Stats</h5>
+                                    <p>View your stats and activity insights.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </ChatPlacement>
     );
 };

@@ -1,27 +1,32 @@
-// This handles the chat bubble on the corner of the pages of the dashboard
 import React, { useState } from 'react';
 import './components_styles/ChatBubble.css';
-import ChatMessengerInterface from './ChatMessengerInterface'; // Import your ChatMessengerInterface
+import ChatMessengerInterface from './ChatMessengerInterface'; // Import ChatMessengerInterface
+import { useDarkMode } from './DarkModeContext'; // Import dark mode context
 
 const ChatBubble = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false); // Single state to control the chat
+    const { darkMode } = useDarkMode(); // Access dark mode state
 
     const toggleChat = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(!isOpen); // Toggle chat open/close state
     };
 
     return (
-        <div className="chat-bubble-container">
+        <div className={`chat-bubble-container ${darkMode ? 'dark' : ''}`}>
             {/* Chat Bubble */}
             {!isOpen && (
-                <button className="chat-bubble" onClick={toggleChat} aria-label="Open Chat">
+                <button
+                    className={`chat-bubble ${darkMode ? 'dark' : ''}`}
+                    onClick={toggleChat}
+                    aria-label="Open Chat"
+                >
                     💬
                 </button>
             )}
 
-            {/* Chat Messenger with ChatMessengerInterface */}
+            {/* Chat Messenger */}
             {isOpen && (
-                <ChatMessengerInterface />
+                <ChatMessengerInterface isOpen={isOpen} toggleChat={toggleChat} darkMode={darkMode} />
             )}
         </div>
     );
