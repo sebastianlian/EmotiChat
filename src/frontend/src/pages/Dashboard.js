@@ -3,6 +3,8 @@ import { useAuth } from '../components/AuthContext'; // Import the AuthContext
 import Sidebar from '../components/SideBar'; // Import the Sidebar component
 import './pages_styles/Dashboard.css';
 import { BsMoon, BsSun, BsCloudSun } from 'react-icons/bs';
+import DashboardLayout from "../components/ChatPlacement";
+import ChatPlacement from "../components/ChatPlacement";
 
 const Dashboard = () => {
     const { user, logout } = useAuth(); // Access user information from AuthContext
@@ -42,6 +44,7 @@ const Dashboard = () => {
     };
 
     return (
+        <ChatPlacement>
         <div className="dashboard-wrapper">
             {/*/!* Dark Mode Toggle *!/*/}
             {/*<div className="dark-mode-toggle" onClick={toggleDarkMode}>*/}
@@ -83,6 +86,7 @@ const Dashboard = () => {
                 </div>
             </div>
         </div>
+        </ChatPlacement>
     );
 };
 
