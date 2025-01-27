@@ -3,16 +3,24 @@ import './components_styles/ChatMessengerInterface.css';
 import axios from 'axios';
 
 const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
-    const [messages, setMessages] = useState([]);
-    const [input, setInput] = useState('');
+    const [messages, setMessages] = useState([]); // Stores all messages (user + bot)
+    const [input, setInput] = useState(''); // User input
 
     const sendMessage = async () => {
-        if (!input.trim()) return;
+        if (!input.trim()) {
+            console.warn('Cannot send an empty message');
+            return;
+        }
 
-        console.log('Sending message:', input); // Log the user's input
-        console.log('Username being sent:', username); // Log the username
+        // Add the user's message to the messages array
+        const userMessage = { sender: 'user', text: input };
+        setMessages((prevMessages) => [...prevMessages, userMessage]);
+
+        console.log('User message sent:', userMessage); // Debug user message
+        console.log('Username being sent:', username); // Debug username
 
         try {
+            // Send the user's message to the backend chatbot API
             const response = await axios.post('http://localhost:5000/api/chatbot/message', {
                 message: input,
                 username: username, // Ensure this is a valid string
@@ -20,6 +28,7 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
 
             console.log('Response from chatbot:', response.data);
 
+            // Add the bot's response to the messages array
             const botMessage = { sender: 'bot', text: response.data.response };
             setMessages((prevMessages) => [...prevMessages, botMessage]);
         } catch (error) {
@@ -28,9 +37,9 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             setMessages((prevMessages) => [...prevMessages, botErrorMessage]);
         }
 
+        // Clear the input field
         setInput('');
     };
-
 
     return (
         <div className={`chatbot-container ${isOpen ? 'open' : 'closed'} ${darkMode ? 'dark' : ''}`}>
