@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './components_styles/ChatBubble.css';
-import ChatMessengerInterface from './ChatMessengerInterface'; // Import ChatMessengerInterface
-import { useDarkMode } from './DarkModeContext'; // Import dark mode context
+import ChatMessengerInterface from './ChatMessengerInterface';
+import { useDarkMode } from './DarkModeContext';
 
-const ChatBubble = () => {
+const ChatBubble = ({ username }) => {
     const [isOpen, setIsOpen] = useState(false); // Single state to control the chat
-    const { darkMode } = useDarkMode(); // Access dark mode state
+    const { darkMode } = useDarkMode();
 
     const toggleChat = () => {
         setIsOpen(!isOpen); // Toggle chat open/close state
@@ -26,7 +26,11 @@ const ChatBubble = () => {
 
             {/* Chat Messenger */}
             {isOpen && (
-                <ChatMessengerInterface isOpen={isOpen} toggleChat={toggleChat} darkMode={darkMode} />
+                <ChatMessengerInterface
+                    isOpen={isOpen}
+                    toggleChat={toggleChat}
+                    darkMode={darkMode}
+                    username={username}/> // Get the username for the interface context
             )}
         </div>
     );

@@ -1,17 +1,19 @@
 import React from 'react';
-// import './components_styles/DashboardLayout.css';
-import ChatBubble from './ChatBubble'; // Import the ChatBubble component
+import ChatBubble from './ChatBubble';
+import { useAuth } from './AuthContext'; // Import AuthContext to get the user
 
-const Layout = ({ children }) => {
+const ChatPlacement = ({ children }) => {
+    const { user } = useAuth(); // Access user from AuthContext
+
     return (
         <div className="dashboard-layout">
             <div className="content-wrapper">
                 {children} {/* Render the main content */}
             </div>
             {/* Add ChatBubble as a persistent feature */}
-            <ChatBubble />
+            <ChatBubble username={user?.username} /> {/* Pass username to ChatBubble */}
         </div>
     );
 };
 
-export default Layout;
+export default ChatPlacement;

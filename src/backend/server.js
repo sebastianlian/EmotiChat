@@ -34,6 +34,9 @@ app.use('/api/auth', authRoutes);
 const protectedRoutes = require('./routes/protectedRoutes');
 app.use('/api/protected', protectedRoutes);
 
+const chatbotRoutes = require('./routes/chatRoutes');
+app.use('/api/chatbot', chatbotRoutes);
+
 // Basic route
 app.get('/', (req, res) => res.send('API is running...'));
 

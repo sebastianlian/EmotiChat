@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     gender: { type: String, enum: ['male', 'female', 'nonbinary', 'other', 'prefer_not_to_say'], required: true },
     pronouns: { type: String, required: true }, // Allow any string for pronouns
     customPronouns: { type: String }, // Optional field for custom pronouns
-    username: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 });
@@ -30,4 +30,5 @@ userSchema.methods.isValidPassword = async function (password) {
     return bcrypt.compare(password, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+// Check if the model already exists before defining it
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);
