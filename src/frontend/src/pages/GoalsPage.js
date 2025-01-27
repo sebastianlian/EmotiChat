@@ -2,7 +2,6 @@ import React from 'react';
 import { useAuth } from '../components/AuthContext'; // Import AuthContext
 import Sidebar from '../components/SideBar'; // Import the Sidebar component
 import './pages_styles/GoalsPage.css';
-import {CgArrowsH} from "react-icons/cg";
 import ChatPlacement from "../components/ChatPlacement"; // Optional: Add specific CSS for ProgressPage
 
 const GoalsPage = () => {
