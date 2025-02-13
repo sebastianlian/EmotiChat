@@ -5,6 +5,7 @@ import axios from 'axios';
 const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
     const [messages, setMessages] = useState([]); // Stores all messages (user + bot)
     const [input, setInput] = useState(''); // User input
+    const [isExpanded, setIsExpanded] = useState(false); // State for expanded mode
 
     const sendMessage = async () => {
         if (!input.trim()) {
@@ -20,21 +21,25 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
         console.log('Username being sent:', username); // Debug username
 
         try {
-            // Send the user's message to the backend chatbot API
             const response = await axios.post('http://localhost:5000/api/chatbot/message', {
                 message: input,
-                username: username, // Ensure this is a valid string
+                username: username,
             });
 
-            console.log('Response from chatbot:', response.data);
+            console.log('Full response from chatbot:', response.data);
 
-            // Add the bot's response to the messages array
-            const botMessage = { sender: 'bot', text: response.data.response };
+            if (!response.data || !response.data.botResponse) {
+                console.error('Invalid chatbot response:', response.data);
+                return;
+            }
+
+            // Ensure the response is added to state
+            const botMessage = { sender: 'bot', text: response.data.botResponse };
+            console.log('Bot message to be added:', botMessage);
             setMessages((prevMessages) => [...prevMessages, botMessage]);
+
         } catch (error) {
             console.error('Error communicating with chatbot:', error);
-            const botErrorMessage = { sender: 'bot', text: 'Sorry, I am unable to process your message at the moment.' };
-            setMessages((prevMessages) => [...prevMessages, botErrorMessage]);
         }
 
         // Clear the input field
@@ -42,20 +47,30 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
     };
 
     return (
-        <div className={`chatbot-container ${isOpen ? 'open' : 'closed'} ${darkMode ? 'dark' : ''}`}>
+        <div className={`chatbot-container ${isOpen ? 'open' : 'closed'} ${darkMode ? 'dark' : ''} ${isExpanded ? 'expanded' : 'compact'}`}>
             <div className="chatbot-header">
                 <span>Chat with Us</span>
-                <button onClick={toggleChat} aria-label="Close Chat">
-                    ✖
-                </button>
+                <div className="chat-controls">
+                    <button onClick={() => setIsExpanded(!isExpanded)} className="expand-btn">
+                        {isExpanded ? '➖' : '➕'}
+                    </button>
+                    <button onClick={toggleChat} aria-label="Close Chat" className="close-btn">
+                        ✖
+                    </button>
+                </div>
             </div>
             <div className="chatbot-messages">
-                {messages.map((msg, idx) => (
-                    <div key={idx} className={`chat-message ${msg.sender}`}>
-                        {msg.text}
-                    </div>
-                ))}
+                {messages.length > 0 ? (
+                    messages.map((msg, idx) => (
+                        <div key={idx} className={`chat-message ${msg.sender}`}>
+                            {msg.text}
+                        </div>
+                    ))
+                ) : (
+                    <p className="empty-chat">No messages yet</p>
+                )}
             </div>
+
             <div className="chatbot-input">
                 <input
                     type="text"
