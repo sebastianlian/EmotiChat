@@ -36,7 +36,7 @@ const Login = () => {
     return (
         <div className="login-page d-flex justify-content-center align-items-center">
             <div className="card login-card p-4">
-                <h3 className="text-center mb-4">Login</h3>
+                <h3 className="text-center mb-4 display-4">Login</h3>
                 <p className="card-text text-center text-secondary">Enter your email and password to access your account.</p>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <form onSubmit={handleSubmit}>

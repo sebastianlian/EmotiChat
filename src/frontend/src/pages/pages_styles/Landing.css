@@ -20,11 +20,11 @@
     padding: 60px 20px; /* Adjust padding for better responsiveness */
 }
 
-.display-4 {
-    font-weight: bold;
-    color: #000;
-    font-size: 2.5rem; /* Adjust size for better visibility */
-}
+/*.display-4 {*/
+/*    font-weight: bold;*/
+/*    color: #000;*/
+/*    font-size: 2.5rem; !* Adjust size for better visibility *!*/
+/*}*/
 
 .lead {
     font-size: 1.25rem;
@@ -54,12 +54,12 @@
     background-color: #fff; /* Alternating light green */
 }
 
-.landing-section h2 {
-    font-size: 2.5rem; /* Larger heading for prominence */
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 30px; /* More space below the heading */
-}
+/*.landing-section h2 {*/
+/*    font-size: 2.5rem; !* Larger heading for prominence *!*/
+/*    font-weight: bold;*/
+/*    color: #000;*/
+/*    margin-bottom: 30px; !* More space below the heading *!*/
+/*}*/
 
 .landing-section p {
     font-size: 1.25rem; /* Uniform size for text */

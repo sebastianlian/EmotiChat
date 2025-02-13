@@ -61,7 +61,7 @@ const Register = () => {
     return (
         <div className="register-page d-flex justify-content-center align-items-center">
             <div className="card register-card p-4">
-                <h3 className="text-center mb-4">Register</h3>
+                <h3 className="text-center mb-4 display-4">Register</h3>
                 {/*<p className="card-text text-center text-secondary">Create a new account to get started.</p>*/}
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && <div className="alert alert-success">{success}</div>}

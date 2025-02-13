@@ -7,8 +7,8 @@ const Footer = () => {
             <div className="footer-container">
                 <span>© 2025 EmotiChat. All rights reserved.</span>
                 <div className="footer-links">
-                    <a href="#terms" className="footer-link">Terms of Service</a>
-                    <a href="#privacy" className="footer-link">Privacy</a>
+                    <a href="/eula" className="footer-link">Terms of Service</a>
+                    <a href="/privacy" className="footer-link">Privacy</a>
                 </div>
             </div>
         </footer>
