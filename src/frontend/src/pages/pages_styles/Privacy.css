@@ -1,15 +1,15 @@
-/* EULA Page Layout */
-.eula-page {
-    height: 100vh;
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+/* Privacy Page Layout */
+.privacy-page {
+    height: 100vh; /* Full viewport height */
+    background: linear-gradient(to right, #f8f9fa, #e9ecef); /* Soft gradient */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
-/* EULA Card */
-.eula-card {
+/* Privacy Card */
+.privacy-card {
     max-width: 700px;
     width: 100%;
     background-color: #fff;
@@ -23,7 +23,7 @@
 }
 
 /* Title */
-.eula-card h1 {
+.privacy-card h1 {
     font-size: 2.2rem;
     font-weight: 800;
     color: #333;
@@ -31,8 +31,8 @@
     margin-bottom: 10px;
 }
 
-/* Effective Date */
-.eula-card p:last-child {
+/* Last Updated */
+.privacy-card p:last-child {
     text-align: center;
     font-size: 0.9rem;
     color: #666;
@@ -40,7 +40,7 @@
 }
 
 /* Section Titles */
-.eula-card h2 {
+.privacy-card h2 {
     font-size: 1.6rem;
     font-weight: 700;
     color: #000;
@@ -49,22 +49,22 @@
     align-items: center;
 }
 
-/* Icons for Section Titles */
-.eula-card h2::before {
-    content: "📜";
+/* Add an icon before each section title */
+.privacy-card h2::before {
+    content: "🔹";
     margin-right: 10px;
     font-size: 1.4rem;
     color: #007bff;
 }
 
 /* Bold and Highlighted Warning */
-.eula-card strong {
+.privacy-card strong {
     color: #d9534f;
     font-weight: bold;
 }
 
 /* Paragraphs */
-.eula-card p {
+.privacy-card p {
     font-size: 1rem;
     color: #444;
     line-height: 1.8;
@@ -72,12 +72,12 @@
 }
 
 /* Lists */
-.eula-card ul {
+.privacy-card ul {
     list-style-type: none;
     padding-left: 0;
 }
 
-.eula-card li {
+.privacy-card li {
     font-size: 1rem;
     margin-bottom: 8px;
     color: #444;
@@ -86,26 +86,26 @@
 }
 
 /* Bullet Points with Icons */
-.eula-card li::before {
-    content: "⚠️";
-    color: #ffc107;
+.privacy-card li::before {
+    content: "✔️";
+    color: #28a745;
     font-weight: bold;
     margin-right: 8px;
 }
 
 /* Links */
-.eula-card a {
+.privacy-card a {
     color: #007bff;
     text-decoration: none;
     font-weight: bold;
 }
 
-.eula-card a:hover {
+.privacy-card a:hover {
     text-decoration: underline;
 }
 
 /* Horizontal Rules */
-.eula-card hr {
+.privacy-card hr {
     border: 0;
     border-top: 1px solid #ddd;
     margin: 15px 0;

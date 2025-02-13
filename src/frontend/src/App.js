@@ -64,6 +64,7 @@ import ProgressPage from './pages/ProgressPage';
 import SettingsPage from './pages/SettingsPage';
 import GoalsPage from './pages/GoalsPage';
 import EULA from './pages/EULA';
+import Privacy from "./pages/Privacy";
 
 
 const App = () => {
@@ -85,6 +86,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/eula" element={<EULA />} />
+            <Route path="/privacy" element={<Privacy />} />
+
             <Route
                 path="/dashboard"
                 element={

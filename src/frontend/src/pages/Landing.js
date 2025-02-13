@@ -42,9 +42,9 @@ const Landing = () => {
             <div className="landing-page">
                 <NavBar />
                 <div className="landing-content text-center">
-                    <h1 className="display-4">Welcome to EmotiChat</h1>
+                    <h1 className="display-2">Welcome to EmotiChat</h1>
                     <p className="lead">
-                        Your AI companion for managing depression. Get support anytime, anywhere.
+                        Your AI companion for managing your mental health. Get support anytime, anywhere.
                     </p>
                     <div className="button-group mt-4">
                         <Link to="/login" className="btn btn-dark me-2">Login</Link>
@@ -54,7 +54,7 @@ const Landing = () => {
 
                 {/* About Section */}
                 <section id="about" className="landing-section" ref={el => sectionRefs.current[0] = el}>
-                    <h2>About</h2>
+                    <h2 className="display-4">About</h2>
                     <p>
                         EmotiChat is an innovative AI-powered platform designed to provide accessible mental health support,
                         focusing on depression management. Our mission is to bridge the gap in mental health care, offering
@@ -72,10 +72,10 @@ const Landing = () => {
 
                 {/* Features Section */}
                 <section id="features" className="landing-section" ref={el => sectionRefs.current[1] = el}>
-                    <h2>Features</h2>
+                    <h2 className="display-4">Features</h2>
                     <ul className="features">
-                        <li><i className="bi bi-chat-dots"></i> 24/7 AI-powered chat support for managing depression</li>
-                        <li><i className="bi bi-person"></i> Personalized coping strategies and exercises</li>
+                        <li><i className="bi bi-chat-dots"></i> 24/7 AI-powered chat support for managing depression and anxiety</li>
+                        <li><i className="bi bi-person"></i> Personalized coping strategies and goal-setting</li>
                         <li><i className="bi bi-graph-up-arrow"></i> Progress tracking and mood monitoring</li>
                         <li><i className="bi bi-lock"></i> Secure and confidential conversations</li>
                     </ul>
@@ -83,7 +83,7 @@ const Landing = () => {
 
                 {/* Contact Section */}
                 <section id="contact" className="landing-section" ref={el => sectionRefs.current[2] = el}>
-                    <h2>Contact Us</h2>
+                    <h2 className="display-4">Contact Us</h2>
                     <p>
                         Have questions or need help? Reach out to our team at:
                         <br />
