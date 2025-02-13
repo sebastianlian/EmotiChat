@@ -12,6 +12,7 @@ const SettingsPage = () => {
 
     // State for the password field
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     // State for editable fields
@@ -142,25 +143,54 @@ const SettingsPage = () => {
                             />
                         </div>
 
-                        <div className="settings-group">
-                            <label htmlFor="password">New Password</label>
-                            <div className="password-input-wrapper">
-                                <input
-                                    type={isPasswordVisible ? 'text' : 'password'}
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="Enter new password"
-                                />
-                                <button
-                                    type="button"
-                                    className="password-toggle-btn"
-                                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                                >
-                                    {isPasswordVisible ? 'Hide' : 'Show'}
-                                </button>
+                        <div className="settings-group password-group">
+                            {/* New Password */}
+                            <div className="password-field">
+                                <label htmlFor="password">New Password</label>
+                                <div className="password-input-wrapper">
+                                    <input
+                                        type={isPasswordVisible ? 'text' : 'password'}
+                                        id="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="Enter new password"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="password-toggle-btn"
+                                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                                    >
+                                        {isPasswordVisible ? 'Hide' : 'Show'}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div className="password-field">
+                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <div className="password-input-wrapper">
+                                    <input
+                                        type={isPasswordVisible ? 'text' : 'password'}
+                                        id="confirmPassword"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        placeholder="Confirm new password"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="password-toggle-btn"
+                                        onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                                    >
+                                        {isPasswordVisible ? 'Hide' : 'Show'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
+                        {/* Display Error if passwords don't match */}
+                        {password && confirmPassword && password !== confirmPassword && (
+                            <p className="error-message">Passwords do not match.</p>
+                        )}
 
                         <div className="settings-group">
                             <label htmlFor="darkMode">Dark Mode</label>
@@ -178,6 +208,7 @@ const SettingsPage = () => {
                             type="button"
                             className="btn"
                             onClick={handlePasswordUpdate}
+                            disabled={!password || !confirmPassword || password !== confirmPassword} // Disable button if passwords don't match
                             style={{marginBottom: '1rem'}}
                         >
                             Update Password

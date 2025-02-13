@@ -191,6 +191,22 @@ button.btn:active {
     }
 }
 
+/* Password Group */
+.password-group {
+    display: flex;
+    gap: 20px; /* Space between fields */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Each Password Field */
+.password-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 /* Password Field Wrapper */
 .password-input-wrapper {
     display: flex;
@@ -214,3 +230,21 @@ button.btn:active {
     padding: 0;
 }
 
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* Responsive Design: Stack the fields on smaller screens */
+@media (max-width: 768px) {
+    .password-group {
+        flex-direction: column;
+        gap: 10px; /* Reduce spacing for smaller screens */
+        width: 100%;
+    }
+
+    .password-field {
+        width: 100%;
+    }
+}
