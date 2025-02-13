@@ -5,6 +5,15 @@ const messageSchema = new mongoose.Schema( {
    sender: { type: String, enum: ['user', 'bot'], required: true },
    text: { type: String, required: true },
    timestamp: { type: Date, default: Date.now },
+    sentimentScore: { type: Number }, // Optional, only for user messages
+    magnitude: { type: Number },
+    entities: [
+        {
+            name: String,
+            sentiment: String,
+            magnitude: Number,
+        }
+    ]
 });
 
 // Define the conversation schema
