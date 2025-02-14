@@ -9,26 +9,32 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
 
     // Function to detect and format bot messages into bullet points to simplify readiablity
     const formatBotMessage = (text) => {
-        if (!text) return null;
+        const lines = text.split('\n').map(line => line.trim()); // Split by new lines
+        let isNumberedList = lines.some(line => /^\d+\./.test(line)); // Check if any line is a numbered list
+        let isBulletList = lines.some(line => /^[-•]/.test(line)); // Check if any line is a bullet point list
 
-        // Split text into lines, trim space, and filter out empty lines
-        const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        if (isNumberedList) {
+            return (
+                <ol className="bot-response-list">
+                    {lines.map((line, idx) =>
+                        /^\d+\./.test(line) ? <li key={idx}>{line.replace(/^\d+\.\s*/, '')}</li> : <p key={idx}>{line}</p>
+                    )}
+                </ol>
+            );
+        }
 
-        // Check if message contains a list format (numbered or bullet points)
-        const isList = lines.some(line => line.match(/^(\d+\.\s|-)/));
-
-        if (isList) {
+        if (isBulletList) {
             return (
                 <ul className="bot-response-list">
-                    {lines.map((line, idx) => (
-                        <li key={idx}>{line.replace(/^[-\d.]+\s*/, '')}</li>
-                    ))}
+                    {lines.map((line, idx) =>
+                        /^[-•]/.test(line) ? <li key={idx}>{line.replace(/^[-•]\s*/, '')}</li> : <p key={idx}>{line}</p>
+                    )}
                 </ul>
             );
-        } else {
-            return <p>{text}</p>;
         }
-    }
+
+        return <p>{text}</p>; // Default to normal text
+    };
 
     const sendMessage = async () => {
         if (!input.trim()) {

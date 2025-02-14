@@ -80,7 +80,7 @@ router.post('/message', async (req, res) => {
     The user has just said: "${message}"
 
     - **Acknowledge the user's emotions empathetically.** 
-    - **Provide at least 2-3 coping strategies or suggestions formatted as a numbered list.**
+    - **Provide 2-3 coping strategies formatted as a numbered list (1., 2., 3.).**
     - **Ensure the suggestions are practical and supportive.**
     - **Keep responses concise and easy to read.**
 

@@ -202,3 +202,11 @@
     font-size: 14px;
     line-height: 1.6;
 }
+
+.bot-response-list ol {
+    list-style-type: decimal;
+}
+
+.bot-response-list ul {
+    list-style-type: disc;
+}
