@@ -15,8 +15,10 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" replace />;
     }
 
-    // Render the protected content if authenticated
-    return children;
+    console.log(`📌 ProtectedRoute: Passing username "${user.username}"`);
+
+    // Clone the `children` component and inject `username` dynamically
+    return React.cloneElement(children, { username: user.username });
 };
 
 export default ProtectedRoute;

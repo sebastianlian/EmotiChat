@@ -4,6 +4,9 @@ import { useAuth } from './AuthContext'; // Import AuthContext to get the user
 
 const ChatPlacement = ({ children }) => {
     const { user } = useAuth(); // Access user from AuthContext
+    const username = user?.username || "Guest";
+
+    console.log("ChatPlacement received username:", username); // Debugging
 
     return (
         <div className="dashboard-layout">
@@ -11,7 +14,7 @@ const ChatPlacement = ({ children }) => {
                 {children} {/* Render the main content */}
             </div>
             {/* Add ChatBubble as a persistent feature */}
-            <ChatBubble username={user?.username} /> {/* Pass username to ChatBubble */}
+            <ChatBubble username={username} /> {/* Pass username to ChatBubble */}
         </div>
     );
 };

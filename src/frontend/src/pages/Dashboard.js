@@ -7,7 +7,10 @@ import ChatPlacement from "../components/ChatPlacement";
 
 const Dashboard = () => {
     const { user, logout } = useAuth(); // Access user information from AuthContext
+    const username = user?.username || "Guest"; // Ensure username always has a value
     const currentHour = new Date().getHours(); // Get the current hour
+
+    console.log("Dashboard received username:", username); // Debugging
 
     const handleLogout = () => {
         logout();
@@ -27,7 +30,7 @@ const Dashboard = () => {
     };
 
     return (
-        <ChatPlacement username={user?.username}>
+        <ChatPlacement username={username}>
             <div className="dashboard-wrapper">
                 <div className="dashboard-container">
                     {/* Sidebar */}

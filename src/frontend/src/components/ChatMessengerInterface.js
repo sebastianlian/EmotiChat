@@ -13,11 +13,16 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             return;
         }
 
+        if (!username) {
+            console.error('ERROR: Username is missing before sending the request!');
+        }
+
         // Add the user's message to the messages array
         const userMessage = { sender: 'user', text: input };
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
         console.log('User message sent:', userMessage); // Debug user message
+        console.log('Sender type being sent', userMessage.sender);
         console.log('Username being sent:', username); // Debug username
 
         try {
@@ -39,7 +44,14 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             setMessages((prevMessages) => [...prevMessages, botMessage]);
 
         } catch (error) {
-            console.error('Error communicating with chatbot:', error);
+            if (error.response) {
+                console.error('❌ Axios Error:', error.response.data);
+                console.error('❌ Status Code:', error.response.status);
+            } else if (error.request) {
+                console.error('❌ No Response Received:', error.request);
+            } else {
+                console.error('❌ Request Setup Error:', error.message);
+            }
         }
 
         // Clear the input field
