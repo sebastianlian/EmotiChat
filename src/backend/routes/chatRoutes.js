@@ -71,14 +71,30 @@ router.post('/message', async (req, res) => {
 
         // Generate AI response with chat history for context
         const prompt = `
-            You are an AI mental health chatbot. Consider the following conversation history:
+    You are an AI mental health chatbot focused on providing support and actionable suggestions.
+    
+    Consider the following conversation history:
 
-            ${chatHistory}
+    ${chatHistory}
 
-            The user has just said: "${message}"
+    The user has just said: "${message}"
 
-            Respond empathetically, taking into account previous messages and sentiment trends.
-        `;
+    - **Acknowledge the user's emotions empathetically.** 
+    - **Provide at least 2-3 coping strategies or suggestions formatted as a numbered list.**
+    - **Ensure the suggestions are practical and supportive.**
+    - **Keep responses concise and easy to read.**
+
+    Example format:
+
+    "I understand that you're feeling overwhelmed. Here are some things that might help:  
+
+    1. Try taking deep breaths and focusing on slow exhales.
+    2. Write down your thoughts in a journal to clear your mind.
+    3. Reach out to a friend or support network for guidance."
+
+    Now, based on the user's message, provide a response in this structured format.
+`;
+
 
         console.log(`Generating AI response...`);
         const botResponse = await generateResponse(prompt);

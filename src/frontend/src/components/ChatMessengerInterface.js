@@ -7,6 +7,29 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
     const [input, setInput] = useState(''); // User input
     const [isExpanded, setIsExpanded] = useState(false); // State for expanded mode
 
+    // Function to detect and format bot messages into bullet points to simplify readiablity
+    const formatBotMessage = (text) => {
+        if (!text) return null;
+
+        // Split text into lines, trim space, and filter out empty lines
+        const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+        // Check if message contains a list format (numbered or bullet points)
+        const isList = lines.some(line => line.match(/^(\d+\.\s|-)/));
+
+        if (isList) {
+            return (
+                <ul className="bot-response-list">
+                    {lines.map((line, idx) => (
+                        <li key={idx}>{line.replace(/^[-\d.]+\s*/, '')}</li>
+                    ))}
+                </ul>
+            );
+        } else {
+            return <p>{text}</p>;
+        }
+    }
+
     const sendMessage = async () => {
         if (!input.trim()) {
             console.warn('Cannot send an empty message');
@@ -59,7 +82,8 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
     };
 
     return (
-        <div className={`chatbot-container ${isOpen ? 'open' : 'closed'} ${darkMode ? 'dark' : ''} ${isExpanded ? 'expanded' : 'compact'}`}>
+        <div
+            className={`chatbot-container ${isOpen ? 'open' : 'closed'} ${darkMode ? 'dark' : ''} ${isExpanded ? 'expanded' : 'compact'}`}>
             <div className="chatbot-header">
                 <span>Chat with Us</span>
                 <div className="chat-controls">
@@ -71,17 +95,29 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                     </button>
                 </div>
             </div>
+            {/*<div className="chatbot-messages">*/}
+            {/*    {messages.length > 0 ? (*/}
+            {/*        messages.map((msg, idx) => (*/}
+            {/*            <div key={idx} className={`chat-message ${msg.sender}`}>*/}
+            {/*                {msg.sender === 'bot' ? formatBotMessage(msg.text) : msg.text}*/}
+            {/*            </div>*/}
+            {/*        ))*/}
+            {/*    ) : (*/}
+            {/*        <p className="empty-chat">No messages yet</p>*/}
+            {/*    )}*/}
+            {/*</div>*/}
             <div className="chatbot-messages">
                 {messages.length > 0 ? (
                     messages.map((msg, idx) => (
                         <div key={idx} className={`chat-message ${msg.sender}`}>
-                            {msg.text}
+                            {msg.sender === 'bot' ? formatBotMessage(msg.text) : <p>{msg.text}</p>}
                         </div>
                     ))
                 ) : (
                     <p className="empty-chat">No messages yet</p>
                 )}
             </div>
+
 
             <div className="chatbot-input">
                 <input
