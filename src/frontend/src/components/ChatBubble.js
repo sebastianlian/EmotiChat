@@ -7,6 +7,8 @@ const ChatBubble = ({ username }) => {
     const [isOpen, setIsOpen] = useState(false); // Single state to control the chat
     const { darkMode } = useDarkMode();
 
+    console.log("📌 ChatBubble received username:", username); // Debugging
+
     const toggleChat = () => {
         setIsOpen(!isOpen); // Toggle chat open/close state
     };

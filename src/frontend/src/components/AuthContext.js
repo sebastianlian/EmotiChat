@@ -27,6 +27,9 @@ export const AuthProvider = ({ children }) => {
                     const response = await axios.get('http://localhost:5000/api/auth/verify-token', {
                         headers: { Authorization: `Bearer ${storedToken}` },
                     });
+
+                    console.log("Fetched user from API:", response.data.user); // Debugging
+
                     setAuthState({
                         user: response.data.user,
                         token: storedToken,
