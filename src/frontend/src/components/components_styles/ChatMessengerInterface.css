@@ -190,3 +190,15 @@
     background-color: #555;
     color: #e0e0e0;
 }
+
+/* Styling for the bot messages */
+.bot-response-list {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.bot-response-list li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.6;
+}
