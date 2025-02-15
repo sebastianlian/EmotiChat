@@ -7,6 +7,8 @@ require('./config/passport'); // Passport configuration file
 
 dotenv.config();
 
+// console.log("GOOGLE_APPLICATION_CREDENTIALS:", process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 const app = express();
 
 // Middleware

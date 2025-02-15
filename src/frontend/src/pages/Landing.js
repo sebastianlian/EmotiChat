@@ -74,10 +74,24 @@ const Landing = () => {
                 <section id="features" className="landing-section" ref={el => sectionRefs.current[1] = el}>
                     <h2 className="display-4">Features</h2>
                     <ul className="features">
-                        <li><i className="bi bi-chat-dots"></i> 24/7 AI-powered chat support for managing depression and anxiety</li>
-                        <li><i className="bi bi-person"></i> Personalized coping strategies and goal-setting</li>
-                        <li><i className="bi bi-graph-up-arrow"></i> Progress tracking and mood monitoring</li>
-                        <li><i className="bi bi-lock"></i> Secure and confidential conversations</li>
+                        <li><i className="bi bi-chat-dots"></i> 24/7 AI-powered chat support for emotional support and
+                            mental wellness
+                        </li>
+                        <li><i className="bi bi-person"></i> Personalized coping strategies, mindfulness exercises, and
+                            goal-setting
+                        </li>
+
+                        <li><i className="bi bi-graph-up-arrow"></i> Mood tracking and data-driven insights for
+                            emotional well-being
+                        </li>
+
+
+                        <li><i className="bi bi-people"></i> Clinician Dashboard: Monitor patient progress with
+                            AI-driven analytics
+                        </li>
+                        <li><i className="bi bi-lock"></i> Secure and confidential conversations with end-to-end
+                            encryption
+                        </li>
                     </ul>
                 </section>
 

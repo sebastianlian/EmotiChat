@@ -75,7 +75,7 @@
     list-style-type: none; /* Remove bullets */
     padding: 0; /* Remove default padding */
     margin: 30px auto; /* Center the list within the section */
-    max-width: 600px; /* Restrict width for readability */
+    max-width: 700px; /* Restrict width for readability */
     text-align: left; /* Left-align the feature items */
 }
 

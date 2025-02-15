@@ -1,34 +1,49 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './components_styles/ChatMessengerInterface.css';
 import axios from 'axios';
 
 const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
-    const [messages, setMessages] = useState([]); // Stores all messages (user + bot)
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem(`chatHistory-${username}`);
+        return savedMessages ? JSON.parse(savedMessages) : [];
+    });
+
     const [input, setInput] = useState(''); // User input
     const [isExpanded, setIsExpanded] = useState(false); // State for expanded mode
 
+    useEffect(() => {
+        localStorage.setItem(`chatHistory-${username}`, JSON.stringify(messages));
+    }, [messages, username]); // Save chat history when messages update
+
+
     // Function to detect and format bot messages into bullet points to simplify readiablity
     const formatBotMessage = (text) => {
-        if (!text) return null;
+        const lines = text.split('\n').map(line => line.trim()); // Split by new lines
+        let isNumberedList = lines.some(line => /^\d+\./.test(line)); // Check if any line is a numbered list
+        let isBulletList = lines.some(line => /^[-•]/.test(line)); // Check if any line is a bullet point list
 
-        // Split text into lines, trim space, and filter out empty lines
-        const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        if (isNumberedList) {
+            return (
+                <ol className="bot-response-list">
+                    {lines.map((line, idx) =>
+                        /^\d+\./.test(line) ? <li key={idx}>{line.replace(/^\d+\.\s*/, '')}</li> : <p key={idx}>{line}</p>
+                    )}
+                </ol>
+            );
+        }
 
-        // Check if message contains a list format (numbered or bullet points)
-        const isList = lines.some(line => line.match(/^(\d+\.\s|-)/));
-
-        if (isList) {
+        if (isBulletList) {
             return (
                 <ul className="bot-response-list">
-                    {lines.map((line, idx) => (
-                        <li key={idx}>{line.replace(/^[-\d.]+\s*/, '')}</li>
-                    ))}
+                    {lines.map((line, idx) =>
+                        /^[-•]/.test(line) ? <li key={idx}>{line.replace(/^[-•]\s*/, '')}</li> : <p key={idx}>{line}</p>
+                    )}
                 </ul>
             );
-        } else {
-            return <p>{text}</p>;
         }
-    }
+
+        return <p>{text}</p>; // Default to normal text
+    };
 
     const sendMessage = async () => {
         if (!input.trim()) {
@@ -40,13 +55,16 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             console.error('ERROR: Username is missing before sending the request!');
         }
 
+        // Get current timestamp
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         // Add the user's message to the messages array
-        const userMessage = { sender: 'user', text: input };
+        const userMessage = { sender: 'user', text: input, time: timestamp };
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-        console.log('User message sent:', userMessage); // Debug user message
-        console.log('Sender type being sent', userMessage.sender);
-        console.log('Username being sent:', username); // Debug username
+        // console.log('User message sent:', userMessage); // Debug user message
+        // console.log('Sender type being sent', userMessage.sender);
+        // console.log('Username being sent:', username); // Debug username
 
         try {
             const response = await axios.post('http://localhost:5000/api/chatbot/message', {
@@ -62,7 +80,7 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             }
 
             // Ensure the response is added to state
-            const botMessage = { sender: 'bot', text: response.data.botResponse };
+            const botMessage = { sender: 'bot', text: response.data.botResponse, time: timestamp };
             console.log('Bot message to be added:', botMessage);
             setMessages((prevMessages) => [...prevMessages, botMessage]);
 
@@ -110,7 +128,10 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                 {messages.length > 0 ? (
                     messages.map((msg, idx) => (
                         <div key={idx} className={`chat-message ${msg.sender}`}>
-                            {msg.sender === 'bot' ? formatBotMessage(msg.text) : <p>{msg.text}</p>}
+                            <div className="message-content">
+                                {msg.sender === 'bot' ? formatBotMessage(msg.text) : <p>{msg.text}</p>}
+                            </div>
+                            <span className="timestamp">{msg.time}</span>
                         </div>
                     ))
                 ) : (

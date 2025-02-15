@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "mental-health-tracker-439613",
+  "private_key_id": "5ed873f795c68b583b25c02852e83b1b8f7a8fdd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKMgOJ0eySrjbO\n1nRp8WkgTs1CnuUvo1dgbHAWgnZmFE7TnsiZYI8R8xoyuQ5x7TZyt2bb2dzkbVRb\nWnewoGfxqK8lbaE1UQRkPa2TDiktlewL3ohQckW98OiU03u05SvOEudoIQb0uIZG\nNxBuHsG/2zCtjU4ouKrtCZsjBwjz0VZ7klGad3N3QxQAASET5oZNgixSfOlMRBrS\n/Zxq3I948musA33FYDalkE4I0H7D1o7/Hic20rQpsjASIzexthy/7FFPp20XWxW5\n/LrUXFoSgBLGXWiBzcW73y5iGr7Jml/baOumLcSy1BWOAL8Tth00SW1e1w7VTMtJ\nM11mU9dfAgMBAAECggEAD7qZ8t0yjECNgUPxNL1JDRsu4C6wgScG6OMr9FxRbeRz\niLEn8A0xDqzneKhTsCzLWQYyXrTmeEXsU4TzSE6vd1REzQ0SXC2WwV4uRAEh1pV8\nkiR4BzC0gy+b8C6Ox4YyWlVhzK8RCvWAdd2FDi6fVNeYxE94k+C1ueXO5zJ+EaAE\n592srmol+ThltToKTmhEgcCtbRhxKQ3Heqx5C6F2nz62LT1V2KBABjg9OF+axxdN\n6ouCw0lTVv3IFC3optNrbJPQidVzheujDxt4LqL1ha25bJn0+kpK6RUvmp/3uMYw\nDWk1m0uz6er4dnw+svPh0E743cHm0hVUvQOvD8m+IQKBgQD4xrThySCqS1d27eKy\nvNYBOYlbWzolnSweTMyAWp+Y6M9driI7D850KnAaW7crYCEeFIIMf7ZU5rg1cSVv\nOWxuoXHaxt1RokOKFSErx5gkVXPPdam2gpDFIR9jIPZb2lQqCrE/Otg3+m9JqpjO\nJPhPti58e55CLSdyeo+5JAKNfwKBgQDQEQu07LS1ZvQcmZ4bbksQwYcfXIyf+TrC\nD4E5P9c3dE9Wzf3lIx1ypn9gnLZ64aZo8sXzZBxdo4yEXkHj6ra/2mjVAThgVR9l\ni1bNnqXsPkDS2CbzEgvxAsm8P/vN7cffLr88/Elt39e+GS7sD20+8R1eGaP6QqfP\n6hw6H+FmIQKBgDDDUkVHlT2MExLewibi2NfYnVHo6dbhnfo6d4NZQBtK1wq3zUHi\ncUdX4i1oeNjpuNQalPs6NVUi/EyNZxcMHHL69kQ54rvToIV6aswYDXxhu5eYqrF5\nmkLpoStfFKsgeorbGa8ZK7SdRB8eb2FI4dtODIKeAIFcNHU+DNnvcwilAoGBAM22\nzLhJADIKZHiSeXvthFJAxXQAcRkJtUqBQeZ0dDjjyj2s1MZj/Y2JiI7g4pqD16AT\nyBtoc5MxTJDjEIpjWeQ98UAIQNEd2DjxlxUdMjdtJXJRO9E/mobjlsmFCVUFL4Q+\nF94YIhF8KzZMd9P1PLHqenq7JyEcHga3FMlzE8uBAoGAaGHBtMzxRYoeUwKAsMKM\nhRJZnDsOHqUXYwSYum48Axb3LfDnEGIm9U74yVJkSosinDcYwLK5kyeVQyKEbHmv\ncH4BicKeZfJKRJf5ZjevFp8zbshGm8mXA+fJkqgOZIf3ULGxS4kTpKD6pbhTogBp\nBZFmRvbey8CZ4Tf3U3imFeo=\n-----END PRIVATE KEY-----\n",
+  "client_email": "emotichat-google-nlp@mental-health-tracker-439613.iam.gserviceaccount.com",
+  "client_id": "115740944676495629117",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/emotichat-google-nlp%40mental-health-tracker-439613.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

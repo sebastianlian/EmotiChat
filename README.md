@@ -42,6 +42,8 @@ making it a personal and private companion for users.
 - **Passport.js**: Authentication middleware.
 - **JWT**: Token-based secure sessions.
 - **Mongoose**: MongoDB object modeling.
+- **Google NLP**: Sentiment analysis
+- **Claude AI**: AI bot
 
 ### Database
 - **MongoDB**: NoSQL database for data storage.
