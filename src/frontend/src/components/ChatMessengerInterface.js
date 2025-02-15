@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './components_styles/ChatMessengerInterface.css';
 import axios from 'axios';
 
 const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
-    const [messages, setMessages] = useState([]); // Stores all messages (user + bot)
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem(`chatHistory-${username}`);
+        return savedMessages ? JSON.parse(savedMessages) : [];
+    });
+
     const [input, setInput] = useState(''); // User input
     const [isExpanded, setIsExpanded] = useState(false); // State for expanded mode
+
+    useEffect(() => {
+        localStorage.setItem(`chatHistory-${username}`, JSON.stringify(messages));
+    }, [messages, username]); // Save chat history when messages update
+
 
     // Function to detect and format bot messages into bullet points to simplify readiablity
     const formatBotMessage = (text) => {

@@ -10,7 +10,7 @@ const Dashboard = () => {
     const username = user?.username || "Guest"; // Ensure username always has a value
     const currentHour = new Date().getHours(); // Get the current hour
 
-    console.log("Dashboard received username:", username); // Debugging
+    console.log("Dashboard received username:", username, user); // Debugging
 
     const handleLogout = () => {
         logout();

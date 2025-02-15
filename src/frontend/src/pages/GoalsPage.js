@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../components/AuthContext'; // Import AuthContext
 import Sidebar from '../components/SideBar'; // Import the Sidebar component
 import './pages_styles/GoalsPage.css';
-import ChatPlacement from "../components/ChatPlacement"; // Optional: Add specific CSS for ProgressPage
+import ChatPlacement from "../components/ChatPlacement";
 
 const GoalsPage = () => {
     const { user } = useAuth(); // Get user details if needed
@@ -19,7 +19,7 @@ const GoalsPage = () => {
                 <div className="main-content">
                     <div className="progress-header">
                         <h1 className="main-title">Goals Page</h1>
-                        <p>Welcome, {user?.firstname || 'User'}! Here's your progress overview.</p>
+                        <p>Welcome, {user?.firstname || 'User'}! Here's your goals overview.</p>
                     </div>
                     <div className="progress-content">
                         <div className="card">

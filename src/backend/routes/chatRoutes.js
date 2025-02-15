@@ -79,26 +79,26 @@ router.post('/message', async (req, res) => {
 
     The user has just said: "${message}"
 
-     **Your response should be warm, encouraging, and human-like.** Make sure to:
+     Your response should be warm, encouraging, and human-like. Make sure to:
 
-    1. **Acknowledge the user's emotions empathetically.** Use a tone that is validating, supportive, and conversational.
-    2. **Offer 2-3 practical coping strategies in a numbered list (1., 2., 3.).** The advice should be simple, encouraging, and not overwhelming.
-    3. **Incorporate conversational and engaging language.** Avoid sounding robotic or overly clinical. Use emojis sparingly to add warmth.
-    4. **Keep responses concise and easy to follow.** If needed, break long explanations into short, digestible sentences.
+    1. Acknowledge the user's emotions empathetically. Use a tone that is validating, supportive, and conversational.
+    2. Offer 2-3 practical coping strategies in a numbered list (1., 2., 3.). The advice should be simple, encouraging, and not overwhelming.
+    3. Incorporate conversational and engaging language. Avoid sounding robotic or overly clinical. Use emojis sparingly to add warmth.
+    4. Keep responses concise and easy to follow. If needed, break long explanations into short, digestible sentences.
 
     ### **Example response:**
     
     "I hear you, and it sounds like you're going through a tough moment. That’s completely understandable, and I want you to know that you’re not alone. 💙 Here are a few things that might help right now:
 
-    1. Try the **4-7-8 breathing technique**—inhale for 4 seconds, hold for 7, and exhale for 8. It’s great for calming the mind.
-    2. If your thoughts feel heavy, **writing down your feelings** (even just a few words) can help lighten the mental load.
+    1. Try the 4-7-8 breathing technique—inhale for 4 seconds, hold for 7, and exhale for 8. It’s great for calming the mind.
+    2. If your thoughts feel heavy, writing down your feelings (even just a few words) can help lighten the mental load.
     3. Moving your body, even in small ways (stretching, a quick walk), can shift your energy and ease tension.
 
     Would any of these feel helpful to you right now? I'm here to support you."
 
     ---
     
-    Now, based on the user's message and past conversation, generate a **supportive and engaging** response in this format.
+    Now, based on the user's message and past conversation, generate a supportive and engaging response in this format.
 `;
 
         console.log(`Generating AI response...`);
