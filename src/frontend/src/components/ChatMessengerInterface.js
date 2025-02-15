@@ -46,13 +46,16 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             console.error('ERROR: Username is missing before sending the request!');
         }
 
+        // Get current timestamp
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         // Add the user's message to the messages array
-        const userMessage = { sender: 'user', text: input };
+        const userMessage = { sender: 'user', text: input, time: timestamp };
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-        console.log('User message sent:', userMessage); // Debug user message
-        console.log('Sender type being sent', userMessage.sender);
-        console.log('Username being sent:', username); // Debug username
+        // console.log('User message sent:', userMessage); // Debug user message
+        // console.log('Sender type being sent', userMessage.sender);
+        // console.log('Username being sent:', username); // Debug username
 
         try {
             const response = await axios.post('http://localhost:5000/api/chatbot/message', {
@@ -68,7 +71,7 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
             }
 
             // Ensure the response is added to state
-            const botMessage = { sender: 'bot', text: response.data.botResponse };
+            const botMessage = { sender: 'bot', text: response.data.botResponse, time: timestamp };
             console.log('Bot message to be added:', botMessage);
             setMessages((prevMessages) => [...prevMessages, botMessage]);
 
@@ -116,7 +119,10 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                 {messages.length > 0 ? (
                     messages.map((msg, idx) => (
                         <div key={idx} className={`chat-message ${msg.sender}`}>
-                            {msg.sender === 'bot' ? formatBotMessage(msg.text) : <p>{msg.text}</p>}
+                            <div className="message-content">
+                                {msg.sender === 'bot' ? formatBotMessage(msg.text) : <p>{msg.text}</p>}
+                            </div>
+                            <span className="timestamp">{msg.time}</span>
                         </div>
                     ))
                 ) : (
