@@ -53,6 +53,7 @@
     color: var(--text-color);
     margin-bottom: 2rem;
     text-align: center;
+    font-style: italic;
 }
 
 /* Form Section */
@@ -79,11 +80,13 @@
     font-size: 1rem;
     color: var(--text-color);
     margin-right: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .settings-group input,
 .settings-group select {
-    flex: 2;
+    flex: 5;
     padding: 0.5rem;
     font-size: 1rem;
     border: 1px solid var(--border-color);
@@ -247,4 +250,8 @@ button.btn:active {
     .password-field {
         width: 100%;
     }
+}
+
+.alert {
+    padding: 0.5rem;
 }
