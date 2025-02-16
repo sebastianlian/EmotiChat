@@ -18,21 +18,31 @@ const ProgressPage = () => {
                 {/* Main Content */}
                 <div className="main-content">
                     <div className="progress-header">
+                        {/* TODO: Need to work on assigning roles for clinician dashboard to have access to staff roles (clinicians/therapists) they should be able to access certain pages the user role can't */}
                         <h1 className="main-title">Progress Page</h1>
                         <p>Welcome, {user?.firstname || 'User'}! Here's your progress overview.</p>
                     </div>
                     <div className="progress-content">
                         <div className="card">
-                            <h5 className="card-title">Task 1</h5>
-                            <p>Track the details of your first task here.</p>
+                            <h5 className="card-title">Mental State Analysis</h5>
+                            <p>Your current mental state based on recent interactions</p>
+                        </div>
+                        {/* TODO: Create the Journal tab for users to log their emotions and type in the notebook. The notebook should also have an ai-analytical feature */}
+                        {/*<div className="card">*/}
+                        {/*    <h5 className="card-title">Emotion Tracking Journal</h5>*/}
+                        {/*    <p>Record your thoughts and feelings</p>*/}
+                        {/*</div>*/}
+                        <div className="card">
+                            <h5 className="card-title">Mental State Trends</h5>
+                            <p>Mood and stress over time</p>
                         </div>
                         <div className="card">
-                            <h5 className="card-title">Task 2</h5>
-                            <p>Track the details of your second task here.</p>
+                            <h5 className="card-title">Weekly Summary</h5>
+                            <p>View your weekly mood summaries</p>
                         </div>
                         <div className="card">
-                            <h5 className="card-title">Task 3</h5>
-                            <p>Track the details of your third task here.</p>
+                            <h5 className="card-title">Anomaly Detection</h5>
+                            <p>Potential issues detected that may require clinician attention</p>
                         </div>
                     </div>
                 </div>

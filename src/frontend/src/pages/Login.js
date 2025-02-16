@@ -11,6 +11,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { login } = useAuth(); // Get login function from AuthContext
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,25 +53,34 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <div className="mb-3">
-                        <label htmlFor="password" className="form-label">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            className="form-control"
-                            placeholder="Enter your password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+                    <div className="password-field">
+                        <div className="mb-4">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                type={isPasswordVisible ? 'text' : 'password'}
+                                id="password"
+                                className="form-control"
+                                placeholder="Enter your password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle-btn"
+                                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                            >
+                                {isPasswordVisible ? 'Hide Password' : 'Show Password'}
+                            </button>
+                        </div>
+                        <button type="submit" className="btn btn-dark w-100" disabled={loading}>
+                            {loading ? 'Logging in...' : 'Login'}
+                        </button>
                     </div>
-                    <button type="submit" className="btn btn-dark w-100" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Login'}
-                    </button>
                 </form>
             </div>
         </div>
-    );
+);
 };
 
 export default Login;

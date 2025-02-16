@@ -29,7 +29,7 @@
 
 .progress-header p {
     font-size: 1.2rem;
-    /*color: var(--text-secondary-color); !* Secondary text color *!*/
+    font-style: italic;
 }
 
 /* Cards */

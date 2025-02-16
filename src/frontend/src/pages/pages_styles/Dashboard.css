@@ -211,3 +211,8 @@ body.dark-mode .dark-mode-toggle {
 .dark-mode-toggle:hover {
     transform: scale(1.1);
 }
+
+
+.icon-container {
+    margin-right: 10px;
+}

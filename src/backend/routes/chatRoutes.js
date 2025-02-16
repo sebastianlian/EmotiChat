@@ -1,3 +1,4 @@
+const axios = require('axios');
 const express = require('express');
 const router = express.Router();
 const { analyzeSentimentAndEntities } = require('../utils/aiServices/googleNLService'); // Google NLP
@@ -69,9 +70,15 @@ router.post('/message', async (req, res) => {
         const sentimentData = await analyzeSentimentAndEntities(message);
         console.log(`Sentiment Analysis Result:`, sentimentData);
 
+        // Send sentiment data to sentimentRoutes to store in the new schema
+        await axios.post("http://localhost:5000/api/sentiment/add-sentiment", {
+            username,
+            sentimentScore: sentimentData.score,
+        }).catch(err => console.error("Error sending sentiment to API:", err));
+
         // Generate AI response with chat history for context
         const prompt = `
-    You are a AI mental health chatbot focused on providing support and actionable suggestions.
+    You are an AI mental health chatbot focused on providing support, encouragement, and actionable guidance.
     
     Consider the following conversation history:
 
@@ -79,14 +86,18 @@ router.post('/message', async (req, res) => {
 
     The user has just said: "${message}"
 
-     Your response should be warm, encouraging, and human-like. Make sure to:
+    Your response should be warm, encouraging, and human-like. Make sure to:
 
-    1. Acknowledge the user's emotions empathetically. Use a tone that is validating, supportive, and conversational.
-    2. Offer 2-3 practical coping strategies in a numbered list (1., 2., 3.). The advice should be simple, encouraging, and not overwhelming.
-    3. Incorporate conversational and engaging language. Avoid sounding robotic or overly clinical. Use emojis sparingly to add warmth.
-    4. Keep responses concise and easy to follow. If needed, break long explanations into short, digestible sentences.
+    1. **Acknowledge the user's emotions empathetically.** Use a tone that is validating, supportive, and conversational.
+    2. **Offer 2-3 practical coping strategies in a numbered list (1., 2., 3.).** The advice should be simple, encouraging, and not overwhelming.
+    3. **Guide the user rather than solve everything for them.** Encourage self-reflection and goal-setting rather than just providing direct answers.
+    4. **If the user asks for a more detailed expansion on self-care or self-improvement techniques, ask if they’d like to add that to their goals list.** This will help them take ownership of their progress.
+    5. **Incorporate conversational and engaging language.** Avoid sounding robotic or overly clinical. Use emojis sparingly to add warmth.
+    6. **Keep responses concise and easy to follow.** If needed, break long explanations into short, digestible sentences.
 
-    ### **Example response:**
+    ---
+    
+    ### **Example response when offering guidance:**
     
     "I hear you, and it sounds like you're going through a tough moment. That’s completely understandable, and I want you to know that you’re not alone. 💙 Here are a few things that might help right now:
 
@@ -98,6 +109,18 @@ router.post('/message', async (req, res) => {
 
     ---
     
+    ### **Example response when discussing self-improvement techniques:**
+    
+    "You’re interested in self-improvement— that’s great! 🎯 There are many ways to grow, and what works best depends on what resonates with you. Some popular methods include:
+
+    1. Practicing mindfulness and meditation to develop self-awareness.
+    2. Setting small, achievable goals to build consistency and confidence.
+    3. Engaging in reflective journaling to track your growth over time.
+
+    Would you like to add any of these to your goals list? This way, you can keep track and revisit them when you're ready."
+
+    ---
+
     Now, based on the user's message and past conversation, generate a supportive and engaging response in this format.
 `;
 
@@ -139,5 +162,51 @@ router.post('/message', async (req, res) => {
         res.status(500).json({ error: `Error processing message: ${error.message}` });
     }
 });
+
+/* TODO: Use this for showing a real-time analysis based on the last 10 messages */
+// Get the latest conversation for a user
+router.get("/latest-conversation/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Find the latest conversation for the user
+        const conversation = await Conversation.findOne({ user: userId })
+            .sort({ "messages.timestamp": -1 }) // Sort messages by timestamp
+            .select("messages") // Only return messages
+            .lean();
+
+        if (!conversation || conversation.messages.length === 0) {
+            return res.status(404).json({ message: "No recent conversation found." });
+        }
+
+        // Filter only user messages that have sentiment scores
+        const userMessages = conversation.messages
+            .filter(msg => msg.sender === 'user' && msg.sentimentScore !== undefined)
+            .slice(-10); // ✅ Take the last 10 messages (adjust this number as needed)
+
+        const averageSentiment = userMessages.length > 0
+            ? userMessages.reduce((sum, msg) => sum + msg.sentimentScore, 0) / userMessages.length
+            : 0; // Default to 0 if no user messages
+
+        console.log(`Updating ${user}'s average sentiment using last ${userMessages.length} messages: ${averageSentiment}`);
+
+// ✅ Store the updated sentiment score in the User model
+        user = await User.findOneAndUpdate(
+            { _id: user._id },
+            {
+                $set: { averageSentiment },
+                $push: { recentSentimentScores: { $each: [averageSentiment], $slice: -10 } } // ✅ Keep last 10 sentiment scores
+            },
+            { new: true }
+        );
+
+        console.log(`✅ Updated ${username}'s average sentiment to:`, user.averageSentiment);
+
+    } catch (error) {
+        console.error("Error fetching recent chat:", error);
+        res.status(500).json({ message: "Server error." });
+    }
+});
+
 
 module.exports = router;

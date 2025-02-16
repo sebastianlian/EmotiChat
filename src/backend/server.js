@@ -39,6 +39,9 @@ app.use('/api/protected', protectedRoutes);
 const chatbotRoutes = require('./routes/chatRoutes');
 app.use('/api/chatbot', chatbotRoutes);
 
+const sentimentRoutes = require('./routes/sentimentRoutes');
+app.use('/api/sentiment', sentimentRoutes);
+
 // Basic route
 app.get('/', (req, res) => res.send('API is running...'));
 

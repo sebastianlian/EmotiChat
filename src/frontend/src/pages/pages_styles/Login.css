@@ -38,6 +38,30 @@
     margin-bottom: 1rem;
 }
 
+.password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: gray;
+    font-size: 0.9rem;
+    padding: 0;
+}
+
+/* Responsive Design: Stack the fields on smaller screens */
+@media (max-width: 768px) {
+    .password-group {
+        flex-direction: column;
+        gap: 10px; /* Reduce spacing for smaller screens */
+        width: 100%;
+    }
+
+    .password-field {
+        width: 100%;
+    }
+}
+
 .btn-dark {
     background-color: #000;
     color: #fff;

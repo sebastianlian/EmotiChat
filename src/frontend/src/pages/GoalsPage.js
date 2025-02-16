@@ -23,16 +23,12 @@ const GoalsPage = () => {
                     </div>
                     <div className="progress-content">
                         <div className="card">
-                            <h5 className="card-title">Task 1</h5>
-                            <p>Track the details of your first task here.</p>
+                            <h5 className="card-title">Recent Conversation</h5>
+                            <p>Recent conversation will populate here</p>
                         </div>
                         <div className="card">
-                            <h5 className="card-title">Task 2</h5>
-                            <p>Track the details of your second task here.</p>
-                        </div>
-                        <div className="card">
-                            <h5 className="card-title">Task 3</h5>
-                            <p>Track the details of your third task here.</p>
+                            <h5 className="card-title">Coping Strategies</h5>
+                            <p>Cards will populate here</p>
                         </div>
                     </div>
                 </div>
