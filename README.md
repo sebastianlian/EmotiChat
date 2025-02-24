@@ -103,7 +103,7 @@ prior written permission from the author.
 ### Contact
 For inquiries, feel free to contact:
 
-- Sebastian Lian Carmagnola
+- Sebastian Lian Carmagnola  <a href="mailto:info@emotichat.tech ">sebastianlian@emotichat.tech</a>
 - GitHub: https://github.com/sebastianlian
 - LinkedIn: https://www.linkedin.com/in/sebastiancarmagnola/
 

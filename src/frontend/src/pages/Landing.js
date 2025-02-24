@@ -101,7 +101,7 @@ const Landing = () => {
                     <p>
                         Have questions or need help? Reach out to our team at:
                         <br />
-                        <a href="mailto:support@emotichat.com">support@emotichat.com</a>
+                        <a href="mailto:info@emotichat.tech ">support@emotichat.tech</a>
                     </p>
                 </section>
 
