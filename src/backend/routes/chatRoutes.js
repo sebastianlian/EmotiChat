@@ -1,6 +1,7 @@
 const axios = require('axios');
 const express = require('express');
 const router = express.Router();
+const moment = require('moment')
 const { analyzeSentimentAndEntities } = require('../utils/aiServices/googleNLService'); // Google NLP
 const { generateResponse } = require('../utils/aiServices/anthropicService'); // Claude AI
 const User = require('../models/User');
@@ -33,21 +34,11 @@ router.post('/message', async (req, res) => {
         // Retrieve or create a conversation (corrected to use `user._id`)
         let conversation = await Conversation.findOne({ user: user._id });
 
-        // if (!conversation) {
-        //     console.log(`Conversation for ${username} not found. Creating new conversation.`);
-        //     conversation = new Conversation({
-        //         user: user._id,
-        //         username: username,
-        //         messages: []
-        //     });
-        //     await conversation.save();
-        // }
-
         if (!conversation) {
             console.log(`Creating a new conversation for user: ${username}`);
 
             if (!username) {
-                console.error("❌ Error: Username is missing before saving conversation!");
+                console.error("Error: Username is missing before saving conversation!");
             }
 
             conversation = new Conversation({
@@ -58,7 +49,7 @@ router.post('/message', async (req, res) => {
 
             console.log(username);
             await conversation.save();
-            console.log("✅ Conversation successfully saved with username:", username);
+            console.log("Conversation successfully saved with username:", username);
         }
 
 
@@ -182,7 +173,7 @@ router.get("/latest-conversation/:userId", async (req, res) => {
         // Filter only user messages that have sentiment scores
         const userMessages = conversation.messages
             .filter(msg => msg.sender === 'user' && msg.sentimentScore !== undefined)
-            .slice(-10); // ✅ Take the last 10 messages (adjust this number as needed)
+            .slice(-10); // Take the last 10 messages (adjust this number as needed)
 
         const averageSentiment = userMessages.length > 0
             ? userMessages.reduce((sum, msg) => sum + msg.sentimentScore, 0) / userMessages.length
@@ -190,17 +181,17 @@ router.get("/latest-conversation/:userId", async (req, res) => {
 
         console.log(`Updating ${user}'s average sentiment using last ${userMessages.length} messages: ${averageSentiment}`);
 
-// ✅ Store the updated sentiment score in the User model
+        // Store the updated sentiment score in the User model
         user = await User.findOneAndUpdate(
             { _id: user._id },
             {
                 $set: { averageSentiment },
-                $push: { recentSentimentScores: { $each: [averageSentiment], $slice: -10 } } // ✅ Keep last 10 sentiment scores
+                $push: { recentSentimentScores: { $each: [averageSentiment], $slice: -10 } } // Keep last 10 sentiment scores
             },
             { new: true }
         );
 
-        console.log(`✅ Updated ${username}'s average sentiment to:`, user.averageSentiment);
+        console.log(`Updated ${username}'s average sentiment to:`, user.averageSentiment);
 
     } catch (error) {
         console.error("Error fetching recent chat:", error);
@@ -208,5 +199,76 @@ router.get("/latest-conversation/:userId", async (req, res) => {
     }
 });
 
+router.get('/first-message/:username', async (req, res) => {
+    const { username } = req.params;
+
+    if (!username) {
+        return res.status(400).json({ error: 'Username is required' });
+    }
+
+    try {
+        let user = await User.findOne({ username });
+
+        if (!user) {
+            // Create a new user if they don't exist
+            user = new User({
+                username,
+                mentalHealthStatus: 'Neutral',
+                averageSentiment: 0,
+                recentSentimentScores: []
+            });
+            await user.save();
+        }
+
+        let conversation = await Conversation.findOne({ user: user._id });
+
+        if (!conversation) {
+            conversation = new Conversation({
+                user: user._id,
+                username: username,
+                messages: []
+            });
+            await conversation.save();
+        }
+
+        // **Check last message timestamp**
+        const lastMessage = conversation.messages.length > 0 ? conversation.messages[conversation.messages.length - 1] : null;
+        const isFirstMessageToday = !lastMessage || !moment(lastMessage.timestamp).isSame(moment(), 'day');
+
+        if (isFirstMessageToday) {
+            let botResponse = `Good to see you again, ${username}! 😊 Hope you're doing well today.`;
+
+            // **If user is new, send a fresh welcome message**
+            if (!lastMessage) {
+                botResponse += " Let's start fresh! How are you feeling today?";
+            } else {
+                // **Otherwise, summarize the last conversation**
+                const lastUserMessages = conversation.messages
+                    .filter(msg => msg.sender === 'user')
+                    .slice(-3); // Get the last 3 user messages
+
+                if (lastUserMessages.length > 0) {
+                    const summary = lastUserMessages.map(msg => `"${msg.text}"`).join(" ");
+                    botResponse += ` Last time, we talked about: ${summary}. How have you been feeling since then?`;
+                } else {
+                    botResponse += " Let's start fresh! How are you feeling today?";
+                }
+            }
+
+
+            // **Save bot message to conversation**
+            conversation.messages.push({ sender: 'bot', username: 'bot', text: botResponse, timestamp: new Date() });
+            await conversation.save();
+
+            return res.json({ botResponse });
+        }
+
+        res.json({ botResponse: null }); // No need to send a message if it's not the first interaction today.
+
+    } catch (error) {
+        console.error('Error checking first message:', error.message);
+        res.status(500).json({ error: `Error checking first message: ${error.message}` });
+    }
+});
 
 module.exports = router;

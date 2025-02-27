@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema( {
         required: function() { return this.sender === 'user'; } // ✅ Only required for users
     },
     text: { type: String, required: true },
-   timestamp: { type: Date, default: Date.now },
+    timestamp: { type: Date, default: Date.now },
     sentimentScore: { type: Number }, // Optional, only for user messages
     magnitude: { type: Number },
     entities: [

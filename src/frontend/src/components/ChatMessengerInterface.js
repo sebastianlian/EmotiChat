@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import './components_styles/ChatMessengerInterface.css';
 import axios from 'axios';
 
@@ -10,11 +10,46 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
 
     const [input, setInput] = useState(''); // User input
     const [isExpanded, setIsExpanded] = useState(false); // State for expanded mode
+    const messagesEndRef = useRef(null); // Reference to the last message
+
+    // **Scroll to latest message**
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     useEffect(() => {
         localStorage.setItem(`chatHistory-${username}`, JSON.stringify(messages));
+        scrollToBottom(); // Scroll every time messages update
     }, [messages, username]); // Save chat history when messages update
 
+
+    useEffect(() => {
+        let hasFetched = false; // Prevent duplicate fetch calls
+
+        const fetchFirstMessage = async () => {
+            if (hasFetched) return; // Stop multiple calls
+            hasFetched = true;
+
+            try {
+                const response = await axios.get(`http://localhost:5000/api/chatbot/first-message/${username}`);
+                if (response.data.botResponse) {
+                    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    setMessages((prevMessages) => {
+                        // **🚀 Prevent duplicate bot messages from being added**
+                        if (prevMessages.some(msg => msg.text === response.data.botResponse)) return prevMessages;
+                        return [...prevMessages, { sender: 'bot', text: response.data.botResponse, time: timestamp }];
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching first message:", error);
+            }
+        };
+
+        if (isOpen && messages.length === 0) {  // Ensures it only runs when the chat opens & messages are empty
+            fetchFirstMessage();
+        }
+    }, [isOpen, username]); // Runs only when chat opens or username changes
 
     // Function to detect and format bot messages into bullet points to simplify readiablity
     const formatBotMessage = (text) => {
@@ -86,12 +121,12 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
 
         } catch (error) {
             if (error.response) {
-                console.error('❌ Axios Error:', error.response.data);
-                console.error('❌ Status Code:', error.response.status);
+                console.error('Axios Error:', error.response.data);
+                console.error('Status Code:', error.response.status);
             } else if (error.request) {
-                console.error('❌ No Response Received:', error.request);
+                console.error('No Response Received:', error.request);
             } else {
-                console.error('❌ Request Setup Error:', error.message);
+                console.error('Request Setup Error:', error.message);
             }
         }
 
@@ -113,17 +148,7 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                     </button>
                 </div>
             </div>
-            {/*<div className="chatbot-messages">*/}
-            {/*    {messages.length > 0 ? (*/}
-            {/*        messages.map((msg, idx) => (*/}
-            {/*            <div key={idx} className={`chat-message ${msg.sender}`}>*/}
-            {/*                {msg.sender === 'bot' ? formatBotMessage(msg.text) : msg.text}*/}
-            {/*            </div>*/}
-            {/*        ))*/}
-            {/*    ) : (*/}
-            {/*        <p className="empty-chat">No messages yet</p>*/}
-            {/*    )}*/}
-            {/*</div>*/}
+
             <div className="chatbot-messages">
                 {messages.length > 0 ? (
                     messages.map((msg, idx) => (
@@ -137,6 +162,8 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                 ) : (
                     <p className="empty-chat">No messages yet</p>
                 )}
+                {/* Invisible element at the bottom to scroll into view */}
+                <div ref={messagesEndRef} />
             </div>
 
 
