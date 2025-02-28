@@ -48,7 +48,7 @@ const Landing = () => {
                     </p>
                     <div className="button-group mt-4">
                         <Link to="/login" className="btn btn-dark me-2">Login</Link>
-                        <Link to="/register" className="btn btn-outline-dark">Register</Link>
+                        <Link to="/register" className="btn btn-dark me-2">Register</Link>
                     </div>
                 </div>
 

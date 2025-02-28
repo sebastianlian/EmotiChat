@@ -6,6 +6,7 @@ const { analyzeSentimentAndEntities } = require('../utils/aiServices/googleNLSer
 const { generateResponse } = require('../utils/aiServices/anthropicService'); // Claude AI
 const User = require('../models/User');
 const Conversation = require('../models/Conversation');
+const {mapSentimentToEmotionalState, calculateAverageEmotionalState} = require("../utils/sentimentUtils");
 
 router.post('/message', async (req, res) => {
     const { message, username } = req.body;
@@ -60,6 +61,9 @@ router.post('/message', async (req, res) => {
         console.log(`Analyzing sentiment for message: "${message}"`);
         const sentimentData = await analyzeSentimentAndEntities(message);
         console.log(`Sentiment Analysis Result:`, sentimentData);
+
+        // ✅ Map sentiment score & magnitude to an emotional state
+        const emotionalState = mapSentimentToEmotionalState(sentimentData.score, sentimentData.magnitude);
 
         // Send sentiment data to sentimentRoutes to store in the new schema
         await axios.post("http://localhost:5000/api/sentiment/add-sentiment", {
@@ -121,31 +125,70 @@ router.post('/message', async (req, res) => {
 
         // Save user and bot messages in MongoDB
         conversation.messages.push(
-            { sender: 'user', username: username, text: message, sentimentScore: sentimentData.score, magnitude: sentimentData.magnitude, entities: sentimentData.entities },
-            { sender: 'bot', username: 'bot', text: botResponse  }
+            {
+                sender: 'user',
+                username: username,
+                text: message,
+                sentimentScore: sentimentData.score,
+                magnitude: sentimentData.magnitude,
+                entities: sentimentData.entities,
+                emotionalState: emotionalState
+            },
+            {
+                sender: 'bot',
+                username: 'bot',
+                text: botResponse
+            }
         );
+
+        const lastSentiments = conversation.messages
+            .slice(-10)
+            .map(msg => msg.sentimentScore)
+            .filter(score => score !== undefined);  // Filter out undefined values
+
+        const lastMagnitudes = conversation.messages
+            .slice(-10)
+            .map(msg => msg.magnitude || 0) // If magnitude is undefined, set to 0
+            .filter(mag => mag !== undefined);  // Filter out undefined values
+
+        console.log("Debugging Emotional State Calculation:");
+        console.log("Last Sentiments:", lastSentiments);
+        console.log("Last Magnitudes:", lastMagnitudes);
+        console.log("User Average Sentiment:", user.averageSentiment || 0);
+
+        // Ensure we pass `user.averageSentiment` to factor in long-term trends
+        conversation.averageEmotionalState = calculateAverageEmotionalState(
+            lastSentiments,
+            lastMagnitudes,
+            user.averageSentiment || 0 // Default to 0 if user is new
+        );
+
+
 
         await conversation.save();
         console.log(`Conversation updated for user: ${username}`);
 
-        // Track user’s sentiment trends over time
-        const last5Messages = conversation.messages.slice(-5);
-        const averageSentiment = last5Messages.reduce((sum, msg) => sum + (msg.sentimentScore || 0), 0) / last5Messages.length;
+        // Update user's mental health status
+        const averageSentiment = lastSentiments.reduce((sum, score) => sum + (score || 0), 0) / lastSentiments.length;
 
         console.log(`Updating mental health status for ${username}. Avg Sentiment: ${averageSentiment}`);
 
         user = await User.findOneAndUpdate(
             { _id: user._id },
-            { mentalHealthStatus: averageSentiment > 0.25 ? 'Positive' : (averageSentiment < -0.25 ? 'Negative' : 'Neutral') },
+            {
+                mentalHealthStatus: averageSentiment > 0.25 ? 'Positive' : (averageSentiment < -0.25 ? 'Negative' : 'Neutral'),
+                averageSentiment: averageSentiment
+            },
             { new: true }
         );
 
         res.json({
             botResponse,
-            sentiment: sentimentData.score,
-            mentalHealthStatus: user.mentalHealthStatus,
-            averageSentiment
+            emotionalState,
+            averageEmotionalState: conversation.averageEmotionalState,
+            mentalHealthStatus: user.mentalHealthStatus
         });
+
 
     } catch (error) {
         console.error('Error in chatbot route:', error.message);
@@ -154,7 +197,6 @@ router.post('/message', async (req, res) => {
     }
 });
 
-/* TODO: Use this for showing a real-time analysis based on the last 10 messages */
 // Get the latest conversation for a user
 router.get("/latest-conversation/:userId", async (req, res) => {
     try {
