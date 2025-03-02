@@ -7,3 +7,12 @@ node_modules/
 # Ignore IDE files
 .idea/
 *.iml
+
+# Ignore batch files
+*.bat
+
+# Ignore trained model files
+*.pkl
+
+# Ignore CSV files (processed data, logs, etc.)
+*.csv
