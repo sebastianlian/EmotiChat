@@ -28,7 +28,7 @@ function calculateAverageEmotionalState(sentimentScores, magnitudes, averageSent
     // Combine weighted sentiment with `averageSentiment` for better accuracy
     const adjustedSentiment = (avgSentiment + averageSentiment) / 2;
 
-    console.log("📊 Final Adjusted Sentiment:", adjustedSentiment);
+    console.log("Final Adjusted Sentiment:", adjustedSentiment);
 
     // Ensure adjustedSentiment isn't NaN
     if (isNaN(adjustedSentiment)) {
@@ -41,6 +41,5 @@ function calculateAverageEmotionalState(sentimentScores, magnitudes, averageSent
 
 
 module.exports = {
-    mapSentimentToEmotionalState,
     calculateAverageEmotionalState
 };

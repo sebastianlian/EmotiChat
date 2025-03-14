@@ -41,14 +41,16 @@ const Landing = () => {
         <>
             <div className="landing-page">
                 <NavBar />
-                <div className="landing-content text-center">
-                    <h1 className="display-2">Welcome to EmotiChat</h1>
-                    <p className="lead">
-                        Your AI companion for managing your mental health. Get support anytime, anywhere.
-                    </p>
-                    <div className="button-group mt-4">
-                        <Link to="/login" className="btn btn-dark me-2">Login</Link>
-                        <Link to="/register" className="btn btn-dark me-2">Register</Link>
+                <div className="hero-banner">
+                    <div className="landing-content text-center">
+                        <h1 className="display-2">Welcome to EmotiChat</h1>
+                        <p className="lead">
+                            Your AI companion for managing your mental health. Get support anytime, anywhere.
+                        </p>
+                        <div className="button-group mt-4">
+                            <Link to="/login" className="btn btn-dark me-2">Login</Link>
+                            <Link to="/register" className="btn btn-dark me-2">Register</Link>
+                        </div>
                     </div>
                 </div>
 

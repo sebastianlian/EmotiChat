@@ -2,11 +2,30 @@ const axios = require('axios');
 const express = require('express');
 const router = express.Router();
 const moment = require('moment')
+const {join} = require("node:path");
 const { analyzeSentimentAndEntities } = require('../utils/aiServices/googleNLService'); // Google NLP
 const { generateResponse } = require('../utils/aiServices/anthropicService'); // Claude AI
 const User = require('../models/User');
 const Conversation = require('../models/Conversation');
-const {mapSentimentToEmotionalState, calculateAverageEmotionalState} = require("../utils/sentimentUtils");
+const {calculateAverageEmotionalState} = require("../utils/sentimentUtils");
+const { exec } = require("child_process");
+
+async function getEmotionalState(sentimentScore, magnitude) {
+    return new Promise((resolve, reject) => {
+        const scriptPath = join(__dirname, '../ml/emotionPredictor.py'); // Adjust path
+
+        exec(
+            `python "${scriptPath}" ${sentimentScore} ${magnitude}`,
+            (error, stdout, stderr) => {
+                if (error) {
+                    console.error("Error running emotion predictor:", stderr);
+                    reject(error);
+                }
+                resolve(stdout.trim()); // Return the predicted emotion
+            }
+        );
+    });
+}
 
 router.post('/message', async (req, res) => {
     const { message, username } = req.body;
@@ -62,8 +81,10 @@ router.post('/message', async (req, res) => {
         const sentimentData = await analyzeSentimentAndEntities(message);
         console.log(`Sentiment Analysis Result:`, sentimentData);
 
-        // ✅ Map sentiment score & magnitude to an emotional state
-        const emotionalState = mapSentimentToEmotionalState(sentimentData.score, sentimentData.magnitude);
+        // Map sentiment score & magnitude to an emotional state
+        const emotionalState = await getEmotionalState(sentimentData.score, sentimentData.magnitude);
+        console.log(`Predicted Emotional State: ${emotionalState}`);
+
 
         // Send sentiment data to sentimentRoutes to store in the new schema
         await axios.post("http://localhost:5000/api/sentiment/add-sentiment", {
