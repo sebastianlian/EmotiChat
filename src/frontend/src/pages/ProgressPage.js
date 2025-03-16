@@ -27,11 +27,6 @@ const ProgressPage = () => {
                             <h5 className="card-title">Mental State Analysis</h5>
                             <p>Your current mental state based on recent interactions</p>
                         </div>
-                        {/* TODO: Create the Journal tab for users to log their emotions and type in the notebook. The notebook should also have an ai-analytical feature */}
-                        {/*<div className="card">*/}
-                        {/*    <h5 className="card-title">Emotion Tracking Journal</h5>*/}
-                        {/*    <p>Record your thoughts and feelings</p>*/}
-                        {/*</div>*/}
                         <div className="card">
                             <h5 className="card-title">Mental State Trends</h5>
                             <p>Mood and stress over time</p>

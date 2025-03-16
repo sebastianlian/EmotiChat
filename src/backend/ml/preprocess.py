@@ -1,3 +1,4 @@
+# Combined this into trainEmotionaModel.py to automate workflow
 import pymongo
 import pandas as pd
 import os

@@ -1,10 +1,13 @@
+# Used to test predictions
 import pickle
 import sys
-import numpy as np
 import os
-import pandas as pd  # 🔥 Add pandas to format input correctly
+import pandas as pd
+import io
 
-# Get absolute path to model.pkl
+# Force UTF-8 encoding (fixes the UnicodeEncodeError)
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
 
 try:
@@ -15,7 +18,7 @@ try:
         else:
             raise ValueError("Invalid model.pkl structure! Expected a tuple (model, scaler).")
 except FileNotFoundError:
-    print(f"❌ Error: model.pkl file not found at {model_path}! Ensure the training script has been run.")
+    print(f"Error: model.pkl file not found at {model_path}! Ensure the training script has been run.")
     model, scaler = None, None
 
 def map_cluster_to_emotion(cluster):
@@ -29,14 +32,14 @@ def map_cluster_to_emotion(cluster):
         5: "Contentment / Calmness",
         6: "Frustration / Irritation",
         7: "Melancholy / Disappointment",  # Added missing Cluster 7
-        8: "Hopefulness / Optimism"  # Added Cluster 8 for full coverage
+        8: "Excitement / Overwhelm"   # Added Cluster 8 for full coverage
     }
     return cluster_emotion_map.get(cluster, "Unknown")
 
 def predict_emotional_state(sentiment_score, magnitude):
     """Predicts emotional state based on sentiment score & magnitude."""
     if model is None or scaler is None:
-        return "❌ Model not loaded. Please retrain."
+        return "Model not loaded. Please retrain."
 
     # Pass column names to match scaler training format
     features = pd.DataFrame([[float(sentiment_score), float(magnitude)]], columns=["sentimentScore", "magnitude"])
