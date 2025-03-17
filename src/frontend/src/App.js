@@ -62,7 +62,7 @@ import { DarkModeProvider } from './components/DarkModeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ProgressPage from './pages/ProgressPage';
 import SettingsPage from './pages/SettingsPage';
-import GoalsPage from './pages/GoalsPage';
+import CopingStratPage from './pages/CopingStratPage';
 import EULA from './pages/EULA';
 import Privacy from "./pages/Privacy";
 
@@ -105,10 +105,10 @@ const App = () => {
                 }
             />
             <Route
-                path="/dashboard/goals"
+                path="/dashboard/strategies"
                 element={
                     <ProtectedRoute>
-                        <GoalsPage />
+                        <CopingStratPage />
                     </ProtectedRoute>
                 }
             />

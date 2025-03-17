@@ -80,6 +80,62 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
         return <p>{text}</p>; // Default to normal text
     };
 
+    // const sendMessage = async () => {
+    //     if (!input.trim()) {
+    //         console.warn('Cannot send an empty message');
+    //         return;
+    //     }
+    //
+    //     if (!username) {
+    //         console.error('ERROR: Username is missing before sending the request!');
+    //     }
+    //
+    //     // Get current timestamp
+    //     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    //
+    //     // Add the user's message to the messages array
+    //     const userMessage = { sender: 'user', text: input, time: timestamp };
+    //     setMessages((prevMessages) => [...prevMessages, userMessage]);
+    //
+    //     // console.log('User message sent:', userMessage); // Debug user message
+    //     // console.log('Sender type being sent', userMessage.sender);
+    //     // console.log('Username being sent:', username); // Debug username
+    //
+    //     try {
+    //         const response = await axios.post('http://localhost:5000/api/chatbot/message', {
+    //             message: input,
+    //             username: username,
+    //         });
+    //
+    //         console.log('Full response from chatbot:', response.data);
+    //
+    //         if (!response.data || !response.data.botResponse) {
+    //             console.error('Invalid chatbot response:', response.data);
+    //             return;
+    //         }
+    //
+    //         // Ensure the response is added to state
+    //         const botMessage = { sender: 'bot', text: response.data.botResponse, time: timestamp };
+    //         console.log('Bot message to be added:', botMessage);
+    //         setMessages((prevMessages) => [...prevMessages, botMessage]);
+    //
+    //     } catch (error) {
+    //         if (error.response) {
+    //             console.error('Axios Error:', error.response.data);
+    //             console.error('Status Code:', error.response.status);
+    //         } else if (error.request) {
+    //             console.error('No Response Received:', error.request);
+    //         } else {
+    //             console.error('Request Setup Error:', error.message);
+    //         }
+    //     }
+    //
+    //     // Clear the input field
+    //     setInput('');
+    // };
+
+    const [copingStrategies, setCopingStrategies] = useState([]); // New state to store strategies
+
     const sendMessage = async () => {
         if (!input.trim()) {
             console.warn('Cannot send an empty message');
@@ -97,10 +153,6 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
         const userMessage = { sender: 'user', text: input, time: timestamp };
         setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-        // console.log('User message sent:', userMessage); // Debug user message
-        // console.log('Sender type being sent', userMessage.sender);
-        // console.log('Username being sent:', username); // Debug username
-
         try {
             const response = await axios.post('http://localhost:5000/api/chatbot/message', {
                 message: input,
@@ -114,25 +166,30 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                 return;
             }
 
-            // Ensure the response is added to state
+            // Extract the bot response and coping strategies
             const botMessage = { sender: 'bot', text: response.data.botResponse, time: timestamp };
-            console.log('Bot message to be added:', botMessage);
+            const newStrategies = response.data.copingStrategies || [];
+
             setMessages((prevMessages) => [...prevMessages, botMessage]);
 
-        } catch (error) {
-            if (error.response) {
-                console.error('Axios Error:', error.response.data);
-                console.error('Status Code:', error.response.status);
-            } else if (error.request) {
-                console.error('No Response Received:', error.request);
-            } else {
-                console.error('Request Setup Error:', error.message);
+            if (newStrategies.length > 0) {
+                setCopingStrategies((prevStrategies) => {
+                    const updatedStrategies = [...prevStrategies, ...newStrategies];
+
+                    // **Save to localStorage**
+                    localStorage.setItem(`copingStrategies-${username}`, JSON.stringify(updatedStrategies));
+
+                    return updatedStrategies;
+                });
             }
+
+        } catch (error) {
+            console.error('Error:', error.response ? error.response.data : error.message);
         }
 
-        // Clear the input field
-        setInput('');
+        setInput(''); // Clear input field
     };
+
 
     return (
         <div
@@ -180,5 +237,4 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
         </div>
     );
 };
-
 export default ChatMessengerInterface;

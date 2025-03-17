@@ -9,7 +9,27 @@ const User = require('../models/User');
 const Conversation = require('../models/Conversation');
 const {calculateAverageEmotionalState} = require("../utils/sentimentUtils");
 const { exec } = require("child_process");
+const CopingStrategy = require('../models/CopingStrategy'); // Import coping strategies model
 
+// Extract Coping Strategies from Chatbot Response
+const extractCopingStrategies = (botResponse) => {
+    // const strategyRegex = /^(\d+)\.\s+(.+?):\s*(.+)$/gm; // Captures strategy number, title, and description
+    const strategyRegex = /\d+\.\s+(.+?)(?:\n\s*[-•]\s+(.+?))?(?=\n\d+\.|\n*$)/gs;
+
+    const strategies = [];
+    let match;
+
+    while ((match = strategyRegex.exec(botResponse)) !== null) {
+        strategies.push({
+            title: match[1]?.trim() || "Coping Strategy", // Ensure title always has a fallback
+            details: match[2] ? match[2].trim() : "", // Only trim details if they exist
+        });
+    }
+
+    return strategies.length > 0 ? strategies : null;
+};
+
+// Get Emotional State from Python Predictor
 async function getEmotionalState(sentimentScore, magnitude) {
     return new Promise((resolve, reject) => {
         const scriptPath = join(__dirname, '../ml/emotionPredictor.py'); // Adjust path
@@ -144,6 +164,24 @@ router.post('/message', async (req, res) => {
         const botResponse = await generateResponse(prompt);
         console.log(`AI Response: ${botResponse}`);
 
+        // Extract Coping Strategies from AI Response
+        const copingStrategies = extractCopingStrategies(botResponse);
+        console.log(`Extracted Coping Strategies:`, copingStrategies);
+
+        // Save extracted coping strategies in MongoDB
+        if (copingStrategies && copingStrategies.length > 0) {
+            await CopingStrategy.insertMany(
+                copingStrategies.map((strategy, index) => ({
+                    user: user._id,
+                    username,
+                    title: strategy.title,
+                    details: strategy.details,
+                    order: index, // Keep order for sorting
+                    completed: false
+                }))
+            );
+        }
+
         // Save user and bot messages in MongoDB
         conversation.messages.push(
             {
@@ -207,7 +245,8 @@ router.post('/message', async (req, res) => {
             botResponse,
             emotionalState,
             averageEmotionalState: conversation.averageEmotionalState,
-            mentalHealthStatus: user.mentalHealthStatus
+            mentalHealthStatus: user.mentalHealthStatus,
+            copingStrategies: copingStrategies || [],
         });
 
 
@@ -294,7 +333,7 @@ router.get('/first-message/:username', async (req, res) => {
             await conversation.save();
         }
 
-        // **Check last message timestamp**
+        // Check last message timestamp
         const lastMessage = conversation.messages.length > 0 ? conversation.messages[conversation.messages.length - 1] : null;
         const isFirstMessageToday = !lastMessage || !moment(lastMessage.timestamp).isSame(moment(), 'day');
 
@@ -319,7 +358,7 @@ router.get('/first-message/:username', async (req, res) => {
             }
 
 
-            // **Save bot message to conversation**
+            // Save bot message to conversation
             conversation.messages.push({ sender: 'bot', username: 'bot', text: botResponse, timestamp: new Date() });
             await conversation.save();
 
@@ -333,5 +372,28 @@ router.get('/first-message/:username', async (req, res) => {
         res.status(500).json({ error: `Error checking first message: ${error.message}` });
     }
 });
+
+router.get('/strategies/:username', async (req, res) => {
+    try {
+        console.log("Fetching strategies for user:", req.params.username);
+        const { username } = req.params;
+
+        if (!username) {
+            return res.status(400).json({ error: "Username is required" });
+        }
+
+        const strategies = await CopingStrategy.find({ username }).sort({ order: 1 });
+
+        if (!strategies.length) {
+            return res.status(404).json({ message: "No coping strategies found." });
+        }
+
+        res.json(strategies);
+    } catch (error) {
+        console.error("Error fetching coping strategies:", error);
+        res.status(500).json({ error: "Server error." });
+    }
+});
+
 
 module.exports = router;

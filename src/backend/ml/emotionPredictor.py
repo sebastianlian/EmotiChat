@@ -60,30 +60,30 @@ def predict_emotional_state(sentiment_score, magnitude):
 
     return predicted_emotion
 
-# Accept input arguments from command line (for Node.js integration)
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python emotionPredictor.py <sentiment_score> <magnitude>")
-        sys.exit(1)
-
-    sentiment_score = float(sys.argv[1])
-    magnitude = float(sys.argv[2])
-
-    emotion = predict_emotional_state(sentiment_score, magnitude)
-    print(emotion)  # This will be captured in Node.js
-
-    # Run test cases to validate model output
-    test_cases = [
-        (0.8, 0.2),    # Should return Contentment
-        (-0.7, 0.8),   # Should return Anxiety / Worry
-        (-1.9, 3.0),   # Should return Panic / Overwhelm
-        (1.5, 1.2),    # Should return Joy / Excitement
-        (-0.5, 0.2),   # Should return Melancholy / Disappointment
-        (-0.2, 2.5),   # Should return Hopefulness / Optimism
-    ]
-
-    print("\nRunning Emotional State Prediction Tests...\n")
-
-    for score, mag in test_cases:
-        emotion = predict_emotional_state(score, mag)
-        print(f"Sentiment Score: {score}, Magnitude: {mag} → Predicted Emotion: {emotion}")
+# # Accept input arguments from command line (for Node.js integration)
+# if __name__ == "__main__":
+#     if len(sys.argv) != 3:
+#         print("Usage: python emotionPredictor.py <sentiment_score> <magnitude>")
+#         sys.exit(1)
+#
+#     sentiment_score = float(sys.argv[1])
+#     magnitude = float(sys.argv[2])
+#
+#     emotion = predict_emotional_state(sentiment_score, magnitude)
+#     print(emotion)  # This will be captured in Node.js
+#
+#     # Run test cases to validate model output
+#     test_cases = [
+#         (0.8, 0.2),    # Should return Contentment
+#         (-0.7, 0.8),   # Should return Anxiety / Worry
+#         (-1.9, 3.0),   # Should return Panic / Overwhelm
+#         (1.5, 1.2),    # Should return Joy / Excitement
+#         (-0.5, 0.2),   # Should return Melancholy / Disappointment
+#         (-0.2, 2.5),   # Should return Hopefulness / Optimism
+#     ]
+#
+#     print("\nRunning Emotional State Prediction Tests...\n")
+#
+#     for score, mag in test_cases:
+#         emotion = predict_emotional_state(score, mag)
+#         print(f"Sentiment Score: {score}, Magnitude: {mag} → Predicted Emotion: {emotion}")
