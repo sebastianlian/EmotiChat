@@ -8,44 +8,69 @@ import ChatPlacement from "../components/ChatPlacement";
 const CopingStratPage = () => {
     const { user } = useAuth();
     const [copingStrategies, setCopingStrategies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [motivationMessage, setMotivationMessage] = useState("");
 
     // Fetch Coping Strategies from Backend
     useEffect(() => {
-        const savedStrategies = localStorage.getItem(`copingStrategies-${user?.username}`);
-        if (savedStrategies) {
+        const fetchCopingStrategies = async () => {
+            if (!user?.username) return;
+            setLoading(true);
+
             try {
-                const parsedStrategies = JSON.parse(savedStrategies);
-                setCopingStrategies(parsedStrategies);
-            } catch (error) {
-                console.error("Error parsing stored coping strategies:", error);
-                setCopingStrategies([]); // Fallback to empty array if parsing fails
+                const response = await axios.get(`http://localhost:5000/api/coping-strategies/${user.username}`);
+                setCopingStrategies(response.data); // Store in state
+                localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(response.data)); // Also cache in localStorage
+            } catch (err) {
+                console.error("Error fetching coping strategies:", err);
+                setError("Failed to fetch coping strategies.");
+            } finally {
+                setLoading(false);
             }
-        }
+        };
+
+        fetchCopingStrategies();
     }, [user?.username]);
 
-    // Mark Strategy as Complete
-    const markAsComplete = async (strategyId) => {
+    // Toggle Completion (Mark as Complete OR Undo AND Display Motivation Message)
+    const toggleCompletion = async (strategyId, currentStatus) => {
         try {
-            await axios.patch(`http://localhost:5000/api/coping-strategies/${strategyId}/complete`);
-            setCopingStrategies(prevStrategies =>
-                prevStrategies.map(strategy =>
-                    strategy._id === strategyId ? { ...strategy, completed: true } : strategy
-                )
-            );
+            const response = await axios.patch(`http://localhost:5000/api/coping-strategies/${strategyId}`);
+            const { strategy, motivationalMessage } = response.data;
+
+            setCopingStrategies(prevStrategies => {
+                const updatedStrategies = prevStrategies.map(s =>
+                    s._id === strategyId ? { ...s, completed: strategy.completed } : s
+                );
+
+                // Save updated strategies to localStorage
+                localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(updatedStrategies));
+                return updatedStrategies;
+            });
+
+            // Set Motivation Message (only when marking as complete)
+            if (strategy.completed) {
+                setMotivationMessage(motivationalMessage);
+
+                // Hide the message after 5 seconds
+                setTimeout(() => {
+                    setMotivationMessage("");
+                }, 5000);
+            } else {
+                setMotivationMessage(""); // Clear if undoing completion
+            }
         } catch (error) {
-            console.error("Error marking strategy as complete:", error);
+            console.error("Error updating strategy completion:", error);
         }
     };
 
     // Extract Strategy Title & Content
     const extractTitleAndContent = (strategy) => {
-        if (typeof strategy === "object" && strategy !== null) {
-            return {
-                title: strategy.title || "Coping Strategy",
-                content: strategy.details || "",
-            };
-        }
-        return { title: "Coping Strategy", content: "" };
+        return {
+            title: strategy.title || "Coping Strategy",
+            content: strategy.details || "",
+        };
     };
 
     return (
@@ -59,8 +84,18 @@ const CopingStratPage = () => {
                         <p>Welcome, {user?.firstname || 'User'}! Here are some strategies to help you navigate your day.</p>
                     </div>
 
+                    {motivationMessage && (
+                        <div className={`motivational-message ${motivationMessage ? '' : 'hidden'}`}>
+                            {motivationMessage}
+                        </div>
+                    )}
+
                     <div className="progress-content">
-                        {copingStrategies.length > 0 ? (
+                        {loading ? (
+                            <p>Loading coping strategies...</p>
+                        ) : error ? (
+                            <p className="error-message">{error}</p>
+                        ) : copingStrategies.length > 0 ? (
                             copingStrategies.map((strategy, index) => {
                                 const { title, content } = extractTitleAndContent(strategy);
                                 return (
@@ -69,10 +104,10 @@ const CopingStratPage = () => {
                                         <p>{content}</p>
                                         <button
                                             className="complete-btn"
-                                            onClick={() => markAsComplete(strategy._id)}
-                                            disabled={strategy.completed}
+                                            onClick={() => toggleCompletion(strategy._id, strategy.completed)}
+                                            // disabled={strategy.completed}
                                         >
-                                            {strategy.completed ? "Completed" : "Mark as Complete"}
+                                            {strategy.completed ? "Undo Completion" : "Mark as Complete"}
                                         </button>
                                     </div>
                                 );

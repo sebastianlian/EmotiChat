@@ -2,6 +2,23 @@ const express = require('express');
 const router = express.Router();
 const CopingStrategy = require('../models/CopingStrategy');
 const User = require('../models/User');
+const {join} = require("node:path");
+const {readFileSync} = require("node:fs");
+
+const getRandomMotivationalMessage = () => {
+    try {
+        // Adjust path to read from `data/motivational_messages.txt`
+        const filePath = join(__dirname, '../data/motivational_msgs.txt');
+        const messages = readFileSync(filePath, 'utf8').split('\n').filter(msg => msg.trim() !== '');
+
+        if (messages.length === 0) return "Keep pushing forward! Every step matters. 🚀"; // Fallback
+
+        return messages[Math.floor(Math.random() * messages.length)]; // Pick a random message
+    } catch (error) {
+        console.error("Error reading motivational messages:", error);
+        return "You're doing great! Keep going. 💙"; // Fallback if file fails
+    }
+};
 
 // Save Coping Strategies
 router.post('/', async (req, res) => {
@@ -42,11 +59,25 @@ router.get('/:username', async (req, res) => {
     }
 });
 
-// Update Coping Strategy (Edit or Mark as Complete)
+// Toggle Coping Strategy Completion (Mark as Complete OR Undo)
 router.patch('/:id', async (req, res) => {
     try {
-        const updatedStrategy = await CopingStrategy.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        res.json(updatedStrategy);
+        const strategy = await CopingStrategy.findById(req.params.id);
+        if (!strategy) {
+            return res.status(404).json({ error: "Strategy not found" });
+        }
+
+        // Toggle the completion status
+        strategy.completed = !strategy.completed;
+        await strategy.save();
+
+        // Generate a motivational message only if the user **completes** a task
+        let motivationalMessage = "";
+        if (strategy.completed) {
+            motivationalMessage = getRandomMotivationalMessage();
+        }
+
+        res.json({ strategy, motivationalMessage });
     } catch (error) {
         console.error("Error updating coping strategy:", error);
         res.status(500).json({ error: "Server error" });

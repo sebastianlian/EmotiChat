@@ -373,27 +373,4 @@ router.get('/first-message/:username', async (req, res) => {
     }
 });
 
-router.get('/strategies/:username', async (req, res) => {
-    try {
-        console.log("Fetching strategies for user:", req.params.username);
-        const { username } = req.params;
-
-        if (!username) {
-            return res.status(400).json({ error: "Username is required" });
-        }
-
-        const strategies = await CopingStrategy.find({ username }).sort({ order: 1 });
-
-        if (!strategies.length) {
-            return res.status(404).json({ message: "No coping strategies found." });
-        }
-
-        res.json(strategies);
-    } catch (error) {
-        console.error("Error fetching coping strategies:", error);
-        res.status(500).json({ error: "Server error." });
-    }
-});
-
-
 module.exports = router;
