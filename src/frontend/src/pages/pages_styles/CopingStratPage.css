@@ -160,4 +160,148 @@ body.dark-mode .card:hover {
     transition: opacity 1s ease-in-out;
 }
 
+/* Strategy Card */
+.coping-strategy-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+/* Overview & Conclusion */
+.overview-card, .conclusion-card {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Step List */
+.strategy-steps {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.strategy-steps li {
+    margin-bottom: 5px;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 8px 12px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.pagination-controls button:hover {
+    background-color: #3700b3;
+}
+
+.pagination-controls button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.strategy-divider {
+    border: 0;
+    height: 1px;
+    background: black;
+    margin: 20px 0;
+}
+
+/* Dark mode support */
+.dark-mode .strategy-divider {
+    background: var(--text-color);
+    opacity: 0.3;
+}
+
+/* Coping Strategies Page - Buttons */
+.complete-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.complete-btn:hover {
+    background-color: var(--primary-hover-color);
+    transform: scale(1.02);
+}
+
+.complete-btn:active {
+    transform: scale(0.98);
+}
+
+/* Optional: Add a completed style */
+.complete-btn.completed {
+    background-color: #28a745; /* Green for completed */
+}
+
+.complete-btn.completed:hover {
+    background-color: #218838;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .complete-btn {
+        font-size: 0.9rem;
+    }
+}
+
+/* Overview & Final Thought Styling */
+.overview-card, .conclusion-card {
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode adjustments */
+.dark-mode .overview-card,
+.dark-mode .conclusion-card {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+/* Add a subtle hover effect */
+.overview-card:hover,
+.conclusion-card:hover {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Improve text readability */
+.overview-card h5, .conclusion-card h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.overview-card p, .conclusion-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}

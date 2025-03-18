@@ -17,7 +17,7 @@ app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
 
 // Environment variables
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 7000;
 const DB_URI = process.env.DB_URI;
 
 // MongoDB connection

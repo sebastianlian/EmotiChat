@@ -52,13 +52,17 @@ router.post('/', async (req, res) => {
 router.get("/:username", async (req, res) => {
     try {
         const { username } = req.params;
-        const strategySet = await CopingStrategy.findOne({ username });
 
-        if (!strategySet) {
-            return res.json([]); // Return empty array to prevent frontend errors
+        // Fetch all coping strategies for a user, sorted by timestamp (newest first)
+        const strategySet = await CopingStrategy.find({ username })
+            .sort({ createdAt: -1 }) // Sort by timestamp DESCENDING (newest first)
+            .exec();
+
+        if (!strategySet || strategySet.length === 0) {
+            return res.json([]); // Return empty array if no strategies found
         }
 
-        res.json([strategySet]); // Return as an array so frontend mapping works
+        res.json(strategySet); // Send ordered strategies
     } catch (error) {
         console.error("Error fetching coping strategies:", error);
         res.status(500).json({ error: "Server error" });

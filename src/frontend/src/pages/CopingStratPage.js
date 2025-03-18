@@ -5,12 +5,15 @@ import Sidebar from '../components/SideBar';
 import './pages_styles/CopingStratPage.css';
 import ChatPlacement from "../components/ChatPlacement";
 
+const ITEMS_PER_PAGE = 5; // Limit items per page
+
 const CopingStratPage = () => {
     const { user } = useAuth();
     const [copingStrategies, setCopingStrategies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [motivationMessage, setMotivationMessage] = useState("");
+    const [currentPage, setCurrentPage] = useState(1); // ✅ Track current page
 
     // Fetch Coping Strategies from Backend
     useEffect(() => {
@@ -21,15 +24,13 @@ const CopingStratPage = () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/coping-strategies/${user.username}`);
 
-                console.log("Coping Strategies API Response:", response.data); // Debugging
+                console.log("Coping Strategies API Response:", response.data);
 
-                // Ensure data is structured correctly
-                if (response.data && Array.isArray(response.data)) {
-                    setCopingStrategies(response.data);
-                    localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(response.data));
-                } else {
-                    throw new Error("Invalid coping strategies format received from API.");
-                }
+                // Sort by `createdAt` if not sorted already
+                const sortedStrategies = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                setCopingStrategies(sortedStrategies);
+                localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(sortedStrategies));
 
             } catch (err) {
                 console.error("Error fetching coping strategies:", err);
@@ -42,14 +43,27 @@ const CopingStratPage = () => {
         fetchCopingStrategies();
     }, [user?.username]);
 
-    // Toggle Completion (Mark as Complete OR Undo AND Display Motivation Message)
+    // Pagination Logic
+    const totalPages = Math.ceil(copingStrategies.length / ITEMS_PER_PAGE);
+    const paginatedStrategies = copingStrategies.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
+    const nextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
+
+    // Toggle Completion (Mark as Complete OR Undo)
     const toggleCompletion = async (strategyId) => {
         if (!strategyId) {
             console.error("Strategy ID is missing!");
             return;
         }
-
-        console.log("🛠Toggling completion for strategy ID:", strategyId); // Debugging
 
         try {
             const response = await axios.patch(`http://localhost:5000/api/coping-strategies/${strategyId}`);
@@ -80,7 +94,6 @@ const CopingStratPage = () => {
         }
     };
 
-
     return (
         <ChatPlacement>
             <div className="progress-page-wrapper">
@@ -89,7 +102,8 @@ const CopingStratPage = () => {
                 <div className="main-content">
                     <div className="progress-header">
                         <h1 className="main-title">Daily Coping Guide</h1>
-                        <p>Welcome, {user?.firstname || 'User'}! Here are some strategies to help you navigate your day.</p>
+                        <p>Welcome, {user?.firstname || 'User'}! Here are some strategies to help you navigate your
+                            day.</p>
                     </div>
 
                     {/* Motivation Message */}
@@ -105,9 +119,10 @@ const CopingStratPage = () => {
                         ) : error ? (
                             <p className="error-message">{error}</p>
                         ) : copingStrategies.length > 0 ? (
-                            copingStrategies.map((strategySet, index) => (
+                            paginatedStrategies.map((strategySet, index) => (
                                 <div key={index} className="coping-strategy-section">
-                                    {/* Overview (First paragraph of the response) */}
+
+                                    {/* ✅ Overview (First paragraph of the response) */}
                                     {strategySet?.overview && (
                                         <div className="overview-card">
                                             <h5 className="card-title">Overview</h5>
@@ -115,12 +130,14 @@ const CopingStratPage = () => {
                                         </div>
                                     )}
 
-                                    {/* Coping Strategies (Only numbered lists) */}
+                                    {/* ✅ Coping Strategies (Each strategy as a separate card) */}
                                     {Array.isArray(strategySet.strategies) && strategySet.strategies.length > 0 ? (
                                         strategySet.strategies.map((strategy, stratIndex) => (
-                                            <div key={stratIndex} className={`card coping-strategy-card ${strategy.completed ? 'completed' : ''}`}>
+                                            <div key={stratIndex}
+                                                 className={`card coping-strategy-card ${strategy.completed ? 'completed' : ''}`}>
                                                 <h5 className="card-title">{strategy?.title || "Coping Strategy"}</h5>
-                                                <ul>
+
+                                                <ul className="strategy-steps">
                                                     {Array.isArray(strategy.steps) && strategy.steps.length > 0 ? (
                                                         strategy.steps.map((step, stepIndex) => (
                                                             <li key={stepIndex}>{step}</li>
@@ -129,6 +146,7 @@ const CopingStratPage = () => {
                                                         <p>No steps provided.</p>
                                                     )}
                                                 </ul>
+
                                                 <button
                                                     className="complete-btn"
                                                     onClick={() => toggleCompletion(strategy._id, strategy.completed)}
@@ -141,13 +159,16 @@ const CopingStratPage = () => {
                                         <p>No strategies found.</p>
                                     )}
 
-                                    {/* Conclusion (Last paragraph of the response) */}
+                                    {/* Conclusion (Final Thought at the bottom) */}
                                     {strategySet?.conclusion && (
                                         <div className="conclusion-card">
                                             <h5 className="card-title">Final Thought</h5>
                                             <p>{strategySet.conclusion}</p>
                                         </div>
                                     )}
+
+                                    <hr className="strategy-divider" />
+
                                 </div>
                             ))
                         ) : (
@@ -157,6 +178,18 @@ const CopingStratPage = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Pagination Controls */}
+                    <div className="pagination-controls">
+                        <button onClick={prevPage} disabled={currentPage === 1}>
+                            ← Previous
+                        </button>
+                        <span> Page {currentPage} of {totalPages} </span>
+                        <button onClick={nextPage} disabled={currentPage === totalPages}>
+                            Next →
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </ChatPlacement>
