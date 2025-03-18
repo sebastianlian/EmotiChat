@@ -20,8 +20,17 @@ const CopingStratPage = () => {
 
             try {
                 const response = await axios.get(`http://localhost:5000/api/coping-strategies/${user.username}`);
-                setCopingStrategies(response.data); // Store in state
-                localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(response.data)); // Also cache in localStorage
+
+                console.log("Coping Strategies API Response:", response.data); // Debugging
+
+                // Ensure data is structured correctly
+                if (response.data && Array.isArray(response.data)) {
+                    setCopingStrategies(response.data);
+                    localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(response.data));
+                } else {
+                    throw new Error("Invalid coping strategies format received from API.");
+                }
+
             } catch (err) {
                 console.error("Error fetching coping strategies:", err);
                 setError("Failed to fetch coping strategies.");
@@ -34,44 +43,43 @@ const CopingStratPage = () => {
     }, [user?.username]);
 
     // Toggle Completion (Mark as Complete OR Undo AND Display Motivation Message)
-    const toggleCompletion = async (strategyId, currentStatus) => {
+    const toggleCompletion = async (strategyId) => {
+        if (!strategyId) {
+            console.error("Strategy ID is missing!");
+            return;
+        }
+
+        console.log("🛠Toggling completion for strategy ID:", strategyId); // Debugging
+
         try {
             const response = await axios.patch(`http://localhost:5000/api/coping-strategies/${strategyId}`);
             const { strategy, motivationalMessage } = response.data;
 
-            setCopingStrategies(prevStrategies => {
-                const updatedStrategies = prevStrategies.map(s =>
-                    s._id === strategyId ? { ...s, completed: strategy.completed } : s
-                );
+            setCopingStrategies(prevStrategies =>
+                prevStrategies.map(strategySet => ({
+                    ...strategySet,
+                    strategies: strategySet.strategies.map(s =>
+                        s._id === strategyId ? { ...s, completed: strategy.completed } : s
+                    )
+                }))
+            );
 
-                // Save updated strategies to localStorage
-                localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(updatedStrategies));
-                return updatedStrategies;
-            });
+            // Store updated strategies in localStorage
+            localStorage.setItem(`copingStrategies-${user.username}`, JSON.stringify(copingStrategies));
 
-            // Set Motivation Message (only when marking as complete)
             if (strategy.completed) {
                 setMotivationMessage(motivationalMessage);
-
-                // Hide the message after 5 seconds
-                setTimeout(() => {
-                    setMotivationMessage("");
-                }, 5000);
+                setTimeout(() => setMotivationMessage(""), 5000);
             } else {
-                setMotivationMessage(""); // Clear if undoing completion
+                setMotivationMessage("");
             }
+
+            console.log(`Strategy ${strategyId} completion updated to: ${strategy.completed}`);
         } catch (error) {
             console.error("Error updating strategy completion:", error);
         }
     };
 
-    // Extract Strategy Title & Content
-    const extractTitleAndContent = (strategy) => {
-        return {
-            title: strategy.title || "Coping Strategy",
-            content: strategy.details || "",
-        };
-    };
 
     return (
         <ChatPlacement>
@@ -84,8 +92,9 @@ const CopingStratPage = () => {
                         <p>Welcome, {user?.firstname || 'User'}! Here are some strategies to help you navigate your day.</p>
                     </div>
 
+                    {/* Motivation Message */}
                     {motivationMessage && (
-                        <div className={`motivational-message ${motivationMessage ? '' : 'hidden'}`}>
+                        <div className="motivational-message">
                             {motivationMessage}
                         </div>
                     )}
@@ -96,22 +105,51 @@ const CopingStratPage = () => {
                         ) : error ? (
                             <p className="error-message">{error}</p>
                         ) : copingStrategies.length > 0 ? (
-                            copingStrategies.map((strategy, index) => {
-                                const { title, content } = extractTitleAndContent(strategy);
-                                return (
-                                    <div key={strategy._id} className={`card coping-strategy-card ${strategy.completed ? 'completed' : ''}`}>
-                                        <h5 className="card-title">{title}</h5>
-                                        <p>{content}</p>
-                                        <button
-                                            className="complete-btn"
-                                            onClick={() => toggleCompletion(strategy._id, strategy.completed)}
-                                            // disabled={strategy.completed}
-                                        >
-                                            {strategy.completed ? "Undo Completion" : "Mark as Complete"}
-                                        </button>
-                                    </div>
-                                );
-                            })
+                            copingStrategies.map((strategySet, index) => (
+                                <div key={index} className="coping-strategy-section">
+                                    {/* Overview (First paragraph of the response) */}
+                                    {strategySet?.overview && (
+                                        <div className="overview-card">
+                                            <h5 className="card-title">Overview</h5>
+                                            <p>{strategySet.overview}</p>
+                                        </div>
+                                    )}
+
+                                    {/* Coping Strategies (Only numbered lists) */}
+                                    {Array.isArray(strategySet.strategies) && strategySet.strategies.length > 0 ? (
+                                        strategySet.strategies.map((strategy, stratIndex) => (
+                                            <div key={stratIndex} className={`card coping-strategy-card ${strategy.completed ? 'completed' : ''}`}>
+                                                <h5 className="card-title">{strategy?.title || "Coping Strategy"}</h5>
+                                                <ul>
+                                                    {Array.isArray(strategy.steps) && strategy.steps.length > 0 ? (
+                                                        strategy.steps.map((step, stepIndex) => (
+                                                            <li key={stepIndex}>{step}</li>
+                                                        ))
+                                                    ) : (
+                                                        <p>No steps provided.</p>
+                                                    )}
+                                                </ul>
+                                                <button
+                                                    className="complete-btn"
+                                                    onClick={() => toggleCompletion(strategy._id, strategy.completed)}
+                                                >
+                                                    {strategy.completed ? "Undo Completion" : "Mark as Complete"}
+                                                </button>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No strategies found.</p>
+                                    )}
+
+                                    {/* Conclusion (Last paragraph of the response) */}
+                                    {strategySet?.conclusion && (
+                                        <div className="conclusion-card">
+                                            <h5 className="card-title">Final Thought</h5>
+                                            <p>{strategySet.conclusion}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
                         ) : (
                             <div className="card">
                                 <h5 className="card-title">Coping Strategies</h5>

@@ -13,21 +13,59 @@ const CopingStrategy = require('../models/CopingStrategy'); // Import coping str
 
 // Extract Coping Strategies from Chatbot Response
 const extractCopingStrategies = (botResponse) => {
-    // const strategyRegex = /^(\d+)\.\s+(.+?):\s*(.+)$/gm; // Captures strategy number, title, and description
-    const strategyRegex = /\d+\.\s+(.+?)(?:\n\s*[-•]\s+(.+?))?(?=\n\d+\.|\n*$)/gs;
+    // Split response into lines
+    const lines = botResponse.split("\n").map(line => line.trim()).filter(line => line);
 
-    const strategies = [];
-    let match;
+    let overview = "";
+    let strategies = [];
+    let conclusion = "";
+    let currentStrategy = null;
 
-    while ((match = strategyRegex.exec(botResponse)) !== null) {
-        strategies.push({
-            title: match[1]?.trim() || "Coping Strategy", // Ensure title always has a fallback
-            details: match[2] ? match[2].trim() : "", // Only trim details if they exist
-        });
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // First paragraph is the overview
+        if (i === 0) {
+            overview = line;
+            continue;
+        }
+
+        // Detect numbered strategy title (e.g., "1. Title of Strategy")
+        const strategyMatch = line.match(/^(\d+)\.\s*(.+)/);
+        if (strategyMatch) {
+            // Save previous strategy if one exists
+            if (currentStrategy) {
+                strategies.push(currentStrategy);
+            }
+
+            // Start new strategy
+            currentStrategy = {
+                title: strategyMatch[2],
+                steps: []
+            };
+        }
+        // Detect steps (bulleted list "- Step 1")
+        else if (line.startsWith("-") && currentStrategy) {
+            currentStrategy.steps.push(line.substring(1).trim());
+        }
+        // If it's the last paragraph and not a strategy, treat it as a conclusion
+        else if (i === lines.length - 1) {
+            conclusion = line;
+        }
     }
 
-    return strategies.length > 0 ? strategies : null;
+    // Push last strategy if it exists
+    if (currentStrategy) {
+        strategies.push(currentStrategy);
+    }
+
+    return {
+        overview,
+        strategies,
+        conclusion
+    };
 };
+
 
 // Get Emotional State from Python Predictor
 async function getEmotionalState(sentimentScore, magnitude) {
@@ -166,20 +204,31 @@ router.post('/message', async (req, res) => {
 
         // Extract Coping Strategies from AI Response
         const copingStrategies = extractCopingStrategies(botResponse);
-        console.log(`Extracted Coping Strategies:`, copingStrategies);
+        console.log(`Extracted Coping Strategies:`, JSON.stringify(copingStrategies, null, 2)); // Log the extracted strategies
 
         // Save extracted coping strategies in MongoDB
-        if (copingStrategies && copingStrategies.length > 0) {
-            await CopingStrategy.insertMany(
-                copingStrategies.map((strategy, index) => ({
+        if (copingStrategies && Array.isArray(copingStrategies.strategies) && copingStrategies.strategies.length > 0) {
+            console.log("Coping Strategies BEFORE Save:", JSON.stringify(copingStrategies, null, 2));
+
+            try {
+                const savedStrategy = await CopingStrategy.create({
                     user: user._id,
                     username,
-                    title: strategy.title,
-                    details: strategy.details,
-                    order: index, // Keep order for sorting
-                    completed: false
-                }))
-            );
+                    overview: copingStrategies.overview,
+                    strategies: copingStrategies.strategies.map(strategy => ({
+                        title: strategy.title,
+                        steps: strategy.steps || [],  // Ensure steps exist
+                        completed: false
+                    })),
+                    conclusion: copingStrategies.conclusion || ""
+                });
+
+                console.log("Successfully saved coping strategy:", savedStrategy);
+            } catch (error) {
+                console.error("Error saving to MongoDB:", error);
+            }
+        } else {
+            console.log("No strategies found to save!");
         }
 
         // Save user and bot messages in MongoDB

@@ -49,10 +49,16 @@ router.post('/', async (req, res) => {
 });
 
 // Fetch Coping Strategies
-router.get('/:username', async (req, res) => {
+router.get("/:username", async (req, res) => {
     try {
-        const strategies = await CopingStrategy.find({ username: req.params.username }).sort('order');
-        res.json(strategies);
+        const { username } = req.params;
+        const strategySet = await CopingStrategy.findOne({ username });
+
+        if (!strategySet) {
+            return res.json([]); // Return empty array to prevent frontend errors
+        }
+
+        res.json([strategySet]); // Return as an array so frontend mapping works
     } catch (error) {
         console.error("Error fetching coping strategies:", error);
         res.status(500).json({ error: "Server error" });
@@ -60,18 +66,34 @@ router.get('/:username', async (req, res) => {
 });
 
 // Toggle Coping Strategy Completion (Mark as Complete OR Undo)
-router.patch('/:id', async (req, res) => {
+router.patch('/:strategyId', async (req, res) => {
     try {
-        const strategy = await CopingStrategy.findById(req.params.id);
-        if (!strategy) {
+        const { strategyId } = req.params;
+
+        console.log("Received request to toggle strategy:", strategyId);
+
+        // Find the parent document that contains this strategy
+        const copingStrategy = await CopingStrategy.findOne({ "strategies._id": strategyId });
+
+        if (!copingStrategy) {
+            console.error("Strategy not found in DB:", strategyId);
             return res.status(404).json({ error: "Strategy not found" });
+        }
+
+        // Find the specific strategy inside the array
+        const strategy = copingStrategy.strategies.id(strategyId);
+        if (!strategy) {
+            console.error("Could not find nested strategy:", strategyId);
+            return res.status(404).json({ error: "Strategy not found inside coping strategies" });
         }
 
         // Toggle the completion status
         strategy.completed = !strategy.completed;
-        await strategy.save();
+        await copingStrategy.save();
 
-        // Generate a motivational message only if the user **completes** a task
+        console.log("Strategy updated:", strategy);
+
+        // Generate a motivational message only when marking as complete
         let motivationalMessage = "";
         if (strategy.completed) {
             motivationalMessage = getRandomMotivationalMessage();
@@ -83,6 +105,7 @@ router.patch('/:id', async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+
 
 // Delete Coping Strategy
 router.delete('/:id', async (req, res) => {
