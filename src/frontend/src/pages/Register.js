@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import './pages_styles/Register.css';
 
 const Register = () => {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [gender, setGender] = useState('');
@@ -166,7 +168,7 @@ const Register = () => {
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
                         <input
-                            type="password"
+                            type={isPasswordVisible ? 'text' : 'password'}
                             id="password"
                             className="form-control"
                             placeholder="Enter your password"
@@ -174,11 +176,18 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
+                        <button
+                            type="button"
+                            className="password-toggle-btn"
+                            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                        >
+                            {isPasswordVisible ? 'Hide' : 'Show'}
+                        </button>
                     </div>
                     <div className="mb-3">
                         <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                         <input
-                            type="password"
+                            type={isPasswordVisible ? 'text' : 'password'}
                             id="confirmPassword"
                             className="form-control"
                             placeholder="Confirm your password"

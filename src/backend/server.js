@@ -42,6 +42,13 @@ app.use('/api/chatbot', chatbotRoutes);
 const sentimentRoutes = require('./routes/sentimentRoutes');
 app.use('/api/sentiment', sentimentRoutes);
 
+const copingStrategiesRoutes = require('./routes/copingStrategiesRoutes');
+app.use('/api/coping-strategies', copingStrategiesRoutes);
+
+const progressRoutes = require('./routes/progressRoutes');
+app.use('/api/progress', progressRoutes);
+
+
 // Basic route
 app.get('/', (req, res) => res.send('API is running...'));
 

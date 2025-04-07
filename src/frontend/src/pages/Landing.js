@@ -41,14 +41,16 @@ const Landing = () => {
         <>
             <div className="landing-page">
                 <NavBar />
-                <div className="landing-content text-center">
-                    <h1 className="display-2">Welcome to EmotiChat</h1>
-                    <p className="lead">
-                        Your AI companion for managing your mental health. Get support anytime, anywhere.
-                    </p>
-                    <div className="button-group mt-4">
-                        <Link to="/login" className="btn btn-dark me-2">Login</Link>
-                        <Link to="/register" className="btn btn-outline-dark">Register</Link>
+                <div className="hero-banner">
+                    <div className="landing-content text-center">
+                        <h1 className="display-2">Welcome to EmotiChat</h1>
+                        <p className="lead">
+                            Your AI companion for managing your mental health. Get support anytime, anywhere.
+                        </p>
+                        <div className="button-group mt-4">
+                            <Link to="/login" className="btn btn-dark me-2">Login</Link>
+                            <Link to="/register" className="btn btn-dark me-2">Register</Link>
+                        </div>
                     </div>
                 </div>
 
@@ -101,7 +103,7 @@ const Landing = () => {
                     <p>
                         Have questions or need help? Reach out to our team at:
                         <br />
-                        <a href="mailto:support@emotichat.com">support@emotichat.com</a>
+                        <a href="mailto:info@emotichat.tech ">support@emotichat.tech</a>
                     </p>
                 </section>
 

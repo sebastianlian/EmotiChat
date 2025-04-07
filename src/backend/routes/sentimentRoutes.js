@@ -27,11 +27,11 @@ router.post("/add-sentiment", async (req, res) => {
             });
         }
 
-        // ✅ Add new sentiment score
+        // Add new sentiment score
         sentimentRecord.sentimentScores.push(sentimentScore);
         sentimentRecord.timestamps.push(new Date());
 
-        // ✅ Remove outdated scores older than 8 hours
+        // Remove outdated scores older than 8 hours
         const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000); // 8 hours in milliseconds
 
         const validIndexes = sentimentRecord.timestamps
@@ -39,11 +39,11 @@ router.post("/add-sentiment", async (req, res) => {
             .filter(entry => entry.timestamp > eightHoursAgo)
             .map(entry => entry.index);
 
-        // ✅ Keep only recent scores
+        // Keep only recent scores
         sentimentRecord.sentimentScores = validIndexes.map(i => sentimentRecord.sentimentScores[i]);
         sentimentRecord.timestamps = validIndexes.map(i => sentimentRecord.timestamps[i]);
 
-        // ✅ Recalculate rolling average based on last 8 hours
+        // Recalculate rolling average based on last 8 hours
         const averageSentiment = sentimentRecord.sentimentScores.length > 0
             ? sentimentRecord.sentimentScores.reduce((sum, score) => sum + score, 0) / sentimentRecord.sentimentScores.length
             : 0;
@@ -51,7 +51,7 @@ router.post("/add-sentiment", async (req, res) => {
         sentimentRecord.averageSentiment = averageSentiment;
 
         await sentimentRecord.save();
-        console.log(`✅ Stored sentiment for ${username}: Avg Sentiment (Last 8 Hours) = ${averageSentiment}`);
+        console.log(`Stored sentiment for ${username}: Avg Sentiment (Last 8 Hours) = ${averageSentiment}`);
 
         res.json({ message: "Sentiment stored successfully", averageSentiment });
     } catch (error) {

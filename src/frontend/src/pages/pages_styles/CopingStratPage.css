@@ -1,0 +1,307 @@
+/* Goals Page Wrapper */
+.progress-page-wrapper {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color); /* Shared variable for light/dark themes */
+    color: var(--text-color); /* Shared variable for text color */
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+.progress-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.progress-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.progress-header p {
+    font-size: 1.2rem;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s ease, color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .card {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #444444;
+}
+
+body.dark-mode .card:hover {
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+/* Recent Conversation Section */
+.recent-conversation-card {
+    padding: 1.5rem;
+}
+
+.recent-conversation-card .conversation-topic {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Chat Box */
+.chat-box {
+    background-color: var(--secondary-background-color);
+    border-radius: 10px;
+    padding: 15px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Chat Bubbles */
+.chat-bubble {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    max-width: 75%;
+    font-size: 14px;
+}
+
+.user-bubble {
+    background-color: #e9ecef;
+    align-self: flex-start;
+}
+
+.bot-bubble {
+    background-color: #343a40;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Chat Sender */
+.chat-sender {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Strategies Section */
+.strategies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.strategy-card {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.strategy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Strategy Checkbox */
+.strategy-checkbox {
+    margin-bottom: 10px;
+}
+
+/* Button */
+.btn-dark {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.card-title {
+    font-weight: bold;
+}
+
+.motivational-message {
+    background-color: #e0ffe6; /* Light green */
+    color: #2c662d; /* Dark green for contrast */
+    border: 2px solid #2c662d;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.motivational-message.hidden {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Strategy Card */
+.coping-strategy-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Overview & Conclusion */
+.overview-card, .conclusion-card {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Step List */
+.strategy-steps {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.strategy-steps li {
+    margin-bottom: 5px;
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 8px 12px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.pagination-controls button:hover {
+    background-color: #3700b3;
+}
+
+.pagination-controls button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.strategy-divider {
+    border: 0;
+    height: 1px;
+    background: black;
+    margin: 20px 0;
+}
+
+/* Dark mode support */
+.dark-mode .strategy-divider {
+    background: var(--text-color);
+    opacity: 0.3;
+}
+
+/* Coping Strategies Page - Buttons */
+.complete-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.complete-btn:hover {
+    background-color: var(--primary-hover-color);
+    transform: scale(1.02);
+}
+
+.complete-btn:active {
+    transform: scale(0.98);
+}
+
+/* Optional: Add a completed style */
+.complete-btn.completed {
+    background-color: #28a745; /* Green for completed */
+}
+
+.complete-btn.completed:hover {
+    background-color: #218838;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .complete-btn {
+        font-size: 0.9rem;
+    }
+}
+
+/* Overview & Final Thought Styling */
+.overview-card, .conclusion-card {
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode adjustments */
+.dark-mode .overview-card,
+.dark-mode .conclusion-card {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+/* Add a subtle hover effect */
+.overview-card:hover,
+.conclusion-card:hover {
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Improve text readability */
+.overview-card h5, .conclusion-card h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.overview-card p, .conclusion-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}

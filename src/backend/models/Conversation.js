@@ -8,7 +8,7 @@ const messageSchema = new mongoose.Schema( {
         required: function() { return this.sender === 'user'; } // ✅ Only required for users
     },
     text: { type: String, required: true },
-   timestamp: { type: Date, default: Date.now },
+    timestamp: { type: Date, default: Date.now },
     sentimentScore: { type: Number }, // Optional, only for user messages
     magnitude: { type: Number },
     entities: [
@@ -17,7 +17,8 @@ const messageSchema = new mongoose.Schema( {
             sentiment: String,
             magnitude: Number,
         }
-    ]
+    ],
+    emotionalState: { type: String }
 });
 
 // Define the conversation schema
@@ -28,6 +29,7 @@ const conversationSchema = new mongoose.Schema({
         required: function() { return this.sender === 'user'; } // ✅ Only required for users
     },
     messages: [messageSchema], // Array of msgs
+    averageEmotionalState: { type: String }
 });
 
 // Export the Conversation model

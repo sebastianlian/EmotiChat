@@ -49,10 +49,10 @@ const Sidebar = ({ handleLogout }) => {
                 </li>
                 <li className="nav-item">
                     <a
-                        href="/dashboard/goals"
-                        className={`nav-link ${location.pathname === '/dashboard/goals' ? 'active disabled' : ''}`}
+                        href="/dashboard/strategies"
+                        className={`nav-link ${location.pathname === '/dashboard/strategies' ? 'active disabled' : ''}`}
                     >
-                        <BsListTask className="sidebar-icon"/> {!collapsed && 'Goals'}
+                        <BsListTask className="sidebar-icon"/> {!collapsed && 'Strategies'}
                     </a>
                 </li>
                 <li className="nav-item">
