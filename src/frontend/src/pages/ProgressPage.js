@@ -12,7 +12,8 @@ const ProgressPage = () => {
     const { user } = useAuth();
     const [sentimentData, setSentimentData] = useState([]);
     const [averageSentiment, setAverageSentiment] = useState(null);
-    const [mentalHealthStatus, setMentalHealthStatus] = useState("Loading...");
+    // const [mentalHealthStatus, setMentalHealthStatus] = useState("Loading...");
+    const [emotionalState, setEmotionalState] = useState("Loading...");
     const [anomalies, setAnomalies] = useState([]);
 
     useEffect(() => {
@@ -21,12 +22,15 @@ const ProgressPage = () => {
 
             try {
                 const response = await axios.get(`http://localhost:5000/api/progress/${user.username}`);
-                const { sentiments, avgSentiment, mentalStatus, detectedAnomalies } = response.data;
+                const { sentiments, avgSentiment, mentalStatus, detectedAnomalies, emotionalState } = response.data;
 
                 setSentimentData(sentiments);
                 setAverageSentiment(avgSentiment);
-                setMentalHealthStatus(mentalStatus);
+                // setMentalHealthStatus(mentalStatus);
+                setEmotionalState(emotionalState);
                 setAnomalies(detectedAnomalies || []);
+                console.log("Progress Data Response:", response.data);
+
             } catch (error) {
                 console.error("Error fetching user progress:", error);
             }
@@ -62,7 +66,7 @@ const ProgressPage = () => {
                     <div className="progress-content">
                         <div className="card">
                             <h5 className="card-title">Mental State Analysis</h5>
-                            <p><strong>Current Mental Health Status:</strong> {mentalHealthStatus}</p>
+                            <p><strong>Current Mental Health Status:</strong> {emotionalState}</p>
                             <p><strong>Average Sentiment Score:</strong> {averageSentiment !== null ? averageSentiment.toFixed(2) : "Loading..."}</p>
                         </div>
 

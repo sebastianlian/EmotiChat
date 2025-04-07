@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const SentimentData = require('../models/Sentiment'); // Assume you have a Sentiment model
+const SentimentData = require('../models/Sentiment');
+const Conversation = require('../models/Conversation');
 
 // Function to detect anomalies (e.g., sudden mood drops)
 const detectAnomalies = (sentiments) => {
@@ -21,22 +22,42 @@ router.get('/:username', async (req, res) => {
 
         if (!user) return res.status(404).json({ error: "User not found" });
 
+        // Get the latest conversation
+        const conversation = await Conversation.findOne({ user: user._id });
+
+        let emotionalState = "Not enough data";
+
+        if (conversation) {
+            // Find most recent emotionalState from a user message
+            const lastEmotional = [...conversation.messages]
+                .reverse()
+                .find(msg => msg.sender === 'user' && msg.emotionalState);
+
+            if (lastEmotional) emotionalState = lastEmotional.emotionalState;
+        }
+
         // Fetch sentiment data for the last 7 days
         const sentiments = await SentimentData.find({ username }).sort({ date: -1 }).limit(7);
 
-        // Calculate average sentiment
-        const avgSentiment = sentiments.length > 0
-            ? sentiments.reduce((sum, entry) => sum + entry.sentimentScore, 0) / sentiments.length
+        const validScores = sentiments
+            .map(entry => entry.sentimentScore)
+            .filter(score => typeof score === 'number' && !isNaN(score));
+
+        const avgSentiment = validScores.length > 0
+            ? validScores.reduce((sum, score) => sum + score, 0) / validScores.length
             : 0;
 
-        // Detect anomalies
+        console.log("Valid Sentiment Scores:", validScores);
+        console.log("Avg Sentiment Score:", avgSentiment);
+
         const anomalies = detectAnomalies(sentiments);
 
         res.json({
             sentiments,
             avgSentiment,
-            mentalStatus: avgSentiment > 0.25 ? "Positive" : avgSentiment < -0.25 ? "Negative" : "Neutral",
+            // mentalStatus: avgSentiment > 0.25 ? "Positive" : avgSentiment < -0.25 ? "Negative" : "Neutral",
             detectedAnomalies: anomalies,
+            emotionalState
         });
     } catch (error) {
         console.error("Error fetching progress data:", error);

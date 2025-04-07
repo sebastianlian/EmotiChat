@@ -87,3 +87,13 @@ def predict_emotional_state(sentiment_score, magnitude):
 #     for score, mag in test_cases:
 #         emotion = predict_emotional_state(score, mag)
 #         print(f"Sentiment Score: {score}, Magnitude: {mag} → Predicted Emotion: {emotion}")
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python emotionPredictor.py <sentiment_score> <magnitude>")
+        sys.exit(1)
+
+    sentiment_score = float(sys.argv[1])
+    magnitude = float(sys.argv[2])
+
+    emotion = predict_emotional_state(sentiment_score, magnitude)
+    print(emotion)

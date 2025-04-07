@@ -55,13 +55,13 @@ const extractCopingStrategies = (botResponse) => {
     }
 
     // Push last strategy if it exists
-    if (currentStrategy) {
+    if (currentStrategy && currentStrategy.steps.length > 0) {
         strategies.push(currentStrategy);
     }
 
     return {
         overview,
-        strategies,
+        strategies: strategies.filter(s => s.steps.length > 0),
         conclusion
     };
 };
@@ -70,20 +70,23 @@ const extractCopingStrategies = (botResponse) => {
 // Get Emotional State from Python Predictor
 async function getEmotionalState(sentimentScore, magnitude) {
     return new Promise((resolve, reject) => {
-        const scriptPath = join(__dirname, '../ml/emotionPredictor.py'); // Adjust path
+        const scriptPath = join(__dirname, '../ml/emotionPredictor.py');
 
-        exec(
-            `python "${scriptPath}" ${sentimentScore} ${magnitude}`,
-            (error, stdout, stderr) => {
-                if (error) {
-                    console.error("Error running emotion predictor:", stderr);
-                    reject(error);
-                }
-                resolve(stdout.trim()); // Return the predicted emotion
+        exec(`python "${scriptPath}" ${sentimentScore} ${magnitude}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error("Error running emotion predictor:", stderr);
+                reject(error);
             }
-        );
+
+            // 🔥 Fix: grab only the last line of meaningful output
+            const lines = stdout.trim().split('\n').filter(line => line.trim() !== '');
+            const emotion = lines[lines.length - 1]; // last non-empty line
+
+            resolve(emotion);
+        });
     });
 }
+
 
 router.post('/message', async (req, res) => {
     const { message, username } = req.body;
@@ -140,8 +143,15 @@ router.post('/message', async (req, res) => {
         console.log(`Sentiment Analysis Result:`, sentimentData);
 
         // Map sentiment score & magnitude to an emotional state
-        const emotionalState = await getEmotionalState(sentimentData.score, sentimentData.magnitude);
-        console.log(`Predicted Emotional State: ${emotionalState}`);
+        let emotionalState = "";
+        try {
+            emotionalState = await getEmotionalState(sentimentData.score, sentimentData.magnitude);
+            console.log("Predicted Emotional State:", emotionalState);
+        } catch (error) {
+            console.error("Error getting emotional state:", error);
+            emotionalState = "Neutral"; // 👈 fallback
+        }
+
 
 
         // Send sentiment data to sentimentRoutes to store in the new schema
@@ -207,31 +217,56 @@ router.post('/message', async (req, res) => {
         console.log(`Extracted Coping Strategies:`, JSON.stringify(copingStrategies, null, 2)); // Log the extracted strategies
 
         // Save extracted coping strategies in MongoDB
-        if (copingStrategies && Array.isArray(copingStrategies.strategies) && copingStrategies.strategies.length > 0) {
-            console.log("Coping Strategies BEFORE Save:", JSON.stringify(copingStrategies, null, 2));
+        // if (copingStrategies && Array.isArray(copingStrategies.strategies) && copingStrategies.strategies.length > 0) {
+        //     console.log("Coping Strategies BEFORE Save:", JSON.stringify(copingStrategies, null, 2));
+        //
+        //     try {
+        //         const savedStrategy = await CopingStrategy.create({
+        //             user: user._id,
+        //             username,
+        //             overview: copingStrategies.overview,
+        //             strategies: copingStrategies.strategies.map(strategy => ({
+        //                 title: strategy.title,
+        //                 steps: strategy.steps || [],  // Ensure steps exist
+        //                 completed: false
+        //             })),
+        //             conclusion: copingStrategies.conclusion || ""
+        //         });
+        //
+        //         console.log("Successfully saved coping strategy:", savedStrategy);
+        //     } catch (error) {
+        //         console.error("Error saving to MongoDB:", error);
+        //     }
+        // } else {
+        //     console.log("No strategies found to save!");
+        // }
+        if (
+            copingStrategies &&
+            Array.isArray(copingStrategies.strategies) &&
+            copingStrategies.strategies.length > 0 &&
+            copingStrategies.strategies.some(s => Array.isArray(s.steps) && s.steps.length > 0)
+        ) {
+            const savedStrategy = await CopingStrategy.create({
+                user: user._id,
+                username,
+                overview: copingStrategies.overview,
+                strategies: copingStrategies.strategies.map(strategy => ({
+                    title: strategy.title,
+                    steps: strategy.steps || [],
+                    completed: false
+                })),
+                conclusion: copingStrategies.conclusion || ""
+            });
 
-            try {
-                const savedStrategy = await CopingStrategy.create({
-                    user: user._id,
-                    username,
-                    overview: copingStrategies.overview,
-                    strategies: copingStrategies.strategies.map(strategy => ({
-                        title: strategy.title,
-                        steps: strategy.steps || [],  // Ensure steps exist
-                        completed: false
-                    })),
-                    conclusion: copingStrategies.conclusion || ""
-                });
-
-                console.log("Successfully saved coping strategy:", savedStrategy);
-            } catch (error) {
-                console.error("Error saving to MongoDB:", error);
-            }
+            console.log("Successfully saved structured coping strategies:", savedStrategy);
         } else {
-            console.log("No strategies found to save!");
+            console.log("No valid strategies to save — skipping insert.");
         }
 
+
         // Save user and bot messages in MongoDB
+        console.log("🧠 Predicted emotional state:", emotionalState);
+
         conversation.messages.push(
             {
                 sender: 'user',
