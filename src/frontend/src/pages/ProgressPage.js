@@ -41,7 +41,8 @@ const ProgressPage = () => {
 
     // Chart Data for Mood Trends
     const chartData = {
-        labels: sentimentData.map(entry => entry.date), // Convert timestamps to readable dates
+        // labels: sentimentData.map(entry => entry.date), // Convert timestamps to readable dates
+        labels: sentimentData.map(entry => new Date(entry.timestamps).toLocaleString()),
         datasets: [
             {
                 label: 'Mood Score',
