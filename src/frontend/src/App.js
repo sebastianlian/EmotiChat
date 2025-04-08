@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import * as bootstrap from 'bootstrap';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
@@ -25,6 +26,12 @@ const App = () => {
             document.body.classList.add('light-mode');
             document.body.classList.remove('dark-mode');
         }
+
+        // Enable Bootstrap tooltips
+        const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(el => {
+            new bootstrap.Tooltip(el);
+        });
     }, [location.pathname]);
 
     return (

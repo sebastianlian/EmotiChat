@@ -15,6 +15,7 @@ const detectAnomalies = (sentiments) => {
     return anomalies;
 };
 
+// ROUTE FOR GETTING EMOTIONAL STATE, CALCULATING 8 HOUR AVG, AND FUTURE ANOMALY DETECTION
 router.get('/:username', async (req, res) => {
     try {
         const { username } = req.params;
@@ -71,6 +72,7 @@ router.get('/:username', async (req, res) => {
             avgSentiment,
             emotionalState,
             detectedAnomalies: anomalies,
+            conversationMessages: conversation?.messages || []
         });
 
     } catch (error) {
