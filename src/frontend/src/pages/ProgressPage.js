@@ -49,6 +49,7 @@ const ProgressPage = () => {
 
                 setSentimentData(enriched);
                 setAverageSentiment(avgSentiment);
+                // setMentalHealthStatus(mentalStatus);
                 setEmotionalState(emotionalState);
                 setAnomalies(detectedAnomalies || []);
                 console.log("Progress Data Response:", response.data);
