@@ -15,45 +15,31 @@ router.post("/add-sentiment", async (req, res) => {
         const user = await User.findOne({ username });
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        let sentimentRecord = await Sentiment.findOne({ user: user._id });
+        // MONGO STORING LAST 8 HOURS AVG SENTIMENT
+        const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000);
 
-        if (!sentimentRecord) {
-            sentimentRecord = new Sentiment({
-                user: user._id,
-                username,
-                sentimentScores: [],
-                timestamps: [],
-                averageSentiment: 0, // Initialize it
-            });
-        }
+        const recentScores = await Sentiment.find({
+            user: user._id,
+            timestamps: { $gte: eightHoursAgo }
+        });
 
-        // Add new sentiment score
-        sentimentRecord.sentimentScores.push(sentimentScore);
-        sentimentRecord.timestamps.push(new Date());
+        const allScores = [...recentScores.map(s => s.sentimentScore), sentimentScore]; // Include current one
+        const rollingAvg = allScores.length > 0
+            ? allScores.reduce((sum, s) => sum + s, 0) / allScores.length
+            : sentimentScore;
 
-        // Remove outdated scores older than 8 hours
-        const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000); // 8 hours in milliseconds
+        const newSentiment = new Sentiment({
+            user: user._id,
+            username,
+            sentimentScore,
+            timestamps: new Date(),
+            averageSentiment: rollingAvg
+        });
 
-        const validIndexes = sentimentRecord.timestamps
-            .map((timestamp, index) => ({ timestamp, index }))
-            .filter(entry => entry.timestamp > eightHoursAgo)
-            .map(entry => entry.index);
+        await newSentiment.save();
 
-        // Keep only recent scores
-        sentimentRecord.sentimentScores = validIndexes.map(i => sentimentRecord.sentimentScores[i]);
-        sentimentRecord.timestamps = validIndexes.map(i => sentimentRecord.timestamps[i]);
-
-        // Recalculate rolling average based on last 8 hours
-        const averageSentiment = sentimentRecord.sentimentScores.length > 0
-            ? sentimentRecord.sentimentScores.reduce((sum, score) => sum + score, 0) / sentimentRecord.sentimentScores.length
-            : 0;
-
-        sentimentRecord.averageSentiment = averageSentiment;
-
-        await sentimentRecord.save();
-        console.log(`Stored sentiment for ${username}: Avg Sentiment (Last 8 Hours) = ${averageSentiment}`);
-
-        res.json({ message: "Sentiment stored successfully", averageSentiment });
+        console.log(`Stored new sentiment for ${username}: ${sentimentScore} | Rolling Avg: ${rollingAvg}`);
+        res.json({ message: "Sentiment stored successfully", sentimentScore, averageSentiment: rollingAvg });
     } catch (error) {
         console.error("Error storing sentiment:", error);
         res.status(500).json({ error: "Server error" });
