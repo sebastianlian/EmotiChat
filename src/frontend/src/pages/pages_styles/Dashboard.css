@@ -216,3 +216,94 @@ body.dark-mode .dark-mode-toggle {
 .icon-container {
     margin-right: 10px;
 }
+
+.read-more-toggle {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 6px;
+    text-decoration: underline;
+}
+
+/*.form-container, .text-area-container {*/
+/*    padding: 1rem;*/
+/*}*/
+
+/* Mood Journal Specific Styling */
+.mood-journal .form-select,
+.mood-journal textarea {
+    width: 100%;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    padding: 0.75rem;
+}
+
+.mood-journal .form-select {
+    background-color: #f9f9f9;
+}
+
+body.dark-mode .mood-journal .form-select {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.mood-journal .btn {
+    width: 100%;
+    font-weight: 600;
+}
+
+body.dark-mode .mood-journal textarea {
+    background-color: #2e2e2e;
+    color: #fff;
+    border: 1px solid #555;
+}
+body.dark-mode textarea::placeholder,
+body.dark-mode .form-control::placeholder,
+body.dark-mode .dark-mode-textarea::placeholder {
+    color: #ccc !important;
+    opacity: 1 !important;
+}
+
+
+.mood-trend-card {
+    transition: all 0.3s ease;
+}
+
+.mood-entry {
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.date-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.emotion-badge {
+    padding: 0.4rem 0.75rem;
+    border-radius: 12px;
+    background-color: #a3e635;
+    color: #000 !important;
+    font-size: 1rem;
+    font-weight: 300;
+    text-transform: capitalize;
+}
+
+body.dark-mode .mood-entry {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+}
+
+body.dark-mode .date-label {
+    color: #bbb;
+}
+
+body.dark-mode .emotion-badge {
+    background-color: #2d6a4f;
+    color: #fff !important;
+}
+

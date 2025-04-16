@@ -10,7 +10,7 @@ import {
     BsBoxArrowLeft,
     BsArrowLeftRight,
     BsMoon,
-    BsSun,
+    BsSun, BsBook,
 } from 'react-icons/bs';
 
 const Sidebar = ({ handleLogout }) => {
@@ -37,6 +37,14 @@ const Sidebar = ({ handleLogout }) => {
                         className={`nav-link ${location.pathname === '/dashboard' ? 'active disabled' : ''}`}
                     >
                         <BsHouse className="sidebar-icon"/> {!collapsed && 'Home'}
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <a
+                        href="/dashboard/journal"
+                        className={`nav-link ${location.pathname === '/dashboard/journal' ? 'active disabled' : ''}`}
+                    >
+                        <BsBook className="sidebar-icon"/> {!collapsed && 'Journal'}
                     </a>
                 </li>
                 <li className="nav-item">

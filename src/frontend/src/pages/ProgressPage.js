@@ -26,16 +26,25 @@ const ProgressPage = () => {
                 const { sentiments, avgSentiment, emotionalState, detectedAnomalies, conversationMessages } = response.data;
 
                 const enriched = sentiments.map(sentiment => {
-                    const matchedMsg = conversationMessages.find(msg =>
-                        msg.sender === 'user' &&
-                        msg.emotionalState &&
-                        Math.abs(new Date(msg.timestamp) - new Date(sentiment.timestamps)) < 5 * 60 * 1000
-                    );
+                    let closestMatch = null;
+                    let minDiff = Infinity;
+
+                    conversationMessages.forEach(msg => {
+                        if (msg.sender === 'user' && msg.emotionalState) {
+                            const diff = Math.abs(new Date(msg.timestamp) - new Date(sentiment.timestamps));
+                            if (diff < minDiff && diff <= 5 * 60 * 1000) { // within 5 min
+                                minDiff = diff;
+                                closestMatch = msg;
+                            }
+                        }
+                    });
+
                     return {
                         ...sentiment,
-                        emotionalState: matchedMsg?.emotionalState || 'Unknown'
+                        emotionalState: closestMatch?.emotionalState || 'Unknown'
                     };
                 });
+
 
                 setSentimentData(enriched);
                 setAverageSentiment(avgSentiment);
@@ -54,7 +63,6 @@ const ProgressPage = () => {
 
     // Chart Data for Emotional Trends
     const chartData = {
-        // labels: sentimentData.map(entry => entry.date), // Convert timestamps to readable dates
         labels: sentimentData.map(entry => {
             const ts = new Date(entry.timestamps);
             return ts.toLocaleDateString(); // or .toLocaleTimeString()

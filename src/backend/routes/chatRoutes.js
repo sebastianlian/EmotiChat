@@ -457,4 +457,45 @@ router.get('/first-message/:username', async (req, res) => {
     }
 });
 
+router.get("/recent-messages/:username", async (req, res) => {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const conversation = await Conversation.findOne({ user: user._id }).lean();
+    if (!conversation) return res.json({ messages: [] });
+
+    // Get the last 6 messages (3 pairs of user + bot)
+    const lastMessages = conversation.messages.slice(-4).map(msg => ({
+        sender: msg.sender,
+        text: msg.text,
+        timestamp: msg.timestamp
+    }));
+
+    res.json({ messages: lastMessages });
+});
+
+router.get('/emotional-states/:username', async (req, res) => {
+    const { username } = req.params;
+
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const conversation = await Conversation.findOne({ user: user._id }).lean();
+    if (!conversation) return res.json({ emotionalStates: [] });
+
+    // Get last 7 user messages with emotional states
+    const emotionalStates = conversation.messages
+        .filter(msg => msg.sender === 'user' && msg.emotionalState)
+        .slice(-7)  // last 7 user messages
+        .map(msg => ({
+            emotionalState: msg.emotionalState,
+            timestamp: msg.timestamp
+        }));
+
+    res.json({ emotionalStates });
+});
+
+
 module.exports = router;
