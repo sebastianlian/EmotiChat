@@ -13,6 +13,7 @@ import SettingsPage from './pages/SettingsPage';
 import CopingStratPage from './pages/CopingStratPage';
 import EULA from './pages/EULA';
 import Privacy from "./pages/Privacy";
+import JournalEntryPage from "./pages/JournalEntryPage";
 
 
 const App = () => {
@@ -71,6 +72,14 @@ const App = () => {
                 element={
                     <ProtectedRoute>
                         <SettingsPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/dashboard/journal"
+                element={
+                    <ProtectedRoute>
+                        <JournalEntryPage />
                     </ProtectedRoute>
                 }
             />

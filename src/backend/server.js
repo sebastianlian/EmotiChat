@@ -48,6 +48,8 @@ app.use('/api/coping-strategies', copingStrategiesRoutes);
 const progressRoutes = require('./routes/progressRoutes');
 app.use('/api/progress', progressRoutes);
 
+const journalRoutes = require('./routes/journalRoutes');
+app.use('/api/journal', journalRoutes);
 
 // Basic route
 app.get('/', (req, res) => res.send('API is running...'));

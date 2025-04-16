@@ -1,0 +1,70 @@
+.journal-wrapper {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.journal-entries-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 1rem;
+}
+
+/* Notebook look */
+.journal-entry-card {
+    background: repeating-linear-gradient(
+            white,
+            white 29px,
+            #f0f0f0 30px
+    );
+    border-left: 5px solid #ccc;
+    padding: 1.5rem;
+    border-radius: 10px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.journal-entry-card .journal-date {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.emotion-tag {
+    background: #a3e635;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+}
+
+.entry-text {
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+    font-family: 'Segoe Print', cursive;
+}
+
+body.dark-mode .journal-entry-card {
+    background: repeating-linear-gradient(
+            #2a2a2a,
+            #2a2a2a 29px,
+            #333 30px
+    );
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .emotion-tag {
+    background: #2d6a4f;
+    color: #fff;
+}
+
+body.dark-mode .form-select {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #666;
+}
