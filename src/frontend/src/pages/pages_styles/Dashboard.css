@@ -277,6 +277,17 @@ body.dark-mode .dark-mode-textarea::placeholder {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+body.dark-mode .mood-trend-card .list-group-item {
+    background-color: #2a2a2a; /* match other dark cards */
+    color: #fff !important;
+    /*border: 1px solid #444444;*/
+    /*box-shadow: 0 4px 8px rgba(255, 255, 255, 0.05);*/
+}
+
+body.dark-mode .pill-strategy-text {
+    color: #ccc !important;
+}
+
 .date-label {
     font-weight: 500;
     color: #555;
@@ -305,5 +316,29 @@ body.dark-mode .date-label {
 body.dark-mode .emotion-badge {
     background-color: #2d6a4f;
     color: #fff !important;
+}
+
+body.dark-mode .accordion-button {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+}
+
+body.dark-mode .accordion-body {
+    background-color: #1f1f1f;
+    color: #ccc;
+}
+.motivational-inline {
+    font-size: 1rem;
+    font-style: italic;
+    margin-top: 0.5rem;
+    color: #666;
+}
+
+body.dark-mode .motivational-inline {
+    color: #ccc;
+}
+
+body.dark-mode .no-convo-yet-text {
+    color: #ccc !important;
 }
 

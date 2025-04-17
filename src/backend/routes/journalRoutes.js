@@ -39,6 +39,32 @@ router.get('/entries/:username', async (req, res) => {
     }
 });
 
+// Route for edited journal entries
+router.put('/entry/:id', async (req, res) => {
+    const { entry, emotion } = req.body;
+
+    if (!entry || !emotion) {
+        return res.status(400).json({ message: "Entry content is required." });
+    }
+
+    try {
+        const updated = await JournalEntry.findByIdAndUpdate(
+            req.params.id,
+            { entry, emotion },
+            { new: true }
+        );
+
+        if (!updated) {
+            return res.status(404).json({ message: "Entry not found." });
+        }
+
+        res.json({ message: "Journal entry updated successfully", updated });
+    } catch (err) {
+        console.error("Error updating journal entry:", err);
+        res.status(500).json({ message: "Server error while updating entry." });
+    }
+});
+
 
 module.exports = router;
 

@@ -1,38 +1,104 @@
-import React, { useState } from 'react';
-import './components_styles/ChatBubble.css';
+import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react';import './components_styles/ChatBubble.css';
 import ChatMessengerInterface from './ChatMessengerInterface';
 import { useDarkMode } from './DarkModeContext';
 
 const ChatBubble = ({ username }) => {
-    const [isOpen, setIsOpen] = useState(false); // Single state to control the chat
+    const [isOpen, setIsOpen] = useState(false);
     const { darkMode } = useDarkMode();
 
-    console.log("📌 ChatBubble received username:", username); // Debugging
+    const [position, setPosition] = useState(() => {
+        const bubbleSize = 60;
+        const padding = 20;
+        return {
+            x: window.innerWidth - bubbleSize - padding,
+            y: window.innerHeight - bubbleSize - padding
+        };
+    });
 
-    const toggleChat = () => {
-        setIsOpen(!isOpen); // Toggle chat open/close state
+    const [dragging, setDragging] = useState(false);
+    const dragStart = useRef({ x: 0, y: 0 });
+    const wasDragging = useRef(false); // track if movement happened
+
+    const handleMouseDown = (e) => {
+        setDragging(true);
+        wasDragging.current = false;
+        dragStart.current = {
+            x: e.clientX - position.x,
+            y: e.clientY - position.y
+        };
     };
 
+    const handleMouseMove = (e) => {
+        if (!dragging) return;
+        const newX = e.clientX - dragStart.current.x;
+        const newY = e.clientY - dragStart.current.y;
+
+        // Only consider as dragging if moved a little
+        if (
+            Math.abs(newX - position.x) > 5 ||
+            Math.abs(newY - position.y) > 5
+        ) {
+            wasDragging.current = true;
+        }
+
+        setPosition({ x: newX, y: newY });
+    };
+
+    const handleMouseUp = () => {
+        setDragging(false);
+    };
+
+    const handleClick = () => {
+        if (!wasDragging.current) {
+            setIsOpen(!isOpen);
+        }
+    };
+
+    // Register global drag listeners
+    useEffect(() => {
+        const onMove = (e) => handleMouseMove(e);
+        const onUp = () => handleMouseUp();
+
+        if (dragging) {
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onUp);
+        };
+    }, [dragging]);
+
     return (
-        <div className={`chat-bubble-container ${darkMode ? 'dark' : ''}`}>
-            {/* Chat Bubble */}
+        <div
+            className={`chat-bubble-container ${darkMode ? 'dark' : ''}`}
+            style={{
+                left: `${position.x}px`,
+                top: `${position.y}px`,
+                position: 'fixed',
+                cursor: dragging ? 'grabbing' : 'grab',
+                zIndex: 1000
+            }}
+            onMouseDown={handleMouseDown}
+        >
             {!isOpen && (
                 <button
                     className={`chat-bubble ${darkMode ? 'dark' : ''}`}
-                    onClick={toggleChat}
+                    onClick={handleClick}
                     aria-label="Open Chat"
                 >
                     💬
                 </button>
             )}
 
-            {/* Chat Messenger */}
             {isOpen && (
                 <ChatMessengerInterface
                     isOpen={isOpen}
-                    toggleChat={toggleChat}
+                    toggleChat={() => setIsOpen(false)}
                     darkMode={darkMode}
-                    username={username}/> // Get the username for the interface context
+                    username={username}
+                />
             )}
         </div>
     );
