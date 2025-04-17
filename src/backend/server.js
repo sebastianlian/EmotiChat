@@ -51,6 +51,10 @@ app.use('/api/progress', progressRoutes);
 const journalRoutes = require('./routes/journalRoutes');
 app.use('/api/journal', journalRoutes);
 
+const motivationRoutes = require('./routes/motivationRoutes');
+app.use('/api/motivation', motivationRoutes);
+
+
 // Basic route
 app.get('/', (req, res) => res.send('API is running...'));
 

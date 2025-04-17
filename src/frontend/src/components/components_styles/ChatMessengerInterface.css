@@ -229,3 +229,24 @@
 .chatbot-container.dark .timestamp {
     color: #ccc;
 }
+
+.chatbot-textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 120px;
+    resize: none;
+    overflow: hidden;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: inherit;
+    margin-right: 0.5rem;
+    transition: height 0.2s ease;
+}
+
+.chatbot-container.dark .chatbot-textarea {
+    background-color: #444;
+    border-color: #555;
+    color: #e0e0e0;
+}

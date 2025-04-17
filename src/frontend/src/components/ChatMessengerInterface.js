@@ -190,6 +190,13 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
         setInput(''); // Clear input field
     };
 
+    const autoResizeTextarea = (e) => {
+        const textarea = e.target;
+        textarea.style.height = 'auto'; // Reset height
+        textarea.style.height = textarea.scrollHeight + 'px'; // Expand height
+    };
+
+
 
     return (
         <div
@@ -220,20 +227,29 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                     <p className="empty-chat">No messages yet</p>
                 )}
                 {/* Invisible element at the bottom to scroll into view */}
-                <div ref={messagesEndRef} />
+                <div ref={messagesEndRef}/>
             </div>
 
-
             <div className="chatbot-input">
-                <input
-                    type="text"
+                <textarea
+                    className="chatbot-textarea"
                     placeholder="Type a message..."
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    rows={1}
+                    onChange={(e) => {
+                        setInput(e.target.value);
+                        autoResizeTextarea(e);
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault(); // Prevent newline
+                            sendMessage();
+                        }
+                    }}
                 />
                 <button onClick={sendMessage}>Send</button>
             </div>
+
         </div>
     );
 };

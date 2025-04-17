@@ -98,6 +98,50 @@ const Dashboard = () => {
         }
     }, [username]);
 
+    const [completedStrategies, setCompletedStrategies] = useState([]);
+
+    useEffect(() => {
+        const fetchCompletedStrategies = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/coping-strategies/${username}`);
+                const allStrategies = res.data;
+
+                console.log("All coping strategies response:", res.data);
+
+                // Flatten and filter completed nested strategies
+                const completed = allStrategies
+                    .flatMap(cs => cs.strategies || []) // access nested .strategies
+                    .filter(s => s.completed)
+                    .slice(-5); // show latest 5
+
+                setCompletedStrategies(completed);
+            } catch (error) {
+                console.error("Error fetching completed strategies:", error);
+            }
+        };
+
+        if (username && username !== "Guest") {
+            fetchCompletedStrategies();
+        }
+    }, [username]);
+
+    const [motivationalQuote, setMotivationalQuote] = useState("");
+
+    useEffect(() => {
+        const fetchQuote = async () => {
+            try {
+                const res = await axios.get(`http://localhost:5000/api/motivation/${username}`);
+                setMotivationalQuote(res.data.quote);
+            } catch (err) {
+                console.error("Error fetching quote:", err);
+            }
+        };
+
+        if (username && username !== "Guest") {
+            fetchQuote();
+        }
+    }, [username]);
+
 
     return (
         <ChatPlacement username={username}>
@@ -112,6 +156,7 @@ const Dashboard = () => {
                             <h1 className="welcome-message">
                                 {getGreeting()} {getGreetingIcon()}, {user?.firstname || 'User'}!
                             </h1>
+                            <p className="motivational-inline">{motivationalQuote}</p>
                         </div>
                         {/*<h1 className="main-title">Dashboard</h1>*/}
                         <div className="alert alert-warning alert-dismissible fade show" role="alert">
@@ -130,17 +175,25 @@ const Dashboard = () => {
                         {/* RECENT CONVO CARD */}
                         <div className="card mb-4">
                             <h5 className="card-title">Recent Conversation</h5>
-                            {recentMessages.slice(-4).map((msg, index) => (
-                                <div key={index} className={`chat-row ${msg.sender === 'user' ? 'right' : 'left'}`}>
-                                    <MessageBubble sender={msg.sender} text={msg.text} timestamp={msg.timestamp} />
-                                </div>
-                            ))}
+
+                            {recentMessages.length === 0 ? (
+                                <p className="no-convo-yet-text text-muted">
+                                    You haven't started a chat yet. Say hi to your mental health assistant and start tracking how you feel 💬
+                                </p>
+
+                            ) : (
+                                recentMessages.slice(-4).map((msg, index) => (
+                                    <div key={index} className={`chat-row ${msg.sender === 'user' ? 'right' : 'left'}`}>
+                                        <MessageBubble sender={msg.sender} text={msg.text} timestamp={msg.timestamp} />
+                                    </div>
+                                ))
+                            )}
                         </div>
 
-
+                        {/* MOOD TRENDS CARD */}
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="card mood-trend-card">
+                                <div className="card mood-trend-card ">
                                     <h5 className="card-title">Mood Trends</h5>
                                     <p className="card-subtitle">Your emotional state from recent
                                         conversations</p>
@@ -150,7 +203,10 @@ const Dashboard = () => {
                                                 <li key={index}
                                                     className="list-group-item d-flex justify-content-between align-items-center mood-entry">
                                                     <span className="date-label">
-                                                        {new Date(entry.timestamp).toLocaleDateString(undefined, {month: 'short', day: 'numeric'})}
+                                                        {new Date(entry.timestamp).toLocaleDateString(undefined, {
+                                                            month: 'short',
+                                                            day: 'numeric'
+                                                        })}
                                                     </span>
                                                     <span className={`badge emotion-badge`}>
                                                         {entry.emotionalState}
@@ -165,21 +221,61 @@ const Dashboard = () => {
                                 </div>
                             </div>
 
+                            {/* COMPLETED STRATS CARD */}
+                            <div className="col-md-6">
+                                <div className="card">
+                                    <h5 className="card-title">Current Strategy</h5>
+                                    <p>Your most recently completed coping objective</p>
 
-                            {/*<div className="col-md-6">*/}
-                            {/*    <div className="card">*/}
-                            {/*        <h5 className="card-title">Recent Goals</h5>*/}
-                            {/*        <p>Your latest objectives</p>*/}
-                            {/*        <ul>*/}
-                            {/*            <li>Text</li>*/}
-                            {/*            <li>Text</li>*/}
-                            {/*            <li>Text</li>*/}
-                            {/*        </ul>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
+                                    {completedStrategies.length > 0 ? (
+                                        <>
+                                            <div className="accordion" id="latestStrategyAccordion">
+                                                <div className="accordion-item">
+                                                    <h2 className="accordion-header" id="heading-latest">
+                                                        <button
+                                                            className="accordion-button collapsed"
+                                                            type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#collapse-latest"
+                                                            aria-expanded="false"
+                                                            aria-controls="collapse-latest"
+                                                        >
+                                                            {completedStrategies[0].title}
+                                                        </button>
+                                                    </h2>
+                                                    <div
+                                                        id="collapse-latest"
+                                                        className="accordion-collapse collapse"
+                                                        aria-labelledby="heading-latest"
+                                                        data-bs-parent="#latestStrategyAccordion"
+                                                    >
+                                                        <div className="accordion-body">
+                                                            <ul className="mb-0">
+                                                                {completedStrategies[0].steps?.map((step, i) => (
+                                                                    <li key={i}>{step}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* View All Link */}
+                                            <div className="mt-3 d-flex justify-content-center">
+                                                <a href="dashboard/strategies" className="btn btn-sm btn-outline-secondary cen">
+                                                    View All Strategies
+                                                </a>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <p className="pill-strategy-text text-muted">No completed strategies yet.</p>
+                                    )}
+                                </div>
+                            </div>
+
 
                             {/* MOOD JOURNAL CARD */}
-                            <div className="col-md-6">
+                            <div className="col-md-12">
                                 <div className="card mb-4 mood-journal">
                                     <h5 className="card-title">Mood Journal</h5>
                                     <p>Write down how you're feeling right now. Journaling helps track mood patterns and
