@@ -1,14 +1,23 @@
 # 🤖 EmotiChat: Your AI-Powered Mental Health Companion
 
 ![React](https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react)
+
 ![Bootstrap](https://img.shields.io/badge/Styling-Bootstrap-purple?style=for-the-badge&logo=bootstrap)
+
 ![Node.js](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js)
+
 ![Express](https://img.shields.io/badge/API-Express-black?style=for-the-badge&logo=express)
+
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen?style=for-the-badge&logo=mongodb)
+
 ![Passport](https://img.shields.io/badge/Auth-Passport.js-orange?style=for-the-badge&logo=passport)
+
 ![JWT](https://img.shields.io/badge/Auth-JWT-blueviolet?style=for-the-badge&logo=jsonwebtokens)
+
 ![Chart.js](https://img.shields.io/badge/Charts-Chart.js-ff6384?style=for-the-badge&logo=chartdotjs&logoColor=white)
+
 ![Google Cloud NLP](https://img.shields.io/badge/NLP-Google%20Cloud-yellow?style=for-the-badge&logo=googlecloud)
+
 ![Claude AI](https://img.shields.io/badge/AI-Claude-9cf?style=for-the-badge)
 
 EmotiChat is a secure, AI-driven web application built to assist individuals managing **depression**, **anxiety**, and general mental well-being. Featuring a conversational chatbot, personalized progress tracking, and strong data privacy, EmotiChat offers users a personal and private space to reflect and grow.
