@@ -85,7 +85,7 @@ const ProgressPage = () => {
         }),
         datasets: [
             {
-                label: 'Mood Score',
+                label: 'Sentiment Score',
                 data: sentimentData.map(entry => entry.sentimentScore),
                 borderColor: 'blue',
                 fill: false,
@@ -135,7 +135,7 @@ const ProgressPage = () => {
         labels: weeklySentiments.map(entry => new Date(entry.timestamps).toLocaleDateString()),
         datasets: [
             {
-                label: 'Weekly Sentiment Score',
+                label: 'Sentiment Score',
                 data: weeklySentiments.map(entry => entry.sentimentScore),
                 borderColor: 'teal',
                 fill: false,
@@ -168,7 +168,6 @@ const ProgressPage = () => {
         }
     };
 
-
     return (
         <ChatPlacement>
             <div className="progress-page-wrapper">
@@ -198,10 +197,12 @@ const ProgressPage = () => {
                             </p>
                         </div>
 
-                        {/* CHART OF EMOTIONAL TRENDS */}
+                        {/* LAST 8 HR ANALYSIS FEATURE */}
                         <div className="card">
                             <h5 className="card-title">Last 8 Hour Summary</h5>
-                            <p>Analyze your mood progression over the last 8 hours.</p>
+                            <div className="mb-3">
+                                <small>Analyze your mood progression over the last 8 hours.</small>
+                            </div>
                             {sentimentData.length > 0 ? (
                                 <Line data={chartData} options={chartOptions}/>
                             ) : (
@@ -209,10 +210,12 @@ const ProgressPage = () => {
                             )}
                         </div>
 
-                        {/* TODO: IMPLEMENT THE 7 DAY ANALYSIS FEATURE */}
+                        {/* 7 DAY ANALYSIS FEATURE */}
                         <div className="card">
                             <h5 className="card-title">Weekly Summary</h5>
-                            <p>Analyze your mood progression over the last 7 days.</p>
+                            <div className="mb-3">
+                                <small>Analyze your mood progression over the last 7 days.</small>
+                            </div>
 
                             {weeklySentiments.length > 0 ? (
                                 <Line data={weeklyChartData} options={weeklyChartOptions} />
@@ -225,6 +228,9 @@ const ProgressPage = () => {
                         {/* TODO: IMPLEMENT THE ANOMALY DETECTION FEATURE */}
                         <div className="card">
                             <h5 className="card-title">Anomaly Detection</h5>
+                            <div className="mb-3">
+                                <small>Analysis of anomalies that require intervention.</small>
+                            </div>
                             {anomalies.length > 0 ? (
                                 <ul>
                                     {anomalies.map((anomaly, index) => (
