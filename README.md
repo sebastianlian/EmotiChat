@@ -26,13 +26,13 @@ EmotiChat is a secure, AI-driven web application built to assist individuals man
 
 ## 📚 Table of Contents
 
-- [✨ Features](#-features)
-- [🛠️ Technologies Used](#️-technologies-used)
-- [🚀 Getting Started](#-getting-started)
-- [⚙️ Installation](#️-installation)
-- [🧠 Development Notes](#-development-notes)
-- [📄 License](#-license)
-- [📬 Contact](#-contact)
+- ✨ [Features](#-features)
+- 🛠️ [Technologies Used](#️-technologies-used)
+- 🚀 [Getting Started](#-getting-started)
+- ⚙️ [Installation](#️-installation)
+- 🧠 [Development Notes](#-development-notes)
+- 📄 [License](#-license)
+- 📬 [Contact](#-contact)
 
 ---
 
