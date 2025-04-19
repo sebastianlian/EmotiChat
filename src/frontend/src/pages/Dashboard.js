@@ -296,7 +296,7 @@ const Dashboard = () => {
 
                                     <div className="text-area-container">
                                         <textarea
-                                            className={`form-control ${isDarkMode ? 'dark-mode-textarea' : ''}`}
+                                            className={`form-control handwriting-textarea ${isDarkMode ? 'dark-mode-textarea' : ''}`}
                                             rows="5"
                                             placeholder="Today I'm feeling..."
                                             value={journalEntry}

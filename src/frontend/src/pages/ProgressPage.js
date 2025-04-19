@@ -15,6 +15,7 @@ const ProgressPage = () => {
     // const [mentalHealthStatus, setMentalHealthStatus] = useState("Loading...");
     const [emotionalState, setEmotionalState] = useState("Loading...");
     const [anomalies, setAnomalies] = useState([]);
+    const [weeklySentiments, setWeeklySentiments] = useState([]);
 
     // GRABS THE SENTIMENT DATA AND CONVERSATION DATA FOR THIS CLASS
     useEffect(() => {
@@ -60,8 +61,23 @@ const ProgressPage = () => {
         fetchUserSentiments();
     }, [user?.username]);
 
+    // GRABS DATA FOR LAST 7 DAYS
+    useEffect(() => {
+        const fetchWeeklySentiments = async () => {
+            if (!user?.username) return;
 
-    // Chart Data for Emotional Trends
+            try {
+                const response = await axios.get(`http://localhost:5000/api/progress/weekly/${user.username}`);
+                setWeeklySentiments(response.data.sentiments || []);
+            } catch (error) {
+                console.error("Error fetching weekly sentiment data:", error);
+            }
+        };
+
+        fetchWeeklySentiments();
+    }, [user?.username]);
+
+    // Chart Data for last 8 hours
     const chartData = {
         labels: sentimentData.map(entry => {
             const ts = new Date(entry.timestamps);
@@ -77,7 +93,7 @@ const ProgressPage = () => {
         ],
     };
 
-    // Chart Options for Emotional Trends
+    // Chart Options for last 8 hours
     const chartOptions = {
         responsive: true,
         plugins: {
@@ -114,6 +130,45 @@ const ProgressPage = () => {
         }
     };
 
+    // Chart data for las 7 days
+    const weeklyChartData = {
+        labels: weeklySentiments.map(entry => new Date(entry.timestamps).toLocaleDateString()),
+        datasets: [
+            {
+                label: 'Weekly Sentiment Score',
+                data: weeklySentiments.map(entry => entry.sentimentScore),
+                borderColor: 'teal',
+                fill: false,
+                tension: 0.4,
+            },
+        ],
+    };
+
+    // Chart options for last 7 days
+    const weeklyChartOptions = {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        const value = context.parsed.y;
+                        const emotion = weeklySentiments[context.dataIndex]?.emotionalState || 'Unknown';
+                        return [`Sentiment: ${value.toFixed(2)}`, `Emotion: ${emotion}`];
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                suggestedMin: -1,
+                suggestedMax: 1
+            }
+        }
+    };
+
+
     return (
         <ChatPlacement>
             <div className="progress-page-wrapper">
@@ -128,7 +183,7 @@ const ProgressPage = () => {
                     <div className="progress-content">
                         {/* CARD DISPLAYING EMOTIONAL ANALYSIS OF USER: CURRENT EMOTION AND ROLLING AVG SENTIMENT SCORE */}
                         <div className="card">
-                            <h5 className="card-title">Emotional Analysis</h5>
+                            <h5 className="card-title">Current Emotional Analysis</h5>
                             <p><strong>Current Emotional Status:</strong> {emotionalState}</p>
                             <p>
                                 <strong>Average Sentiment Score:</strong>
@@ -145,9 +200,10 @@ const ProgressPage = () => {
 
                         {/* CHART OF EMOTIONAL TRENDS */}
                         <div className="card">
-                            <h5 className="card-title">Emotional Trends</h5>
+                            <h5 className="card-title">Last 8 Hour Summary</h5>
+                            <p>Analyze your mood progression over the last 8 hours.</p>
                             {sentimentData.length > 0 ? (
-                                <Line data={chartData} options={chartOptions} />
+                                <Line data={chartData} options={chartOptions}/>
                             ) : (
                                 <p>No mood data available yet.</p>
                             )}
@@ -157,7 +213,14 @@ const ProgressPage = () => {
                         <div className="card">
                             <h5 className="card-title">Weekly Summary</h5>
                             <p>Analyze your mood progression over the last 7 days.</p>
+
+                            {weeklySentiments.length > 0 ? (
+                                <Line data={weeklyChartData} options={weeklyChartOptions} />
+                            ) : (
+                                <p className="text-muted">No data from the past 7 days.</p>
+                            )}
                         </div>
+
 
                         {/* TODO: IMPLEMENT THE ANOMALY DETECTION FEATURE */}
                         <div className="card">
