@@ -33,14 +33,6 @@ router.get('/:username', async (req, res) => {
                 .find(msg => msg.sender === 'user' && msg.emotionalState);
             if (lastEmotional) emotionalState = lastEmotional.emotionalState;
         }
-        //
-        // // 2. Filter for sentiment entries from the last 7 days
-        // const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-        //
-        // const sentiments = await SentimentData.find({
-        //     username,
-        //     timestamps: { $gte: sevenDaysAgo }
-        // }).sort({ timestamps: 1 });
 
         // 2. Replace the 7-day range with an 8-hour range
         const eightHoursAgo = new Date(Date.now() - 8 * 60 * 60 * 1000);
@@ -78,6 +70,50 @@ router.get('/:username', async (req, res) => {
     } catch (error) {
         console.error("Error fetching progress data:", error);
         res.status(500).json({ error: "Server error" });
+    }
+});
+
+// Route for last 7 days mood progression
+router.get("/weekly/:username", async (req, res) => {
+    const { username } = req.params;
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+    try {
+        const sentiments = await SentimentData.find({
+            username,
+            timestamps: { $gte: sevenDaysAgo }
+        }).sort({ timestamps: 1 });
+
+        const user = await User.findOne({ username });
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        const conversation = await Conversation.findOne({ user: user._id });
+        const userMessages = conversation?.messages?.filter(
+            msg => msg.sender === 'user' && msg.emotionalState
+        ) || [];
+
+        const enriched = sentiments.map(sentiment => {
+            let closest = null;
+            let minDiff = Infinity;
+
+            userMessages.forEach(msg => {
+                const diff = Math.abs(new Date(msg.timestamp) - new Date(sentiment.timestamps));
+                if (diff < minDiff && diff <= 10 * 60 * 1000) {
+                    minDiff = diff;
+                    closest = msg;
+                }
+            });
+
+            return {
+                ...sentiment.toObject(),
+                emotionalState: closest?.emotionalState || "Unknown"
+            };
+        });
+
+        res.json({ sentiments: enriched });
+    } catch (err) {
+        console.error("Error fetching weekly sentiments:", err);
+        res.status(500).json({ error: "Internal server error" });
     }
 });
 
