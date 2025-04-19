@@ -247,7 +247,9 @@ const ChatMessengerInterface = ({ isOpen, toggleChat, darkMode, username }) => {
                         }
                     }}
                 />
-                <button onClick={sendMessage}>Send</button>
+                <button
+                    onClick={sendMessage}>Send
+                </button>
             </div>
 
         </div>

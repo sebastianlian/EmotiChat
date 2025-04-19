@@ -83,12 +83,14 @@ const JournalEntriesPage = () => {
                     </div>
 
                     <div className="mb-4 text-end">
-                        <button
-                            className="btn btn-outline-primary"
-                            onClick={() => setShowNewEntry(!showNewEntry)}
-                        >
-                            {showNewEntry ? "Close Entry Form" : "New Journal Entry"}
-                        </button>
+                        <div className="mt-2 d-flex justify-content-end gap-2 flex-wrap">
+                            <button
+                                className="btn btn-outline-primary"
+                                onClick={() => setShowNewEntry(!showNewEntry)}
+                            >
+                                {showNewEntry ? "Close Entry Form" : "New Journal Entry"}
+                            </button>
+                        </div>
                     </div>
 
                     {showNewEntry && (
@@ -113,9 +115,9 @@ const JournalEntriesPage = () => {
                                 value={newEntryText}
                                 onChange={(e) => setNewEntryText(e.target.value)}
                             />
-                            <div className="mt-3 d-flex justify-content-end gap-2">
-                                <button className="btn btn-secondary" onClick={() => setShowNewEntry(false)}>Cancel</button>
-                                <button className="btn btn-primary" onClick={handleSaveNewEntry}>Save Entry</button>
+                            <div className="mt-2 d-flex justify-content-end gap-2 flex-wrap">
+                                <button className="btn btn-secondary btn-sm w-auto" onClick={() => setShowNewEntry(false)}>Cancel</button>
+                                <button className="btn sucess btn-sm w-auto" onClick={handleSaveNewEntry}>Save Entry</button>
                             </div>
                         </div>
                     )}
@@ -172,15 +174,15 @@ const JournalEntriesPage = () => {
                                                     value={editedText}
                                                     onChange={(e) => setEditedText(e.target.value)}
                                                 />
-                                                <div className="mt-2 d-flex justify-content-end gap-2">
+                                                <div className="mt-2 d-flex justify-content-center gap-2 flex-wrap">
                                                     <button
-                                                        className="btn btn-secondary btn-sm"
+                                                        className="btn btn-secondary btn-sm w-auto"
                                                         onClick={() => setEditIndex(null)}
                                                     >
                                                         Cancel
                                                     </button>
                                                     <button
-                                                        className="btn btn-success btn-sm"
+                                                        className="btn btn-success btn-sm w-auto"
                                                         onClick={() => handleSaveEdit(entry._id)}
                                                     >
                                                         Save
@@ -191,16 +193,18 @@ const JournalEntriesPage = () => {
                                         ) : (
                                             <>
                                                 <p className="entry-text">{entry.entry}</p>
-                                                <button
-                                                    className="btn btn-outline-primary btn-sm mt-2"
-                                                    onClick={() => {
-                                                        setEditIndex(idx);
-                                                        setEditedText(entry.entry);
-                                                        setEditedEmotion(entry.emotion);
-                                                    }}
-                                                >
-                                                    Edit
-                                                </button>
+                                                <div className="mt-2 d-flex justify-content-center gap-2 flex-wrap">
+                                                    <button
+                                                        className="btn btn-outline-primary btn-sm mt-2 w-auto"
+                                                        onClick={() => {
+                                                            setEditIndex(idx);
+                                                            setEditedText(entry.entry);
+                                                            setEditedEmotion(entry.emotion);
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                </div>
                                             </>
                                         )}
                                     </div>

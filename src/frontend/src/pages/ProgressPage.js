@@ -51,7 +51,7 @@ const ProgressPage = () => {
                 setAverageSentiment(avgSentiment);
                 // setMentalHealthStatus(mentalStatus);
                 setEmotionalState(emotionalState);
-                setAnomalies(detectedAnomalies || []);
+                // setAnomalies(detectedAnomalies || []);
                 console.log("Progress Data Response:", response.data);
 
             } catch (error) {
@@ -77,6 +77,23 @@ const ProgressPage = () => {
 
         fetchWeeklySentiments();
     }, [user?.username]);
+
+    // Ensures I always show logged anomalies from the database
+    useEffect(() => {
+        const fetchAnomalies = async () => {
+            if (!user?.username) return;
+
+            try {
+                const res = await axios.get(`http://localhost:5000/api/progress/anomalies/${user.username}`);
+                setAnomalies(res.data.anomalies || []);
+            } catch (error) {
+                console.error("Error fetching anomalies:", error);
+            }
+        };
+
+        fetchAnomalies();
+    }, [user?.username]);
+
 
     // Chart Data for last 8 hours
     const chartData = {
@@ -226,21 +243,26 @@ const ProgressPage = () => {
                         </div>
 
 
-                        {/* TODO: IMPLEMENT THE ANOMALY DETECTION FEATURE */}
+                        {/* ANOMALY DETECTION FEATURE */}
+                        {/* TODO: ENHANCE THE READABILITY OF THIS CARD & MAYBE MOVE THIS CARD NEXT TO THE CURRENT EMOTION CARD ^^^^ */}
                         <div className="card">
                             <h5 className="card-title">Anomaly Detection</h5>
                             <div className="mb-3">
                                 <small>Analysis of anomalies that require intervention.</small>
                             </div>
                             {anomalies.length > 0 ? (
-                                <ul>
+                                <ul className="anomaly-list">
                                     {anomalies.map((anomaly, index) => (
-                                        <li key={index}>{anomaly.message}</li>
+                                        <li key={index}>
+                                            <strong>{new Date(anomaly.timestamp).toLocaleString()}</strong><br />
+                                            {anomaly.description || "Anomaly detected"}
+                                        </li>
                                     ))}
                                 </ul>
                             ) : (
-                                <p>No anomalies detected.</p>
+                                <p className="text-muted">No anomalies detected.</p>
                             )}
+
                         </div>
                     </div>
                 </div>
