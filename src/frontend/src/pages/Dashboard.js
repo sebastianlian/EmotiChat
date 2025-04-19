@@ -175,7 +175,9 @@ const Dashboard = () => {
                         {/* RECENT CONVO CARD */}
                         <div className="card mb-4">
                             <h5 className="card-title">Recent Conversation</h5>
-
+                            <div className="mb-3">
+                                <small className="card-subtitle">An overview of your last conversation.</small>
+                            </div>
                             {recentMessages.length === 0 ? (
                                 <p className="no-convo-yet-text text-muted">
                                     You haven't started a chat yet. Say hi to your mental health assistant and start tracking how you feel 💬
@@ -195,8 +197,12 @@ const Dashboard = () => {
                             <div className="col-md-6">
                                 <div className="card mood-trend-card ">
                                     <h5 className="card-title">Mood Trends</h5>
-                                    <p className="card-subtitle">Your emotional state from recent
-                                        conversations</p>
+                                    {/*<p className="card-subtitle">Your emotional state from recent*/}
+                                    {/*    conversations</p>*/}
+                                    <div className="mb-3">
+                                        <small className="card-subtitle">Your emotional state from recent
+                                            conversations</small>
+                                    </div>
                                     <ul className="list-group list-group-flush">
                                         {emotionalTrends.length > 0 ? (
                                             emotionalTrends.map((entry, index) => (
@@ -225,8 +231,9 @@ const Dashboard = () => {
                             <div className="col-md-6">
                                 <div className="card">
                                     <h5 className="card-title">Current Strategy</h5>
-                                    <p>Your most recently completed coping objective</p>
-
+                                    <div className="mb-3">
+                                        <small className="card-subtitle">Your most recently completed coping objective</small>
+                                    </div>
                                     {completedStrategies.length > 0 ? (
                                         <>
                                             <div className="accordion" id="latestStrategyAccordion">
@@ -278,8 +285,10 @@ const Dashboard = () => {
                             <div className="col-md-12">
                                 <div className="card mb-4 mood-journal">
                                     <h5 className="card-title">Mood Journal</h5>
-                                    <p>Write down how you're feeling right now. Journaling helps track mood patterns and
-                                        emotional health over time.</p>
+                                    <div className="mb-3">
+                                        <small className="card-subtitle">Write down how you're feeling right now. Journaling helps track mood patterns and
+                                            emotional health over time.</small>
+                                    </div>
 
                                     <div className="form-container">
                                         <select
