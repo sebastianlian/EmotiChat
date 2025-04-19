@@ -1,0 +1,32 @@
+/* Goals Page Wrapper */
+.progress-page-wrapper {
+    display: flex;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color); /* Shared variable for light/dark themes */
+    color: var(--text-color); /* Shared variable for text color */
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+.progress-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.progress-header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.progress-header p {
+    font-size: 1.2rem;
+}
