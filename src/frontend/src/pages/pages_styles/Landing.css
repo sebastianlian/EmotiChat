@@ -40,7 +40,7 @@
     justify-content: center;
     align-items: center; /* Center content horizontally */
     width: 100%; /* Full width */
-    padding: 80px 20px; /* Increased padding for better spacing */
+    padding: 40px 20px; /* Increased padding for better spacing */
     background-color: #fff; /* Default background color */
     box-sizing: border-box; /* Include padding in the width */
     text-align: center; /* Center align text */
@@ -105,15 +105,15 @@
 }
 
 /* Buttons */
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-}
+/*.button-group {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    gap: 20px;*/
+/*    margin-top: 20px;*/
+/*}*/
 
 .button-group .btn {
-    padding: 10px 20px;
+    padding: 10px 0px;
     font-size: 1rem;
     border-radius: 5px;
     font-weight: bold;

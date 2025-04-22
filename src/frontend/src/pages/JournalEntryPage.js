@@ -97,7 +97,7 @@ const JournalEntriesPage = () => {
                         <div className="card journal-entry-card new-entry-form">
                             <div className="entry-meta mb-2">
                                 <select
-                                    className="form-select w-auto"
+                                    className="form-select w-50"
                                     value={newEntryEmotion}
                                     onChange={(e) => setNewEntryEmotion(e.target.value)}
                                 >

@@ -22,7 +22,8 @@ const detectAnomalies = (sentiments) => {
             anomalies.push({
                 message: `Sharp drop from ${prev.toFixed(2)} to ${curr.toFixed(2)} on ${roundedTimestamp.toISOString()}`,
                 sentimentScore: curr,
-                timestamp: roundedTimestamp
+                timestamp: roundedTimestamp,
+                emotionalState: sentiments[i]?.emotionalState || "Unknown"
             });
         }
     }
@@ -180,7 +181,8 @@ router.post("/detect-historical-anomalies", async (req, res) => {
                         username: user.username,
                         sentimentScore: anomaly.sentimentScore,
                         timestamp: roundedTimestamp,
-                        description: anomaly.message
+                        description: anomaly.message,
+                        emotionalState: anomaly.emotionalState
                     });
                     console.log(`Created anomaly: ${anomaly.message}`);
                 } else {

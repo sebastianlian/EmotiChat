@@ -84,7 +84,7 @@ def map_cluster_to_emotion(cluster, cluster_means):
 df["emotionalState"] = df["cluster"].apply(lambda x: map_cluster_to_emotion(x, cluster_means))
 
 # **Step 6: Save Model & Scaler**
-with open("src/backend/ml/model.pkl", "wb") as f:
+with open("model.pkl", "wb") as f:
     pickle.dump((kmeans, scaler), f)
 
 print(f"\nModel trained successfully with {num_clusters} clusters!")

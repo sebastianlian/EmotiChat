@@ -32,6 +32,9 @@ const Dashboard = () => {
         return <BsMoon className="time-icon" />;
     };
 
+    {/* HOOK FOR RECENT CONVO SNAPSHOT BEGINS HERE
+    THIS RUNS WHEN THE PAGE LOADS AND GETS THE LAST
+    4 MESSAGES FROM THE BACKEND CHATROUTES.JS */}
     const [recentMessages, setRecentMessages] = useState([]);
 
     useEffect(() => {
@@ -39,7 +42,8 @@ const Dashboard = () => {
             if (!username || username === "Guest") return;
 
             try {
-                const response = await axios.get(`http://localhost:5000/api/chatbot/recent-messages/${username}`);
+                const response = await axios.get(
+                    `http://localhost:5000/api/chatbot/recent-messages/${username}`);
                 setRecentMessages(response.data.messages || []);
             } catch (error) {
                 console.error("Error fetching recent messages:", error);
@@ -171,37 +175,78 @@ const Dashboard = () => {
                                     aria-label="Close">
                             </button>
                         </div>
-
-                        {/* RECENT CONVO CARD */}
-                        <div className="card mb-4">
-                            <h5 className="card-title">Recent Conversation</h5>
-                            <div className="mb-3">
-                                <small className="card-subtitle">An overview of your last conversation.</small>
-                            </div>
-                            {recentMessages.length === 0 ? (
-                                <p className="no-convo-yet-text text-muted">
-                                    You haven't started a chat yet. Say hi to your mental health assistant and start tracking how you feel 💬
-                                </p>
-
-                            ) : (
-                                recentMessages.slice(-4).map((msg, index) => (
-                                    <div key={index} className={`chat-row ${msg.sender === 'user' ? 'right' : 'left'}`}>
-                                        <MessageBubble sender={msg.sender} text={msg.text} timestamp={msg.timestamp} />
-                                    </div>
-                                ))
-                            )}
-                        </div>
-
-                        {/* MOOD TRENDS CARD */}
                         <div className="row">
-                            <div className="col-md-6">
-                                <div className="card mood-trend-card ">
-                                    <h5 className="card-title">Mood Trends</h5>
-                                    {/*<p className="card-subtitle">Your emotional state from recent*/}
-                                    {/*    conversations</p>*/}
+                            {/* LEFT COLUMN: Conversation + Mood Journal */}
+                            <div className="col-md-6 d-flex flex-column" style={{ height: '100%' }}>
+                                {/* RECENT CONVO CARD */}
+                                <div className="card mb-4 flex-fill">
+                                    <h5 className="card-title">Recent Conversation Snapshot</h5>
                                     <div className="mb-3">
-                                        <small className="card-subtitle">Your emotional state from recent
-                                            conversations</small>
+                                        <small className="card-subtitle">An overview of your last conversation.</small>
+                                    </div>
+                                    {recentMessages.length === 0 ? (
+                                        <p className="no-convo-yet-text text-muted">
+                                            You haven't started a chat yet. Say hi to your mental health assistant and start
+                                            tracking how you feel 💬
+                                        </p>
+                                    ) : (
+                                        recentMessages.slice(-4).map((msg, index) => (
+                                            <div key={index} className={`chat-row ${msg.sender === 'user' ? 'right' : 'left'}`}>
+                                                <MessageBubble sender={msg.sender} text={msg.text} timestamp={msg.timestamp} />
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+
+                                {/* MOOD JOURNAL CARD */}
+                                <div className="card mb-4 flex-fill">
+                                    <h5 className="card-title">Mood Journal</h5>
+                                    <div className="mb-3">
+                                        <small className="card-subtitle">
+                                            Write down how you're feeling right now. Journaling helps track mood patterns and
+                                            emotional health over time.
+                                        </small>
+                                    </div>
+
+                                    <div className="form-container">
+                                        <select
+                                            className="form-select w-50"
+                                            value={selectedEmotion}
+                                            onChange={(e) => setSelectedEmotion(e.target.value)}
+                                        >
+                                            <option value="">Select Emotion</option>
+                                            {emotionOptions.map((emotion, index) => (
+                                                <option key={index} value={emotion}>{emotion}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="text-area-container">
+                                        <textarea
+                                            className={`form-control handwriting-textarea ${isDarkMode ? 'dark-mode-textarea' : ''}`}
+                                            rows="5"
+                                            placeholder="Today I'm feeling..."
+                                            value={journalEntry}
+                                            onChange={(e) => setJournalEntry(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <button
+                                        className={`btn mt-2 ${isDarkMode ? 'btn-outline-light' : 'btn-primary'}`}
+                                        onClick={handleSaveEntry}
+                                    >
+                                        Save Entry
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* RIGHT COLUMN: Mood Trends + Completed Strategy */}
+                            <div className="col-md-6 d-flex flex-column" style={{ height: '100%' }}>
+                                {/* MOOD TRENDS CARD */}
+                                <div className="card mood-trend-card mb-4 flex-fill">
+                                    <h5 className="card-title">Recent Emotions Snapshot</h5>
+                                    <div className="mb-3">
+                                        <small className="card-subtitle">Your emotional state from recent conversations.</small>
                                     </div>
                                     <ul className="list-group list-group-flush">
                                         {emotionalTrends.length > 0 ? (
@@ -214,25 +259,22 @@ const Dashboard = () => {
                                                             day: 'numeric'
                                                         })}
                                                     </span>
-                                                    <span className={`badge emotion-badge`}>
+                                                                            <span className={`badge emotion-badge`}>
                                                         {entry.emotionalState}
                                                     </span>
                                                 </li>
                                             ))
                                         ) : (
-                                            <li className="list-group-item text-muted">No recent emotional states
-                                                available.</li>
+                                            <li className="list-group-item text-muted">No recent emotional states available.</li>
                                         )}
                                     </ul>
                                 </div>
-                            </div>
 
-                            {/* COMPLETED STRATS CARD */}
-                            <div className="col-md-6">
-                                <div className="card">
-                                    <h5 className="card-title">Current Strategy</h5>
+                                {/* COMPLETED STRATEGY CARD */}
+                                <div className="card flex-fill">
+                                    <h5 className="card-title">Recently Completed Strategy</h5>
                                     <div className="mb-3">
-                                        <small className="card-subtitle">Your most recently completed coping objective</small>
+                                        <small className="card-subtitle">Your most recently completed coping strategy.</small>
                                     </div>
                                     {completedStrategies.length > 0 ? (
                                         <>
@@ -267,9 +309,8 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
 
-                                            {/* View All Link */}
                                             <div className="mt-3 d-flex justify-content-center">
-                                                <a href="dashboard/strategies" className="btn btn-sm btn-outline-secondary cen">
+                                                <a href="dashboard/strategies" className="btn btn-sm btn-outline-primary">
                                                     View All Strategies
                                                 </a>
                                             </div>
@@ -279,51 +320,6 @@ const Dashboard = () => {
                                     )}
                                 </div>
                             </div>
-
-
-                            {/* MOOD JOURNAL CARD */}
-                            <div className="col-md-12">
-                                <div className="card mb-4 mood-journal">
-                                    <h5 className="card-title">Mood Journal</h5>
-                                    <div className="mb-3">
-                                        <small className="card-subtitle">Write down how you're feeling right now. Journaling helps track mood patterns and
-                                            emotional health over time.</small>
-                                    </div>
-
-                                    <div className="form-container">
-                                        <select
-                                            className="form-select"
-                                            value={selectedEmotion}
-                                            onChange={(e) => setSelectedEmotion(e.target.value)}
-                                        >
-                                            <option value="">Select Emotion</option>
-                                            {emotionOptions.map((emotion, index) => (
-                                                <option key={index} value={emotion}>{emotion}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-
-                                    <div className="text-area-container">
-                                        <textarea
-                                            className={`form-control handwriting-textarea ${isDarkMode ? 'dark-mode-textarea' : ''}`}
-                                            rows="5"
-                                            placeholder="Today I'm feeling..."
-                                            value={journalEntry}
-                                            onChange={(e) => setJournalEntry(e.target.value)}
-                                        />
-
-                                    </div>
-
-                                    <button
-                                        className={`btn mt-2 ${isDarkMode ? 'btn-outline-light' : 'btn-primary'}`}
-                                        onClick={handleSaveEntry}
-                                    >
-                                        Save Entry
-                                    </button>
-
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>

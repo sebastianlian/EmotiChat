@@ -148,7 +148,7 @@ const ProgressPage = () => {
         }
     };
 
-    // Chart data for las 7 days
+    // Chart data for last 7 days
     const weeklyChartData = {
         labels: weeklySentiments.map(entry => new Date(entry.timestamps).toLocaleDateString()),
         datasets: [
@@ -216,54 +216,83 @@ const ProgressPage = () => {
                         </div>
 
                         {/* LAST 8 HR ANALYSIS FEATURE */}
-                        <div className="card">
-                            <h5 className="card-title">Last 8 Hour Summary</h5>
-                            <div className="mb-3">
-                                <small>Analyze your mood progression over the last 8 hours.</small>
-                            </div>
-                            {sentimentData.length > 0 ? (
-                                <Line data={chartData} options={chartOptions}/>
-                            ) : (
-                                <p>No mood data available yet.</p>
-                            )}
-                        </div>
-
-                        {/* 7 DAY ANALYSIS FEATURE */}
-                        <div className="card">
-                            <h5 className="card-title">Weekly Summary</h5>
-                            <div className="mb-3">
-                                <small>Analyze your mood progression over the last 7 days.</small>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="card">
+                                    <h5 className="card-title">Last 8 Hour Summary</h5>
+                                    <div className="mb-3">
+                                        <small>Analyze your mood progression over the last 8 hours.</small>
+                                    </div>
+                                    {sentimentData.length > 0 ? (
+                                        <Line data={chartData} options={chartOptions}/>
+                                    ) : (
+                                        <p>No mood data available yet.</p>
+                                    )}
+                                </div>
                             </div>
 
-                            {weeklySentiments.length > 0 ? (
-                                <Line data={weeklyChartData} options={weeklyChartOptions} />
-                            ) : (
-                                <p className="text-muted">No data from the past 7 days.</p>
-                            )}
+                            {/* 7 DAY ANALYSIS FEATURE */}
+                            <div className="col-md-6">
+                                <div className="card">
+                                    <h5 className="card-title">Weekly Summary</h5>
+                                    <div className="mb-3">
+                                        <small>Analyze your mood progression over the last 7 days.</small>
+                                    </div>
+
+                                    {weeklySentiments.length > 0 ? (
+                                        <Line data={weeklyChartData} options={weeklyChartOptions} />
+                                    ) : (
+                                        <p className="text-muted">No data from the past 7 days.</p>
+                                    )}
+                                </div>
+                        </div>
                         </div>
 
 
-                        {/* ANOMALY DETECTION FEATURE */}
-                        {/* TODO: ENHANCE THE READABILITY OF THIS CARD & MAYBE MOVE THIS CARD NEXT TO THE CURRENT EMOTION CARD ^^^^ */}
-                        <div className="card">
+                        <div className="card anomaly-card shadow-sm">
                             <h5 className="card-title">Anomaly Detection</h5>
-                            <div className="mb-3">
-                                <small>Analysis of anomalies that require intervention.</small>
+                            <div className="mb-2">
+                                <small className="card-subtitle text-muted">Detected mood patterns that may require attention.</small>
                             </div>
+
                             {anomalies.length > 0 ? (
-                                <ul className="anomaly-list">
+                                <ul className="list-group anomaly-list-group" style={{ maxHeight: '280px', overflowY: 'auto' }}>
                                     {anomalies.map((anomaly, index) => (
-                                        <li key={index}>
-                                            <strong>{new Date(anomaly.timestamp).toLocaleString()}</strong><br />
-                                            {anomaly.description || "Anomaly detected"}
+                                        <li key={index} className="list-group-item d-flex flex-column">
+                                            <div className="d-flex justify-content-between align-items-center">
+                                                <span className="text-danger fw-bold">
+                                                    <i className="bi bi-exclamation-circle-fill me-2"></i>
+                                                    {anomaly.description || "Anomaly detected"}
+                                                </span>
+
+                                                <div className="d-flex align-items-center gap-2">
+                                                    {/* Emotion Badge */}
+                                                    {anomaly.emotionalState && (
+                                                        <span
+                                                            className="badge bg-secondary">{anomaly.emotionalState}
+                                                        </span>
+                                                    )}
+
+                                                    {/* Timestamp Badge */}
+                                                    <span className="badge bg-danger text-white">
+                                                        {new Date(anomaly.timestamp).toLocaleString('en-US', {
+                                                            month: 'short',
+                                                            day: 'numeric',
+                                                            hour: 'numeric',
+                                                            minute: 'numeric'
+                                                        })}
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
-                            ) : (
-                                <p className="text-muted">No anomalies detected.</p>
-                            )}
 
+                            ) : (
+                                <div className="text-muted">No anomalies detected during this period.</div>
+                            )}
                         </div>
+
                     </div>
                 </div>
             </div>

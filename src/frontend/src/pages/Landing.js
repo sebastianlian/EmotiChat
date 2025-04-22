@@ -40,14 +40,14 @@ const Landing = () => {
     return (
         <>
             <div className="landing-page">
-                <NavBar />
+                <NavBar/>
                 <div className="hero-banner">
                     <div className="landing-content text-center">
                         <h1 className="display-2">Welcome to EmotiChat</h1>
                         <p className="lead">
                             Your AI companion for managing your mental health. Get support anytime, anywhere.
                         </p>
-                        <div className="button-group mt-4">
+                        <div className="button-group m-0">
                             <Link to="/login" className="btn btn-dark me-2">Login</Link>
                             <Link to="/register" className="btn btn-dark me-2">Register</Link>
                         </div>
@@ -58,56 +58,64 @@ const Landing = () => {
                 <section id="about" className="landing-section" ref={el => sectionRefs.current[0] = el}>
                     <h2 className="display-4">About</h2>
                     <p>
-                        EmotiChat is an innovative AI-powered platform designed to provide accessible mental health support,
-                        focusing on depression management. Our mission is to bridge the gap in mental health care, offering
-                        support to those who may not have immediate access to traditional therapy.
+                        EmotiChat is an AI-powered mental health platform designed to support emotional well-being
+                        through intelligent conversation and personalized analytics.
+                        It helps users recognize patterns in their mood and behavior using sentiment analysis and
+                        anomaly detection extracted from their data.
                     </p>
                     <p>
-                        EmotiChat aims to provide a safe, confidential space for individuals to express their thoughts and
-                        feelings, receive support, and learn coping strategies.
+                        Our goal is to provide a safe, always-available space for individuals to express themselves,
+                        receive tailored coping strategies, and monitor their progress over time.
+                        Whether you're between therapy sessions or just need to talk, EmotiChat is here to help.
                     </p>
                     <p>
-                        While EmotiChat is not a replacement for professional mental health treatment, it serves as a valuable
-                        complementary tool, offering support during off-hours or between therapy sessions.
+                        EmotiChat is not a replacement for clinical treatment but serves as a powerful companion tool to
+                        enhance self-awareness and bridge the gap in care.
                     </p>
                 </section>
+
 
                 {/* Features Section */}
                 <section id="features" className="landing-section" ref={el => sectionRefs.current[1] = el}>
                     <h2 className="display-4">Features</h2>
                     <ul className="features">
-                        <li><i className="bi bi-chat-dots"></i> 24/7 AI-powered chat support for emotional support and
-                            mental wellness
+                        <li><i className="bi bi-chat-dots"></i> AI-powered chatbot available 24/7 for mental health
+                            conversations
                         </li>
-                        <li><i className="bi bi-person"></i> Personalized coping strategies, mindfulness exercises, and
-                            goal-setting
+                        <li><i className="bi bi-journal-text"></i> Mood journal for daily emotional reflections and
+                            progress tracking
                         </li>
-
-                        <li><i className="bi bi-graph-up-arrow"></i> Mood tracking and data-driven insights for
-                            emotional well-being
+                        <li><i className="bi bi-bar-chart-line"></i> Real-time sentiment analysis and mood visualization
                         </li>
-
-
-                        <li><i className="bi bi-people"></i> Clinician Dashboard: Monitor patient progress with
-                            AI-driven analytics
+                        <li><i className="bi bi-exclamation-diamond"></i> Anomaly detection to flag emotional distress
+                            and sudden mood changes
                         </li>
-                        <li><i className="bi bi-lock"></i> Secure and confidential conversations with end-to-end
-                            encryption
+                        <li><i className="bi bi-check2-circle"></i> Personalized coping strategies, goals, and
+                            mindfulness techniques
+                        </li>
+                        <li><i className="bi bi-pie-chart"></i> Dashboard with emotion trends and daily mood insights
+                        </li>
+                        <li><i className="bi bi-shield-lock"></i> End-to-end encryption for secure and confidential
+                            interactions
+                        </li>
+                        <li><i className="bi bi-activity"></i> Future Clinician Dashboard featuring AI-generated summaries
+                            and anomaly alert notifications to monitor patient progress
                         </li>
                     </ul>
                 </section>
+
 
                 {/* Contact Section */}
                 <section id="contact" className="landing-section" ref={el => sectionRefs.current[2] = el}>
                     <h2 className="display-4">Contact Us</h2>
                     <p>
                         Have questions or need help? Reach out to our team at:
-                        <br />
+                        <br/>
                         <a href="mailto:info@emotichat.tech ">support@emotichat.tech</a>
                     </p>
                 </section>
 
-                <Footer />
+                <Footer/>
             </div>
         </>
     );

@@ -70,6 +70,24 @@ const ChatBubble = ({ username }) => {
         };
     }, [dragging]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            const bubbleSize = 60;
+            const padding = 20;
+            const maxX = window.innerWidth - bubbleSize - padding;
+            const maxY = window.innerHeight - bubbleSize - padding;
+
+            setPosition(pos => ({
+                x: Math.min(pos.x, maxX),
+                y: Math.min(pos.y, maxY)
+            }));
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+
     return (
         <div
             className={`chat-bubble-container ${darkMode ? 'dark' : ''}`}

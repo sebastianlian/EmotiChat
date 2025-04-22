@@ -17,7 +17,7 @@ db = client[DB_NAME]
 conversation_collection = db["conversations"]
 
 # Path to CSV
-csv_path = "src/backend/ml/sentiment_data.csv"
+csv_path = "sentiment_data.csv"
 
 # **Step 1: Load existing CSV to check last timestamp**
 if os.path.exists(csv_path):
