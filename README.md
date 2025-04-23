@@ -39,17 +39,11 @@ EmotiChat is a secure, AI-driven web application built to assist individuals man
 ## ✨ Features
 
 💬 **AI-Powered Chatbot**: Conversational assistant for emotional support and daily reflection.
-
 📈 **Mood & Progress Tracking**: Log emotional states and track changes over time.
-
 🔐 **Secure Authentication**: Role-based access using **Passport.js** and **JWT**.
-
 🧑‍🤝‍🧑 **Customizable User Preferences**: Support for user-defined pronouns and personalization.
-
 🖥️ **Responsive UI**: Built with **React** and **Bootstrap** for modern device compatibility.
-
 🌐 **RESTful Backend**: Clean API architecture using **Node.js** and **Express.js**.
-
 🧠 **Real-Time Sentiment Analysis**: Powered by **Google NLP** and **Claude AI**.
 
 ---
@@ -68,6 +62,7 @@ EmotiChat is a secure, AI-driven web application built to assist individuals man
 - **JWT (JSON Web Token)** – Session security and user verification.
 - **Google Cloud Natural Language API** – Sentiment analysis.
 - **Claude AI** – Conversational AI assistant.
+- **Sci-kit, Pickle, Pandas** - Build the emotion labeling system.
 
 ### 🗃️ Database
 - **MongoDB** – NoSQL database for storing user profiles, messages, and analytics.
@@ -86,7 +81,7 @@ To run EmotiChat locally:
 
 - [Node.js](https://nodejs.org/)
 - [MongoDB](https://www.mongodb.com/)
-- npm or yarn
+- npm
 
 ---
 
@@ -125,6 +120,10 @@ To run EmotiChat locally:
 The source code for EmotiChat is proprietary and all rights are reserved. 
 No part of this codebase may be reproduced, distributed, or transmitted without 
 prior written permission from the author.
+
+## 🎥 Project Demo
+Check out the full demo on YouTube: [Watch here](https://youtu.be/4C2bSYtqemA?si=ScgMI4hzLFCF-ZMW)
+
 
 ## 📬 Contact
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/sebastiancarmagnola)
