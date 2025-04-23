@@ -122,7 +122,7 @@ No part of this codebase may be reproduced, distributed, or transmitted without
 prior written permission from the author.
 
 ## 🎥 Project Demo
-[![Watch the Demo](https://img.youtube.com/vi/4C2bSYtqemA/0.jpg)](https://youtu.be/4C2bSYtqemA?si=ScgMI4hzLFCF-ZMW)
+Check out the full demo on YouTube: [Watch here](https://youtu.be/4C2bSYtqemA?si=ScgMI4hzLFCF-ZMW)
 
 ## 📬 Contact
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/sebastiancarmagnola)
