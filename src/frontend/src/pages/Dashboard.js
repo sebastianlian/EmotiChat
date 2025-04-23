@@ -190,7 +190,7 @@ const Dashboard = () => {
                                             tracking how you feel 💬
                                         </p>
                                     ) : (
-                                        recentMessages.slice(-4).map((msg, index) => (
+                                        recentMessages.slice(-2).map((msg, index) => (
                                             <div key={index} className={`chat-row ${msg.sender === 'user' ? 'right' : 'left'}`}>
                                                 <MessageBubble sender={msg.sender} text={msg.text} timestamp={msg.timestamp} />
                                             </div>

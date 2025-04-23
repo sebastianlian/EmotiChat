@@ -263,6 +263,8 @@ const ProgressPage = () => {
                                                 <span className="text-danger fw-bold">
                                                     <i className="bi bi-exclamation-circle-fill me-2"></i>
                                                     {anomaly.description || "Anomaly detected"}
+                                                    {/*{(anomaly.description?.split(" on ")[0].trim()) || "Anomaly detected"}*/}
+
                                                 </span>
 
                                                 <div className="d-flex align-items-center gap-2">

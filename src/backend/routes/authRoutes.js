@@ -56,7 +56,7 @@ router.post('/login', (req, res, next) => {
         return res.status(400).send('Email and password are required.');
     }
 
-    console.log('Login request received:', req.body);
+    // console.log('Login request received:', req.body);
 
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err) {
@@ -70,7 +70,7 @@ router.post('/login', (req, res, next) => {
         }
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-        console.log('Login successful, token generated:', token);
+        // console.log('Login successful, token generated:', token);
         res.json({ token });
     })(req, res, next);
 });
