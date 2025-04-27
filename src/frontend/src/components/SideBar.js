@@ -12,6 +12,7 @@ import {
     BsMoon,
     BsSun, BsBook,
 } from 'react-icons/bs';
+import {IoChatbubbleEllipsesOutline} from "react-icons/io5";
 
 const Sidebar = ({ handleLogout }) => {
     const location = useLocation();
@@ -37,6 +38,14 @@ const Sidebar = ({ handleLogout }) => {
                         className={`nav-link ${location.pathname === '/dashboard' ? 'active disabled' : ''}`}
                     >
                         <BsHouse className="sidebar-icon"/> {!collapsed && 'Home'}
+                    </a>
+                </li>
+                <li className="nav-item">
+                    <a
+                        href="/dashboard/chat"
+                        className={`nav-link ${location.pathname === '/dashboard/chat' ? 'active disabled' : ''}`}
+                    >
+                        <IoChatbubbleEllipsesOutline className="sidebar-icon"/> {!collapsed && 'Chat'}
                     </a>
                 </li>
                 <li className="nav-item">

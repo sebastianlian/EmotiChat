@@ -14,6 +14,7 @@ import CopingStratPage from './pages/CopingStratPage';
 import EULA from './pages/EULA';
 import Privacy from "./pages/Privacy";
 import JournalEntryPage from "./pages/JournalEntryPage";
+import ChatPage from "./pages/ChatPage";
 
 
 const App = () => {
@@ -80,6 +81,14 @@ const App = () => {
                 element={
                     <ProtectedRoute>
                         <JournalEntryPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/dashboard/chat"
+                element={
+                    <ProtectedRoute>
+                        <ChatPage />
                     </ProtectedRoute>
                 }
             />

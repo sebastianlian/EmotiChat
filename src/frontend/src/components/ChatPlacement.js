@@ -1,5 +1,5 @@
 import React from 'react';
-import ChatBubble from './ChatBubble';
+// import ChatBubble from './ChatBubble';
 import { useAuth } from './AuthContext'; // Import AuthContext to get the user
 
 const ChatPlacement = ({ children }) => {
@@ -13,8 +13,8 @@ const ChatPlacement = ({ children }) => {
             <div className="content-wrapper">
                 {children} {/* Render the main content */}
             </div>
-            {/* Add ChatBubble as a persistent feature */}
-            <ChatBubble username={username} /> {/* Pass username to ChatBubble */}
+            {/*/!* Add ChatBubble as a persistent feature *!/*/}
+            {/*<ChatBubble username={username} /> /!* Pass username to ChatBubble *!/*/}
         </div>
     );
 };

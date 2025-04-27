@@ -71,6 +71,16 @@ const JournalEntriesPage = () => {
         }
     };
 
+    const groupedEntries = entries.reduce((acc, entry) => {
+        const dateKey = new Date(entry.timestamp).toLocaleDateString();
+        if (!acc[dateKey]) {
+            acc[dateKey] = [];
+        }
+        acc[dateKey].push(entry);
+        return acc;
+    }, {});
+
+
     return (
         <ChatPlacement username={user?.username}>
             <div className="journal-wrapper">
@@ -116,8 +126,11 @@ const JournalEntriesPage = () => {
                                 onChange={(e) => setNewEntryText(e.target.value)}
                             />
                             <div className="mt-2 d-flex justify-content-end gap-2 flex-wrap">
-                                <button className="btn btn-secondary btn-sm w-auto" onClick={() => setShowNewEntry(false)}>Cancel</button>
-                                <button className="btn sucess btn-sm w-auto" onClick={handleSaveNewEntry}>Save Entry</button>
+                                <button className="btn btn-secondary btn-sm w-auto"
+                                        onClick={() => setShowNewEntry(false)}>Cancel
+                                </button>
+                                <button className="btn sucess btn-sm w-auto" onClick={handleSaveNewEntry}>Save Entry
+                                </button>
                             </div>
                         </div>
                     )}
@@ -138,79 +151,96 @@ const JournalEntriesPage = () => {
                     </div>
 
                     <div className="journal-entries-container">
-                        {entries.length === 0 ? (
+                        {Object.keys(groupedEntries).length === 0 ? (
                             <div className="card">
                                 <p>No entries yet. Start journaling to see them here!</p>
                             </div>
                         ) : (
-                            entries
-                                .filter(entry => !selectedEmotionFilter || entry.emotion === selectedEmotionFilter)
-                                .map((entry, idx) => (
-                                    <div key={idx} className="card journal-entry-card">
-                                        <div className="entry-meta d-flex justify-content-between">
-                                            <span className="journal-date">
-                                                {new Date(entry.timestamp).toLocaleString()}
-                                            </span>
-                                            <span className="emotion-tag">{entry.emotion}</span>
-                                        </div>
+                            Object.entries(groupedEntries).map(([date, dayEntries]) => (
+                                <div key={date} className="day-section mb-4">
+                                    <h4 className="mb-3">{date}</h4>
 
-                                        {editIndex === idx ? (
-                                            <>
-                                                <div className="entry-meta mb-2">
-                                                    <select
-                                                        className="form-select w-auto"
-                                                        value={editedEmotion}
-                                                        onChange={(e) => setEditedEmotion(e.target.value)}
-                                                    >
-                                                        {["Joy", "Excitement", "Calm", "Anxiety", "Sadness",
-                                                            "Frustration", "Overwhelm", "Hopeful", "Tired", "Motivated"].map((emotion, idx) => (
-                                                            <option key={idx} value={emotion}>{emotion}</option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                                <textarea
-                                                    className="form-control handwriting-textarea"
-                                                    rows="6"
-                                                    value={editedText}
-                                                    onChange={(e) => setEditedText(e.target.value)}
-                                                />
-                                                <div className="mt-2 d-flex justify-content-center gap-2 flex-wrap">
-                                                    <button
-                                                        className="btn btn-secondary btn-sm w-auto"
-                                                        onClick={() => setEditIndex(null)}
-                                                    >
-                                                        Cancel
-                                                    </button>
-                                                    <button
-                                                        className="btn btn-success btn-sm w-auto"
-                                                        onClick={() => handleSaveEdit(entry._id)}
-                                                    >
-                                                        Save
-                                                    </button>
-                                                </div>
-                                            </>
+                                    <div className="row">
+                                        {dayEntries
+                                            .filter(entry => !selectedEmotionFilter || entry.emotion === selectedEmotionFilter)
+                                            .map((entry, idx) => (
+                                                <div key={entry._id || idx} className="col-md-6 mb-4 d-flex lead">
+                                                    <div className="card journal-entry-card flex-fill">
+                                                        <div className="entry-meta d-flex justify-content-between">
+                                                            <span className="journal-date">
+                                                                {new Date(entry.timestamp).toLocaleTimeString([], {
+                                                                    hour: '2-digit',
+                                                                    minute: '2-digit'
+                                                                })}
+                                                            </span>
+                                                            <span className="emotion-tag">{entry.emotion}</span>
+                                                        </div>
 
-                                        ) : (
-                                            <>
-                                                <p className="entry-text">{entry.entry}</p>
-                                                <div className="mt-2 d-flex justify-content-center gap-2 flex-wrap">
-                                                    <button
-                                                        className="btn btn-outline-primary btn-sm mt-2 w-auto"
-                                                        onClick={() => {
-                                                            setEditIndex(idx);
-                                                            setEditedText(entry.entry);
-                                                            setEditedEmotion(entry.emotion);
-                                                        }}
-                                                    >
-                                                        Edit
-                                                    </button>
+                                                        {editIndex === entry._id ? (
+                                                            <>
+                                                                <div className="entry-meta mb-2">
+                                                                    <select
+                                                                        className="form-select w-auto"
+                                                                        value={editedEmotion}
+                                                                        onChange={(e) => setEditedEmotion(e.target.value)}
+                                                                    >
+                                                                        {["Joy", "Excited", "Calm", "Anxious", "Sad",
+                                                                            "Frustrated", "Overwhelmed", "Hopeful", "Tired", "Motivated"]
+                                                                            .map((emotion, idx) => (
+                                                                                <option key={idx}
+                                                                                        value={emotion}>{emotion}</option>
+                                                                            ))}
+                                                                    </select>
+                                                                </div>
+                                                                <textarea
+                                                                    className="form-control handwriting-textarea"
+                                                                    rows="6"
+                                                                    value={editedText}
+                                                                    onChange={(e) => setEditedText(e.target.value)}
+                                                                />
+                                                                <div
+                                                                    className="mt-2 d-flex justify-content-center gap-2 flex-wrap">
+                                                                    <button
+                                                                        className="btn btn-secondary btn-sm w-auto"
+                                                                        onClick={() => setEditIndex(null)}
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button
+                                                                        className="btn btn-success btn-sm w-auto"
+                                                                        onClick={() => handleSaveEdit(entry._id)}
+                                                                    >
+                                                                        Save
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <p className="entry-text">{entry.entry}</p>
+                                                                <div
+                                                                    className="mt-autp d-flex justify-content-center gap-2 flex-wrap">
+                                                                    <button
+                                                                        className="btn btn-outline-primary btn-sm w-auto"
+                                                                        onClick={() => {
+                                                                            setEditIndex(entry._id);
+                                                                            setEditedText(entry.entry);
+                                                                            setEditedEmotion(entry.emotion);
+                                                                        }}
+                                                                    >
+                                                                        Edit
+                                                                    </button>
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </>
-                                        )}
+                                            ))}
                                     </div>
-                                ))
+                                </div>
+                            ))
                         )}
                     </div>
+
                 </div>
             </div>
         </ChatPlacement>

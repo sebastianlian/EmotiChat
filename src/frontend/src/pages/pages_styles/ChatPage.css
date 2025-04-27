@@ -1,0 +1,213 @@
+/* Main Chat Layout */
+.chatpage-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+.chatpage-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f5f7fa;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode */
+body.dark-mode .chatpage-main {
+    background-color: #202020;
+    color: #e0e0e0;
+}
+
+/* Chat Header */
+.chat-header {
+    padding: 1.5rem 1rem 1rem 1rem;
+    text-align: center;
+    background-color: transparent;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .chat-header {
+    background-color: transparent;
+    color: #e0e0e0;
+    border-bottom: 1px solid #444;
+}
+
+
+/* Messages */
+.chat-messages {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+}
+
+/* Each Message Block */
+.chat-message {
+    display: flex;
+}
+
+.chat-message.bot {
+    justify-content: flex-start;
+}
+
+.chat-message.user {
+    justify-content: flex-end;
+}
+
+/* Chat Bubbles */
+.message-bubble {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    background-color: #93c5fd;
+    color: #1f2937;
+    word-wrap: break-word;
+    font-size: 1rem;
+    line-height: 1.5;
+    /*box-shadow: 0 4px 8px rgba(0,0,0,0.05);*/
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.chat-message.user .message-bubble {
+    background-color: #a3e635;
+    align-self: flex-end;
+    color: #000;
+    border-radius: 16px;
+}
+
+body.dark-mode .chat-message.bot .message-bubble {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    /*box-shadow: 0 4px 8px rgba(255,255,255,0.05);*/
+}
+
+body.dark-mode .chat-message.user .message-bubble {
+    background-color: #2d6a4f;
+    color: #ffffff;
+    /*box-shadow: 0 4px 8px rgba(255,255,255,0.05);*/
+}
+
+/* Timestamp */
+.timestamp {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin-top: 6px;
+    text-align: right;
+}
+
+body.dark-mode .timestamp {
+    color: #9ca3af;
+}
+
+/* Input Area */
+.chat-input-area {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .chat-input-area {
+    background-color: #1f1f1f;
+    border-top: 1px solid #444;
+}
+
+/* Textarea */
+.chat-input {
+    flex: 1;
+    resize: none;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #000;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .chat-input {
+    background-color: #2e2e2e;
+    border: 1px solid #555;
+    color: #e0e0e0;
+}
+
+/* Placeholder in dark mode */
+body.dark-mode .chat-input::placeholder {
+    color: #ccc;
+}
+
+/* Send Button */
+.send-button {
+    margin-left: 0.75rem;
+    background-color: var(--primary-color);
+    border: none;
+    color: #ffffff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.send-button:hover {
+    background-color: #2563eb;
+    transform: scale(1.02);
+}
+
+/*body.dark-mode .send-button {*/
+/*    background-color: #5e9ea0;*/
+/*    transform: scale(1.02);*/
+/*}*/
+
+/*body.dark-mode .send-button:hover {*/
+/*    background-color: #4ca1a3;*/
+/*}*/
+
+/* Bot Response Lists */
+.bot-response-list {
+    margin: 0.5rem 0 0 1rem;
+    padding: 0;
+    list-style-position: inside;
+}
+
+.bot-response-list li {
+    margin-bottom: 6px;
+}
+
+/* Mobile Responsive Adjustments for header */
+@media (max-width: 768px) {
+    .chat-header {
+        padding: 1.5rem 0.75rem 0.75rem;
+    }
+
+    .chat-header h2 {
+        font-size: 1.5rem; /* Slightly smaller title on mobile */
+    }
+
+    .chat-header p {
+        font-size: 0.9rem; /* Slightly smaller subtitle on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-header {
+        padding: 1rem 0.5rem 0.5rem;
+    }
+
+    .chat-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .chat-header p {
+        font-size: 0.85rem;
+    }
+}
